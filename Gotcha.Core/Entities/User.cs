@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Gotcha.Core.Enums;
 using Gotcha.Core.Services;
 
 namespace Gotcha.Core.Entities
@@ -19,7 +20,7 @@ namespace Gotcha.Core.Entities
         private DateTime birthDate;
         private readonly DateTime _accountCreationDate;
         public List<Player> playerAccounts;
-        public Plan plan;
+        private Plan userPlan;
 
         public User(string firstName, string lastName, string username, string email, DateTime birthdate)
         {
@@ -31,6 +32,7 @@ namespace Gotcha.Core.Entities
             BirthDate = birthdate;
             _accountCreationDate = DateTime.UtcNow;
             PlayerAccounts = new List<Player>();
+            UserPlan = Plan.Standard;
         }
 
         public User(Guid id, string firstName, string lastName, string username, string email, DateTime birthdate) : this(firstName, lastName, username, email, birthdate)
@@ -52,6 +54,13 @@ namespace Gotcha.Core.Entities
         {
             ProfileImageSource = profileImageSource;
         }
+
+        public User(Guid id, string firstName, string lastName, string username, string email, DateTime birthdate, DateTime accountCreationDate, List<Player> playerAccounts, string profileImageSource, Plan userPlan) : this(id, firstName, lastName, username, email, birthdate, accountCreationDate, playerAccounts, profileImageSource)
+        {
+            UserPlan = userPlan;
+        }
+
+        // TO DO !! ADD MORE CONSTRUCTORS
 
         public Guid Id
         {
@@ -189,6 +198,12 @@ namespace Gotcha.Core.Entities
         {
             get { return playerAccounts; }
             set { playerAccounts = value; }
+        }
+
+        public Plan UserPlan
+        {
+            get { return plan; }
+            set { plan = value; }
         }
 
         public List<Game> GetAllGamesPlayed()
