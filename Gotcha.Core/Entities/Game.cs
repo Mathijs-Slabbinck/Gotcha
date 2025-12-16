@@ -11,7 +11,7 @@ namespace Gotcha.Core.Entities
         public Guid Id { get; set; }
         public string Name { get; set; }
         public DateTime CreationDate { get; set; }
-        public  DateTime? StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
         public List<Player> Players { get; set; }
         public List<Kill> Kills { get; set; }
         public Rules Rules { get; set; }
