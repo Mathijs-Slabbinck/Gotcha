@@ -18,7 +18,8 @@ namespace Gotcha.Core.Entities
         private string? profileImageSource;
         private DateTime birthDate;
         private readonly DateTime _accountCreationDate;
-        public List<Player> PlayerAccounts { get; set; }
+        public List<Player> playerAccounts;
+        public Plan plan;
 
         public User(string firstName, string lastName, string username, string email, DateTime birthdate)
         {
@@ -32,24 +33,24 @@ namespace Gotcha.Core.Entities
             PlayerAccounts = new List<Player>();
         }
 
-        public User(string firstName, string lastName, string username, string email, DateTime birthdate, Guid id) : this(firstName, lastName, username, email, birthdate)
+        public User(Guid id, string firstName, string lastName, string username, string email, DateTime birthdate) : this(firstName, lastName, username, email, birthdate)
         {
             _id = id;
         }
 
-        public User(string firstName, string lastName, string username, string email, DateTime birthdate, Guid id, DateTime accountCreationDate) : this(firstName, lastName, username, email, birthdate, id)
+        public User(Guid id, string firstName, string lastName, string username, string email, DateTime birthdate, DateTime accountCreationDate) : this(id, firstName, lastName, username, email, birthdate)
         {
             _accountCreationDate = accountCreationDate;
         }
 
-        public User(string firstName, string lastName, string username, string email, DateTime birthdate, Guid id, DateTime accountCreationDate, string profileImageSource) : this(firstName, lastName, username, email, birthdate, id, accountCreationDate)
+        public User(Guid id, string firstName, string lastName, string username, string email, DateTime birthdate, DateTime accountCreationDate, List<Player> playerAccounts) : this(id, firstName, lastName, username, email, birthdate, accountCreationDate)
         {
-            ProfileImageSource = profileImageSource;
+            PlayerAccounts = playerAccounts; 
         }
 
-        public User(string firstName, string lastName, string username, string email, DateTime birthdate, Guid id, DateTime accountCreationDate, string profileImageSource, List<Player> playerAccounts) : this(firstName, lastName, username, email, birthdate, id, accountCreationDate, profileImageSource)
+        public User(Guid id, string firstName, string lastName, string username, string email, DateTime birthdate, DateTime accountCreationDate, List<Player> playerAccounts, string profileImageSource) : this(id, firstName, lastName, username, email, birthdate, accountCreationDate, playerAccounts)
         {
-            PlayerAccounts = playerAccounts;
+            ProfileImageSource = profileImageSource;
         }
 
         public Guid Id
@@ -147,18 +148,19 @@ namespace Gotcha.Core.Entities
             get { return birthDate; }
             set
             {
-                if (value <= DateTime.UtcNow)
-                {
-                    birthDate = value;
-                }
-                else if ((DateTime.UtcNow.Year - value.Year) >= 180)
-                {
-                    throw new ArgumentException("Birthdate indicates age over 180 years, which is not allowed (not possible).");
-                }
-                else
+                value = value.ToUniversalTime();
+                int age = DateTime.UtcNow.Year - value.Year;
+
+                if (age < 0)
                 {
                     throw new ArgumentException("Birthdate cannot be in the future.");
                 }
+                else if (age > 150)
+                {
+                    throw new ArgumentException("Birthdate indicates age over 150 years, which is not allowed.");
+                }
+
+                birthDate = value;
             }
         }
 
@@ -181,6 +183,12 @@ namespace Gotcha.Core.Entities
         public DateTime AccountCreationDate
         {
             get { return _accountCreationDate; }
+        }
+
+        public List<Player> PlayerAccounts
+        {
+            get { return playerAccounts; }
+            set { playerAccounts = value; }
         }
 
         public List<Game> GetAllGamesPlayed()
@@ -227,6 +235,11 @@ namespace Gotcha.Core.Entities
                     .SelectMany(p => p.Game.Kills)
                     .Where(k => k.VictimId == this.Id)
                     .ToList();
+        }
+
+        public override string ToString()
+        {
+            return $"({FirstName} {LastName} - ({Username}))";
         }
     }
 }
