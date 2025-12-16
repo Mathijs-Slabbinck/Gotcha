@@ -18,6 +18,6 @@ namespace Gotcha.Core.Entities
         public string? ProfileImageSource { get; set; }
         public bool IsAlive { get; set; }
         public string Notes { get; set; }
-        public ICollection<TargetAssignment> TargetAssignMents { get; set; }
+        public ICollection<TargetAssignment> TargetAssignments { get; set; }
     }
 }
