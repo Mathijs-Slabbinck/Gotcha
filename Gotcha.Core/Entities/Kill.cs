@@ -168,7 +168,7 @@ namespace Gotcha.Core.Entities
         {
             get { return _weapon; }
         }
-
+            
         public string Reason
         {
             get { return reason; }
