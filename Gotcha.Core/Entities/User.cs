@@ -10,98 +10,198 @@ namespace Gotcha.Core.Entities
 {
     public class User
     {
-        public Guid Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string? ProfileImageSource { get; set; }
-        public DateTime BirthDate { get; set; }
-        public DateTime AccountCreationDate { get; set; }
+        private readonly Guid _id;
+        private string firstName;
+        private string lastName;
+        private string username;
+        private string email;
+        private string? profileImageSource;
+        private DateTime birthDate;
+        private readonly DateTime _accountCreationDate;
         public List<Player> PlayerAccounts { get; set; }
 
         public User(string firstName, string lastName, string username, string email, DateTime birthdate)
         {
-            ThirdLineValidationService thirdLineValidationService = new ThirdLineValidationService();
-            Id = Guid.NewGuid();
-
-            // this should be validated already, but this an extra layer for extra robustness & safety
-            if (thirdLineValidationService.IsInputClean(firstName))
-            {
-                FirstName = firstName;
-            }
-            else
-            {
-                throw new ArgumentException("Invalid characters in first name.");
-            }
-
-            // this should be validated already, but this an extra layer for extra robustness & safety
-            if (thirdLineValidationService.IsInputClean(lastName))
-            {
-                LastName = lastName;
-            }
-            else
-            {
-                throw new ArgumentException("Invalid characters in last name.");
-            }
-
-            // this should be validated already, but this an extra layer for extra robustness & safety
-            if (thirdLineValidationService.IsInputClean(username))
-            {
-                Username = username;
-            }
-            else
-            {
-                throw new ArgumentException("Invalid characters in username.");
-            }
-
-            // this should be validated already, but this an extra layer for extra robustness & safety
-            if (thirdLineValidationService.IsValidEmail(email))
-            {
-                Email = email;
-            }
-            else
-            {
-                throw new ArgumentException("Invalid email format.");
-            }
-
+            _id = Guid.NewGuid();
+            FirstName = firstName;
+            LastName = lastName;
+            Username = username;
+            Email = email;
             BirthDate = birthdate;
-
-            AccountCreationDate = DateTime.UtcNow;
+            _accountCreationDate = DateTime.UtcNow;
             PlayerAccounts = new List<Player>();
         }
 
-        public User(string firstName, string lastName, string username, string email, DateTime birthdate, DateTime accountCreationDate) : this(firstName, lastName, username, email, birthdate)
+        public User(string firstName, string lastName, string username, string email, DateTime birthdate, Guid id) : this(firstName, lastName, username, email, birthdate)
         {
-            AccountCreationDate = accountCreationDate;
+            _id = id;
         }
 
-        public User(string firstName, string lastName, string username, string email, DateTime birthdate, DateTime accountCreationDate, string profileImageSource) : this(firstName, lastName, username, email, birthdate, accountCreationDate)
+        public User(string firstName, string lastName, string username, string email, DateTime birthdate, Guid id, DateTime accountCreationDate) : this(firstName, lastName, username, email, birthdate, id)
+        {
+            _accountCreationDate = accountCreationDate;
+        }
+
+        public User(string firstName, string lastName, string username, string email, DateTime birthdate, Guid id, DateTime accountCreationDate, string profileImageSource) : this(firstName, lastName, username, email, birthdate, id, accountCreationDate)
         {
             ProfileImageSource = profileImageSource;
         }
 
-        public User(string firstName, string lastName, string username, string email, DateTime birthdate, DateTime accountCreationDate, string profileImageSource, List<Player> playerAccounts) : this(firstName, lastName, username, email, birthdate, accountCreationDate, profileImageSource)
+        public User(string firstName, string lastName, string username, string email, DateTime birthdate, Guid id, DateTime accountCreationDate, string profileImageSource, List<Player> playerAccounts) : this(firstName, lastName, username, email, birthdate, id, accountCreationDate, profileImageSource)
         {
             PlayerAccounts = playerAccounts;
         }
 
+        public Guid Id
+        {
+            get { return _id; }
+        }
+
+        public string FirstName
+        {
+            get { return firstName; }
+            set
+            {
+                if (!ThirdLineValidationService.IsValidLength(value, 2, 70))
+                {
+                    throw new ArgumentException("Username must be between 2 and 25 characters long.");
+                }
+
+                string sanitizedValue = ThirdLineValidationService.SaniziteInput(value);
+
+                if (ThirdLineValidationService.IsInputClean(sanitizedValue))
+                {
+                    firstName = sanitizedValue;
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid characters in first name.");
+                }
+            }
+        }
+
+        public string LastName
+        {
+            get { return lastName; }
+            set
+            {
+                if (!ThirdLineValidationService.IsValidLength(value, 2, 100))
+                {
+                    throw new ArgumentException("Username must be between 2 and 25 characters long.");
+                }
+
+                string sanitizedValue = ThirdLineValidationService.SaniziteInput(value);
+
+                if (ThirdLineValidationService.IsInputClean(sanitizedValue))
+                {
+                    lastName = sanitizedValue;
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid characters in first name.");
+                }
+            }
+        }
+
+        public string Username
+        {
+            get { return username; }
+            set
+            {
+                if(!ThirdLineValidationService.IsValidLength(value, 2, 25))
+                {
+                    throw new ArgumentException("Username must be between 2 and 25 characters long.");
+                }
+                
+                string sanitizedValue = ThirdLineValidationService.SaniziteInput(value);
+                
+                if (ThirdLineValidationService.IsInputClean(sanitizedValue))
+                {
+                    username = sanitizedValue;
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid characters in username.");
+                }
+            }
+        }
+
+        public string Email
+        {
+            get { return email; }
+            set
+            {
+                if (ThirdLineValidationService.IsValidEmail(value))
+                {
+                    email = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid email format.");
+                }
+            }
+        }
+
+        public DateTime BirthDate
+        {
+            get { return birthDate; }
+            set
+            {
+                if (value <= DateTime.UtcNow)
+                {
+                    birthDate = value;
+                }
+                else if ((DateTime.UtcNow.Year - value.Year) >= 180)
+                {
+                    throw new ArgumentException("Birthdate indicates age over 180 years, which is not allowed (not possible).");
+                }
+                else
+                {
+                    throw new ArgumentException("Birthdate cannot be in the future.");
+                }
+            }
+        }
+
+        public string? ProfileImageSource
+        {
+            get { return profileImageSource; }
+            set
+            {
+                if (ThirdLineValidationService.IsCleanProfileImageSource(value))
+                {
+                    profileImageSource = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid characters in profile image source.");
+                }
+            }
+        }
+
+        public DateTime AccountCreationDate
+        {
+            get { return _accountCreationDate; }
+        }
 
         public List<Game> GetAllGamesPlayed()
         {
-            return PlayerAccounts.Select(p => p.Game).ToList();
+            return PlayerAccounts
+                    .Select(p => p.Game)
+                    .ToList();
         }
 
         public List<Game> GetAllActiveGames()
         {
-            return PlayerAccounts.Select(p => p.Game)
+            return PlayerAccounts
+                    .Select(p => p.Game)
                     .Where(g => g.IsFinished == false)
                     .ToList();
         }
 
         public List<Game> GetAllFinishedGames()
         {
-            return PlayerAccounts.Select(p => p.Game)
+            return PlayerAccounts
+                    .Select(p => p.Game)
                     .Where(g => g.IsFinished == true)
                     .ToList();
         }
