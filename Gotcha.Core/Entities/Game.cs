@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Gotcha.Core.Enums;
+using Gotcha.Core.Exceptions;
 using Gotcha.Core.Services;
 
 namespace Gotcha.Core.Entities
@@ -299,6 +300,51 @@ namespace Gotcha.Core.Entities
          * Reason is also optional, the message gets made using killer and victim so we can't set it directly in the method signature */
         public void HandleValidKill(Player killer, Player victim, string? weapon = null)
         {
+            if (!HasStarted)
+            {
+                throw new GameStateException("Cannot register kills before game has started.");
+            }
+
+            if (IsFinished)
+            {
+                throw new GameStateException("Cannot register kills after game has finished.");
+            }
+
+            if (killer == null)
+            {
+                throw new ArgumentNullException(nameof(killer));
+            }
+
+            if (victim == null)
+            {
+                throw new ArgumentNullException(nameof(victim));
+            }
+
+            if (killer.Id == victim.Id)
+            {
+                throw new InvalidOperationException("A player cannot kill themselves.");
+            }
+
+            if (!killer.IsAlive)
+            {
+                throw new GameStateException($"Killer {killer.PlayerName} is not alive.");
+            }
+
+            if (!victim.IsAlive)
+            {
+                throw new GameStateException($"Victim {victim.PlayerName} is already dead.");
+            }
+
+            if (!Players.Any(p => p.Id == killer.Id))
+            {
+                throw new PlayerNotFoundException(killer.Id);
+            }
+
+            if (!Players.Any(p => p.Id == victim.Id))
+            {
+                throw new PlayerNotFoundException(victim.Id);
+            }
+
             if (killer == null || victim == null)
             {
                 throw new ArgumentNullException("Killer or victim cannot be null.");
@@ -396,6 +442,51 @@ namespace Gotcha.Core.Entities
 
         public void HandleInValidKill(Player killer, Player victim, string? reason = null, string? weapon = null, AssignmentStatus assignmentStatus = AssignmentStatus.Failed)
         {
+            if (!HasStarted)
+            {
+                throw new GameStateException("Cannot register kills before game has started.");
+            }
+
+            if (IsFinished)
+            {
+                throw new GameStateException("Cannot register kills after game has finished.");
+            }
+
+            if (killer == null)
+            {
+                throw new ArgumentNullException(nameof(killer));
+            }
+
+            if (victim == null)
+            {
+                throw new ArgumentNullException(nameof(victim));
+            }
+
+            if (killer.Id == victim.Id)
+            {
+                throw new InvalidOperationException("A player cannot kill themselves.");
+            }
+
+            if (!killer.IsAlive)
+            {
+                throw new GameStateException($"Killer {killer.PlayerName} is not alive.");
+            }
+
+            if (!victim.IsAlive)
+            {
+                throw new GameStateException($"Victim {victim.PlayerName} is already dead.");
+            }
+
+            if (!Players.Any(p => p.Id == killer.Id))
+            {
+                throw new PlayerNotFoundException(killer.Id);
+            }
+
+            if (!Players.Any(p => p.Id == victim.Id))
+            {
+                throw new PlayerNotFoundException(victim.Id);
+            }
+
             if (killer == null || victim == null)
             {
                 throw new ArgumentNullException("Killer or victim cannot be null.");
@@ -441,21 +532,43 @@ namespace Gotcha.Core.Entities
         {
             if (HasStarted)
             {
-                throw new InvalidOperationException("Game has already started.");
+                throw new GameStateException("Game has already started.");
+            }
+
+            if (IsFinished)
+            {
+                throw new GameStateException("Cannot start a finished game.");
             }
 
             if (Players.Count() < 3)
             {
-                throw new InvalidOperationException("Not enough players to start the game. Minimum 3 players required.");
+                throw new InsufficientPlayersException(Players.Count, 3);
             }
 
-            if (Rules.RandomTargetAssignment)
+            // Validate at least one admin exists
+            if (Admins == null || !Admins.Any())
             {
-                AssignTargetsRandomly();
+                throw new GameStateException("Game must have at least one admin.");
             }
-            else
+
+            try
             {
-                AssignTargetsCircular();
+                if (Rules.RandomTargetAssignment)
+                {
+                    AssignTargetsRandomly();
+                }
+                else
+                {
+                    AssignTargetsCircular();
+                }
+
+                HasStarted = true;
+                startDate = DateTime.UtcNow;
+            }
+            catch (Exception ex)
+            {
+                // Log the error and provide context
+                throw new GameStateException("Failed to start game due to target assignment error.", ex);
             }
 
             HasStarted = true;
@@ -551,23 +664,38 @@ namespace Gotcha.Core.Entities
             }
 
             List<Player> players = GetLivingPlayers();
+            int playerCount = players.Count;
+
+            // Cannot assign unique targets with less than 2 players
+            if (playerCount < 2)
+            {
+                throw new InvalidOperationException("At least two players are required for target assignment.");
+            }
+
+            // Shuffle players
             Random rand = new Random();
             List<Player> shuffledPlayers = players.OrderBy(p => rand.Next()).ToList();
-            int playerCount = shuffledPlayers.Count;
 
+            // Circular assignment: each player targets the next, last targets first
             for (int i = 0; i < playerCount; i++)
             {
                 Player hunter = shuffledPlayers[i];
-                Player target;
-                do
-                {
-                    target = shuffledPlayers[rand.Next(playerCount)];
-                } while (target.Id == hunter.Id); // Ensure hunter and target are not the same
+                Player target = shuffledPlayers[(i + 1) % playerCount]; // Ensures unique, non-self assignment
 
-                TargetAssignment targetAssignment = new TargetAssignment(hunter, target);
+                string? weapon;
+                if (weapons != null && weapons.Count > i)
+                {
+                    weapon = weapons[i];
+                }
+                else
+                {
+                    weapon = null;
+                }
+
+
+                TargetAssignment targetAssignment = new TargetAssignment(hunter, target, weapon);
                 hunter.TargetAssignments.Add(targetAssignment);
             }
         }
-
     }
 }

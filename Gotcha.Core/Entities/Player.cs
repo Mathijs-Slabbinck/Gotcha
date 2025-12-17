@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
+using Gotcha.Core.Exceptions;
 using Gotcha.Core.Services;
 
 namespace Gotcha.Core.Entities
@@ -167,17 +168,27 @@ namespace Gotcha.Core.Entities
 
         public Player GetCurrentTarget()
         {
+            if (!IsAlive)
+            {
+                throw new GameStateException($"Player {PlayerName} is not alive and has no current target.");
+            }
+
+            if (!Game.HasStarted)
+            {
+                throw new GameStateException("Game has not started yet.");
+            }
+
             TargetAssignment? currentAssignment = TargetAssignments
                                         .FirstOrDefault(ta => ta.TargetId == this.Id && ta.AssignmentStatus == Enums.AssignmentStatus.Ongoing);
 
             if (currentAssignment == null)
             {
-                throw new InvalidOperationException("No ongoing target assignment found for this player.");
+                throw new InvalidTargetAssignmentException(this.Id, Guid.Empty, "No ongoing target assignment found for this player.");
             }
 
             if(currentAssignment.Target == null)
             {
-                throw new InvalidOperationException("The current target assignment does not have a valid target.");
+                throw new InvalidTargetAssignmentException(this.Id, currentAssignment.TargetId, "The current target assignment does not have a valid target.");
             }
 
             return currentAssignment.Target;
