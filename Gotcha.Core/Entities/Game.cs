@@ -304,12 +304,12 @@ namespace Gotcha.Core.Entities
                 throw new ArgumentNullException("Killer or victim cannot be null.");
             }
 
-            if (!Rules.CustomWeapons && weapon != null)
+            if (!Rules.CustomKillMethods && weapon != null)
             {
                 throw new InvalidOperationException("Custom weapons are not allowed in this game.");
             }
 
-            if (Rules.CustomWeapons && weapon == null)
+            if (Rules.CustomKillMethods && weapon == null)
             {
                 throw new InvalidOperationException("Custom weapons are on so weapon cannot be null.");
             }
@@ -344,7 +344,7 @@ namespace Gotcha.Core.Entities
 
             if (killersHunterAssignment != null)
             {
-                if (Rules.GameModes == GameModes.Gotcha)
+                if (Rules.GameMode == GameModes.Gotcha)
                 {
                     throw new InvalidOperationException("Killer cannot be the target of the victim in Gotcha gamemode.");
                 }
@@ -401,12 +401,12 @@ namespace Gotcha.Core.Entities
                 throw new ArgumentNullException("Killer or victim cannot be null.");
             }
 
-            if (!Rules.CustomWeapons && weapon != null)
+            if (!Rules.CustomKillMethods && weapon != null)
             {
                 throw new InvalidOperationException("Custom weapons are not allowed in this game.");
             }
 
-            if (Rules.CustomWeapons && weapon == null)
+            if (Rules.CustomKillMethods && weapon == null)
             {
                 throw new InvalidOperationException("Custom weapons are on so weapon cannot be null.");
             }
@@ -476,6 +476,13 @@ namespace Gotcha.Core.Entities
                     .ToList();
         }
 
+        public List<Kill> GetDisputedKills()
+        {
+            return Kills
+                    .Where(k => !k.IsValid)
+                    .ToList();
+        }
+
         public override string ToString()
         {
             return Name;
@@ -484,12 +491,12 @@ namespace Gotcha.Core.Entities
         // Assign targets in a circular manner
         private void AssignTargetsCircular(List<string>? weapons = null)
         {
-            if (!Rules.CustomWeapons && weapons != null)
+            if (!Rules.CustomKillMethods && weapons != null)
             {
                 throw new InvalidOperationException("Custom weapons are not allowed in this game.");
             }
 
-            if (Rules.CustomWeapons && weapons == null)
+            if (Rules.CustomKillMethods && weapons == null)
             {
                 throw new InvalidOperationException("Custom weapons are on so weapon cannot be null.");
             }
@@ -533,12 +540,12 @@ namespace Gotcha.Core.Entities
         // Assigns targets randomly to players, ensuring no player is assigned to themselves
         private void AssignTargetsRandomly(List<string>? weapons = null)
         {
-            if (!Rules.CustomWeapons && weapons != null)
+            if (!Rules.CustomKillMethods && weapons != null)
             {
                 throw new InvalidOperationException("Custom weapons are not allowed in this game.");
             }
 
-            if (Rules.CustomWeapons && weapons == null)
+            if (Rules.CustomKillMethods && weapons == null)
             {
                 throw new InvalidOperationException("Custom weapons are on so weapon cannot be null.");
             }
