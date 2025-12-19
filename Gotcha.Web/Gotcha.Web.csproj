@@ -23,4 +23,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Gotcha.Core\Gotcha.Core.csproj" />
+  </ItemGroup>
+
 </Project>

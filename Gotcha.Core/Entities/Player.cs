@@ -5,7 +5,7 @@ using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using Gotcha.Core.Exceptions;
-using Gotcha.Core.Services;
+using Gotcha.Core.Validation.Services;
 
 namespace Gotcha.Core.Entities
 {
@@ -13,9 +13,7 @@ namespace Gotcha.Core.Entities
     {
         private readonly Guid _id;
         private readonly Guid _userId;
-        private readonly User _user;
         private readonly Guid _gameId;
-        private readonly Game _game;
         private readonly string _playerName;
         public string? profileImageSource;
         public bool IsAlive { get; set; }
@@ -28,9 +26,7 @@ namespace Gotcha.Core.Entities
         {
             _id = Guid.NewGuid();
             _userId = user.Id;
-            _user = user;
             _gameId = game.Id;
-            _game = game;
 
             if (game.Rules.UseRealNames)
             {
@@ -96,9 +92,7 @@ namespace Gotcha.Core.Entities
         {
             _id = id;
             _userId = userId;
-            _user = user;
             _gameId = gameId;
-            _game = game;
             _playerName = playerName;
             ProfileImageSource = profileImageSource;
             IsAlive = isAlive;
@@ -118,7 +112,10 @@ namespace Gotcha.Core.Entities
 
         public User User
         {
-            get { return _user; }
+            get
+            {
+                throw new NotImplementedException("FIX THIS SHIT");
+            }
         }
 
         public Guid GameId
@@ -128,7 +125,10 @@ namespace Gotcha.Core.Entities
 
         public Game Game
         {
-            get { return _game; }
+            get
+            {
+                throw new NotImplementedException("FIX THIS SHIT");
+            }
         }
 
         public string PlayerName
@@ -143,21 +143,21 @@ namespace Gotcha.Core.Entities
             {
                 if (!Game.Rules.ShowPlayerImages)
                 {
-                    throw new Exception("The game settings do not allow player images to be set.");
+                    throw new GameRuleViolationException("ShowPlayerImages", "The game settings do not allow player images to be set.");
                 }
 
                 if (this.Game.Rules.EnforcePlayerImages && value == null)
                 {
-                    throw new Exception("This game requires players to have profile images, but the user does not have one set.");
+                    throw new GameRuleViolationException("EnforcePlayerImages", "This game requires players to have profile images, but the user does not have one set.");
                 }
 
-                if (ThirdLineValidationService.IsCleanProfileImageSource(value))
+                if (LastLineValidationService.IsAllowedImageUrl(value))
                 {
                     profileImageSource = value;
                 }
                 else
                 {
-                    throw new ArgumentException("Invalid characters in profile image source.");
+                    throw new ValidationException("ProfileImageSource", "Invalid characters in profile image source.");
                 }
             }
         }
