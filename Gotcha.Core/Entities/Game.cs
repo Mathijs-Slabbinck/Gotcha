@@ -44,17 +44,17 @@ namespace Gotcha.Core.Entities
             IsFinished = false;
             Admins = new List<Player> { creationPlayer };
 
-            if (creationPlayer.User.plan == Plan.Standard)
+            if (creationPlayer.User.UserPlan == Plan.Standard)
             {
                 MaxPlayers = 50;
             }
 
-            if (creationPlayer.User.plan == Plan.Premium)
+            if (creationPlayer.User.UserPlan == Plan.Premium)
             {
                 MaxPlayers = 250;
             }
 
-            if (creationPlayer.User.plan == Plan.Deluxe)
+            if (creationPlayer.User.UserPlan == Plan.Deluxe)
             {
                 MaxPlayers = 750;
             }
@@ -76,17 +76,17 @@ namespace Gotcha.Core.Entities
             IsFinished = false;
             Admins = new List<Player> { admin };
 
-            if (admin.User.plan == Plan.Standard)
+            if (admin.User.UserPlan == Plan.Standard)
             {
                 MaxPlayers = 50;
             }
 
-            if (admin.User.plan == Plan.Premium)
+            if (admin.User.UserPlan == Plan.Premium)
             {
                 MaxPlayers = 250;
             }
 
-            if (admin.User.plan == Plan.Deluxe)
+            if (admin.User.UserPlan == Plan.Deluxe)
             {
                 MaxPlayers = 750;
             }
@@ -107,17 +107,17 @@ namespace Gotcha.Core.Entities
             IsFinished = false;
             Admins = admins;
 
-            if (creator.User.plan == Plan.Standard)
+            if (creator.User.UserPlan == Plan.Standard)
             {
                 MaxPlayers = 50;
             }
 
-            if (creator.User.plan == Plan.Premium)
+            if (creator.User.UserPlan == Plan.Premium)
             {
                 MaxPlayers = 250;
             }
 
-            if (creator.User.plan == Plan.Deluxe)
+            if (creator.User.UserPlan == Plan.Deluxe)
             {
                 MaxPlayers = 750;
             }

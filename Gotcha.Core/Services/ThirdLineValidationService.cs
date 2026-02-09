@@ -10,7 +10,7 @@ namespace Gotcha.Core.Services
 {
     public static class ThirdLineValidationService
     {
-        public static bool IsValidEmail(string email)
+        public static bool IsValidEmail(this string email)
         {
             if (string.IsNullOrWhiteSpace(email))
                 return false;
@@ -34,7 +34,7 @@ namespace Gotcha.Core.Services
             }
         }
 
-        public static bool IsInputClean(string input)
+        public static bool IsInputClean(this string input)
         {
             if(input == null ||
                input.Equals("null", StringComparison.OrdinalIgnoreCase) ||
@@ -74,7 +74,7 @@ namespace Gotcha.Core.Services
             return true;
         }
 
-        public static bool IsCleanProfileImageSource(string? profileImageSource)
+        public static bool IsCleanProfileImageSource(this string? profileImageSource)
         {
             // Null or empty is considered clean
             if (string.IsNullOrEmpty(profileImageSource))
@@ -93,7 +93,7 @@ namespace Gotcha.Core.Services
         }
 
         // Sanitize input for XSS and basic SQL injection
-        public static string SaniziteInput(string input)
+        public static string SaniziteInput(this string input)
         {
             if (string.IsNullOrEmpty(input))
             {

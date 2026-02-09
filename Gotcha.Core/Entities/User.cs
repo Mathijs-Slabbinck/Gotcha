@@ -202,8 +202,8 @@ namespace Gotcha.Core.Entities
 
         public Plan UserPlan
         {
-            get { return plan; }
-            set { plan = value; }
+            get { return userPlan; }
+            set { userPlan = value; }
         }
 
         public List<Game> GetAllGamesPlayed()
