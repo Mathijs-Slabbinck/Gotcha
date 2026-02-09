@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Gotcha.Core.Enums;
 using Gotcha.Core.Exceptions;
-using Gotcha.Core.Validation.Services;
+using Gotcha.Core.Services.ValidationServices;
 
 namespace Gotcha.Core.Entities
 {

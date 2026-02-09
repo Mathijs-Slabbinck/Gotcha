@@ -9,6 +9,7 @@ namespace Gotcha.Core.Exceptions
     public class ValidationException : GotchaException
     {
         public string FieldName { get; }
+
         public ValidationException(string fieldName, string message)
             : base(message)
         {
