@@ -5,7 +5,9 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Gotcha.Core.Enums;
-using Gotcha.Core.Services;
+using Gotcha.Core.Exceptions;
+using Gotcha.Core.Validation.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace Gotcha.Core.Entities
 {
@@ -72,20 +74,14 @@ namespace Gotcha.Core.Entities
             get { return firstName; }
             set
             {
-                if (!ThirdLineValidationService.IsValidLength(value, 2, 70))
+                UsernameValidationService usernameValidationService = new UsernameValidationService(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
+                if (usernameValidationService.IsReservedUsername(value))
                 {
-                    throw new ArgumentException("Username must be between 2 and 25 characters long.");
-                }
-
-                string sanitizedValue = ThirdLineValidationService.SaniziteInput(value);
-
-                if (ThirdLineValidationService.IsInputClean(sanitizedValue))
-                {
-                    firstName = sanitizedValue;
+                    throw new ValidationException("Firstname", "The provided first name is reserved and cannot be used.");
                 }
                 else
                 {
-                    throw new ArgumentException("Invalid characters in first name.");
+                    firstName = value;
                 }
             }
         }
@@ -95,21 +91,14 @@ namespace Gotcha.Core.Entities
             get { return lastName; }
             set
             {
-                if (!ThirdLineValidationService.IsValidLength(value, 2, 100))
+                UsernameValidationService usernameValidationService = new UsernameValidationService(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
+                if (usernameValidationService.IsReservedUsername(value))
                 {
-                    throw new ArgumentException("Username must be between 2 and 25 characters long.");
-                }
-
-                string sanitizedValue = ThirdLineValidationService.SaniziteInput(value);
-
-                if (ThirdLineValidationService.IsInputClean(sanitizedValue))
-                {
-                    lastName = sanitizedValue;
+                    throw new ValidationException("LastName", "The provided first name is reserved and cannot be used.");
                 }
                 else
                 {
-                    throw new ArgumentException("Invalid characters in first name.");
-                }
+                    lastName = value;                }
             }
         }
 
@@ -118,20 +107,14 @@ namespace Gotcha.Core.Entities
             get { return username; }
             set
             {
-                if(!ThirdLineValidationService.IsValidLength(value, 2, 25))
+                UsernameValidationService usernameValidationService = new UsernameValidationService(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
+                if (usernameValidationService.IsReservedUsername(value))
                 {
-                    throw new ArgumentException("Username must be between 2 and 25 characters long.");
-                }
-                
-                string sanitizedValue = ThirdLineValidationService.SaniziteInput(value);
-                
-                if (ThirdLineValidationService.IsInputClean(sanitizedValue))
-                {
-                    username = sanitizedValue;
+                    throw new ValidationException("Username", "The provided username is reserved and cannot be used.");
                 }
                 else
                 {
-                    throw new ArgumentException("Invalid characters in username.");
+                    username = value;
                 }
             }
         }
@@ -141,13 +124,13 @@ namespace Gotcha.Core.Entities
             get { return email; }
             set
             {
-                if (ThirdLineValidationService.IsValidEmail(value))
+                if (LastLineValidationService.IsValidEmail(value))
                 {
                     email = value;
                 }
                 else
                 {
-                    throw new ArgumentException("Invalid email format.");
+                    throw new ValidationException("email", "The email is invalid!.");
                 }
             }
         }
@@ -162,11 +145,11 @@ namespace Gotcha.Core.Entities
 
                 if (age < 0)
                 {
-                    throw new ArgumentException("Birthdate cannot be in the future.");
+                    throw new ValidationException("BirthDate", "Birthdate cannot be in the future.");
                 }
                 else if (age > 150)
                 {
-                    throw new ArgumentException("Birthdate indicates age over 150 years, which is not allowed.");
+                    throw new ValidationException("BirthDate", "Birthdate indicates age over 150 years, which is not allowed.");
                 }
 
                 birthDate = value;
@@ -178,13 +161,13 @@ namespace Gotcha.Core.Entities
             get { return profileImageSource; }
             set
             {
-                if (ThirdLineValidationService.IsCleanProfileImageSource(value))
+                if (LastLineValidationService.IsAllowedImageUrl(value))
                 {
                     profileImageSource = value;
                 }
                 else
                 {
-                    throw new ArgumentException("Invalid characters in profile image source.");
+                    throw new ValidationException("ProfileImageSource", "Invalid characters in profile image source.");
                 }
             }
         }
@@ -237,7 +220,8 @@ namespace Gotcha.Core.Entities
                     .ToList();
         }
 
-        public List<Kill> GetAllKills() {
+        public List<Kill> GetAllKills()
+        {
             return PlayerAccounts
                     .SelectMany(p => p.Game.Kills)
                     .Where(k => k.KillerId == this.Id && k.IsValid)

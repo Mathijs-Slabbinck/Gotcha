@@ -178,7 +178,7 @@ namespace Gotcha.Core.Entities
         public bool IsValid
         {
             get { return isValid; }
-            set { isValid = true;  }
+            set { isValid = value;  }
         }
 
         public string KillMessage
