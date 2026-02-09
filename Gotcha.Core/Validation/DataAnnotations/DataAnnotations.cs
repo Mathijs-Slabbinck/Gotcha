@@ -10,7 +10,7 @@ namespace Gotcha.Core.Validation.DataAnnotations
             if (value is not string username)
                 return ValidationResult.Success!;
 
-            UsernameValidationService validationService = new UsernameValidationService(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
+            UserNameValidationHelper validationService = new UserNameValidationHelper(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
             if (validationService.IsReservedUsername(username))
             {
                 return new ValidationResult(

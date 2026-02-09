@@ -1,5 +1,12 @@
+:root {
+    --primary-color-blue: #5AD6DE;
+    --background-color-black: #252729;
+}
+
 html {
   font-size: 14px;
+  position: relative;
+  min-height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -12,11 +19,211 @@ html {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+body {
+    margin-bottom: 60px;
+    background-image: url(../images/background.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-body {
-  margin-bottom: 60px;
+.noSelect {
+    -webkit-user-select: none;
+    /* Chrome all / Safari all */
+    -moz-user-select: none;
+    /* Firefox all */
+    -ms-user-select: none;
+    /* IE 10+ */
+    user-select: none;
+    /* Likely future */
+}
+
+.clickAble{
+    cursor: pointer;
+}
+
+nav ul {
+    padding: 0;
+}
+
+.navLogoContainer{
+    margin: 2vh 0 0 1vw;
+}
+
+.navLogoText {
+    font-weight: bold;
+    font-size: 1.9rem;
+    font-family: "Nosifer", sans-serif;
+    color: var(--primary-color-blue);
+    position: absolute;
+    left: 18vw;
+    top: 4.8vh;
+    transition: opacity 1s ease;
+    opacity: 0;
+}
+
+.navLogoImage {
+    max-width: 15vw;
+    position: absolute;
+    z-index: 1;
+    margin-left: 1vw;
+}
+
+.navLogoBackground {
+    position: absolute;
+    margin: 1vh 0 0 1vw;
+    height: 18.5vw;
+    width: 17vw;
+    z-index: 0;
+    background-color: var(--background-color-black);
+    border: 3px solid var(--primary-color-blue);
+    border-radius: 35px;
+    transition: width 2s;
+}
+
+.rotateForward {
+    animation: rotateForward 2s ease-out forwards;
+}
+
+.rotateBack {
+    animation: rotateBack 2s ease-out forwards;
+}
+
+@media only screen and (min-width: 600px) {
+    .navLogoImage {
+        max-width: 12vw;
+    }
+
+    .navLogoBackground {
+        height: 13.7vw;
+        width: 14vw;
+        margin: 1.3vh 0 0 1vw;
+    }
+
+    .navLogoText{
+        font-size: 2rem;
+        top: 6vw;
+        left: 14.7vw;
+    }
+}
+
+@media only screen and (min-width: 1100px) {
+    .navLogoImage {
+        max-width: 9vw;
+    }
+
+    .navLogoBackground {
+        height: 10.3vw;
+        width: 10.7vw;
+        margin: 1.3vh 0 0 1.2vw;
+    }
+
+    .navLogoText {
+        font-size: 2rem;
+        top: 4.5vw;
+        left: 11.5vw;
+    }
+}
+
+@media only screen and (min-width: 1300px) {
+    .navLogoImage {
+        max-width: 8vw;
+    }
+
+    .navLogoBackground {
+        height: 9.3vw;
+        width: 9.7vw;
+        margin: 1.3vh 0 0 1.2vw;
+    }
+
+    .navLogoText {
+        font-size: 1.8rem;
+        top: 4.3vw;
+        left: 10.5vw;
+    }
+}
+
+
+@media only screen and (min-width: 1600px){
+    .navLogoImage {
+        max-width: 7vw;
+        margin-left: 0;
+    }
+
+    .navLogoBackground {
+        height: 7.7vw;
+        width: 7.5vw;
+        margin: 1.3vh 0 0 0.8vw;
+    }
+
+    .navLogoText {
+        font-size: 2.3rem;
+        top: 3.2vw;
+        left: 8.7vw;
+    }
+}
+
+
+@keyframes rotateForward {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(135deg);
+    }
+}
+
+@keyframes rotateBack {
+    0% {
+        transform: rotate(135deg);
+    }
+
+    100% {
+        transform: rotate(0);
+    }
+}
+
+@keyframes clapOutNavImage{
+    0% {
+        .navLogoBackground {
+            height: 17vw;
+            width: 17vw;
+        }
+
+        @media only screen and (min-width: 1200px) {
+            .navLogoBackground {
+                height: 12vw;
+                width: 12vw;
+            }
+        }
+
+        @media only screen and (min-width: 1600px) {
+            .navLogoBackground {
+                height: 8.3vw;
+                width: 9vw;
+            }
+        }
+    }
+
+    100% {
+        .navLogoBackground {
+            height: 17vw;
+            width: 37vw;
+        }
+
+        @media only screen and (min-width: 1200px) {
+            .navLogoBackground {
+                height: 12vw;
+                width: 32vw;
+            }
+        }
+
+        @media only screen and (min-width: 1600px) {
+            .navLogoBackground {
+                height: 8.3vw;
+                width: 29vw;
+            }
+        }
+    }
 }

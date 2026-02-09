@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-public class UsernameValidationService
+internal class UserNameValidationHelper
 {
     private readonly IConfiguration _configuration;
     private HashSet<string> _reservedUsernames;
 
-    public UsernameValidationService(IConfiguration configuration)
+    internal UserNameValidationHelper(IConfiguration configuration)
     {
         _configuration = configuration;
         LoadReservedUsernames();
@@ -18,12 +18,12 @@ public class UsernameValidationService
         _reservedUsernames = new HashSet<string>(usernames, StringComparer.OrdinalIgnoreCase);
     }
 
-    public bool IsReservedUsername(string username)
+    internal bool IsReservedUsername(string username)
     {
         return _reservedUsernames.Contains(username?.Trim() ?? string.Empty);
     }
 
-    public HashSet<string> ReservedUserNames
+    internal HashSet<string> ReservedUserNames
     {
         get { return _reservedUsernames; }
     }

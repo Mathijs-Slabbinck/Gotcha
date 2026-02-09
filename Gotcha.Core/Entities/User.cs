@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Gotcha.Core.Enums;
 using Gotcha.Core.Exceptions;
-using Gotcha.Core.Validation.Services;
+using Gotcha.Core.Services.ValidationServices;
 using Microsoft.Extensions.Configuration;
 
 namespace Gotcha.Core.Entities
@@ -74,7 +74,7 @@ namespace Gotcha.Core.Entities
             get { return firstName; }
             set
             {
-                UsernameValidationService usernameValidationService = new UsernameValidationService(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
+                UserNameValidationHelper usernameValidationService = new UserNameValidationHelper(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
                 if (usernameValidationService.IsReservedUsername(value))
                 {
                     throw new ValidationException("Firstname", "The provided first name is reserved and cannot be used.");
@@ -91,7 +91,7 @@ namespace Gotcha.Core.Entities
             get { return lastName; }
             set
             {
-                UsernameValidationService usernameValidationService = new UsernameValidationService(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
+                UserNameValidationHelper usernameValidationService = new UserNameValidationHelper(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
                 if (usernameValidationService.IsReservedUsername(value))
                 {
                     throw new ValidationException("LastName", "The provided first name is reserved and cannot be used.");
@@ -107,7 +107,7 @@ namespace Gotcha.Core.Entities
             get { return username; }
             set
             {
-                UsernameValidationService usernameValidationService = new UsernameValidationService(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
+                UserNameValidationHelper usernameValidationService = new UserNameValidationHelper(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
                 if (usernameValidationService.IsReservedUsername(value))
                 {
                     throw new ValidationException("Username", "The provided username is reserved and cannot be used.");

@@ -6,8 +6,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-    
-namespace Gotcha.Core.Validation.Services
+
+namespace Gotcha.Core.Services.ValidationServices
 {
     public static class LastLineValidationService
     {
@@ -29,7 +29,10 @@ namespace Gotcha.Core.Validation.Services
 
         internal static bool IsReservedUsername(string username)
         {
-            UsernameValidationService usernameValidationService = new UsernameValidationService(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
+            UserNameValidationHelper usernameValidationService = new UserNameValidationHelper(new ConfigurationBuilder()
+                                                                                                        .AddJsonFile("appsettings.json")
+                                                                                                        .Build());
+
             return usernameValidationService.IsReservedUsername(username.Trim());
         }
 
