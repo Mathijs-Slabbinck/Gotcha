@@ -6,6 +6,11 @@ window.addEventListener("load", initialize);
 
 function initialize() {
     const figNavLogoContainer = document.getElementsByClassName("navLogoContainer")[0];
+    const menuContainer = document.querySelector(".menuContainer");
+
+    menuContainer.addEventListener("click", function () {
+        this.classList.toggle("change");
+    });
 
     figNavLogoContainer.addEventListener("click", toggleNavImageSlider);
 }
@@ -38,7 +43,11 @@ function slideOutNavImage() {
     let widthToApply = "45vw";
 
     if (window.innerWidth >= 600) {
-        widthToApply = "35vw";
+        widthToApply = "40vw";
+    }
+
+    if (window.innerWidth >= 800) {
+        widthToApply = "38vw";
     }
 
     if (window.innerWidth >= 1100) {
