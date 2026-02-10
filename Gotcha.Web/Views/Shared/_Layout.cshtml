@@ -32,36 +32,32 @@
 <body>
     <div id="bodyBackground">
     <header>
-        <!--
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Gotcha.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        -->
-
-        <nav class="noSelect">
+        <nav class="noSelect bigScreenNav">
             <ul class="row">
                 <li class="col-4">
-                   <span class="navLogoBackground"></span>
+                    <span class="navLogoBackground navLogoBackgroundBigScreen"></span>
                     <figure class="navLogoContainer clickAble">
                         <img class="navLogoImage img-fluid" src="~/images/logoFullPng.png" />
                             <figcaption class="navLogoText">GOTCHA</figcaption>
                     </figure>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="noSelect smallScreenNav">
+                <ul class="row align-items-center">
+                <li class="col-10">
+                    <figure class="navLogoBackground clickAble d-flex flex-row align-items-center justify-content-around row">
+                        <img class="img-fluid col-5" src="~/images/logoFullPng.png" />
+                        <figcaption class="col-7">GOTCHA</figcaption>
+                    </figure>
+                </li>
+                <li class="col-2">
+                    <div class="menuContainer">
+                        <div class="bar1"></div>
+                        <div class="bar2"></div>
+                        <div class="bar3"></div>
+                    </div>
                 </li>
             </ul>
         </nav>
