@@ -32,7 +32,6 @@ function toggleNavImageSlider() {
     }
 }
 
-
 function slideOutNavImage() {
     const figCapNavImgCaption = document.getElementsByClassName("navLogoText")[0];
     const divNavLogoBackground = document.getElementsByClassName("navLogoBackground")[0];
@@ -42,32 +41,20 @@ function slideOutNavImage() {
 
     let widthToApply = "45vw";
 
-    if (window.innerWidth >= 600) {
-        widthToApply = "40vw";
-    }
-
-    if (window.innerWidth >= 800) {
-        widthToApply = "38vw";
-    }
-
-    if (window.innerWidth >= 1100) {
-        widthToApply = "30vw";
-    }
-
-    if (window.innerWidth >= 1200) {
-        widthToApply = "26vw";
+    if (window.innerWidth >= 910) {
+        widthToApply = "21vw";
     }
 
     if (window.innerWidth >= 1300) {
-        widthToApply = "23.5vw";
+        widthToApply = "20vw";
     }
 
-    if (window.innerWidth >= 1300) {
-        widthToApply = "22vw";
+    if (window.innerWidth >= 1600) {
+        widthToApply = "15.5vw";
     }
 
     if (window.innerWidth >= 1700) {
-        widthToApply = "20vw";
+        widthToApply = "16vw";
     }
 
     divNavLogoBackground.style.width = widthToApply;
@@ -77,14 +64,17 @@ function slideOutNavImage() {
     }, 1000);
 
     setTimeout(function () {
+        divNavLogoBackground.style.boxShadow = "0 0 30px 0 var(--primary-color-blue)";
         navLogoClickBlocked = false;
-    }, 1500);
+    }, 2000);
 }
 
 function slideInNavImage() {
     const figCapNavImgCaption = document.getElementsByClassName("navLogoText")[0];
     const divNavLogoBackground = document.getElementsByClassName("navLogoBackground")[0];
     const imgNavLogo = document.getElementsByClassName("navLogoImage")[0];
+
+    divNavLogoBackground.style.boxShadow = "";
 
     figCapNavImgCaption.toggleOpacity();
 
@@ -95,7 +85,7 @@ function slideInNavImage() {
 
     setTimeout(function () {
         navLogoClickBlocked = false;
-    }, 1500);
+    }, 2000);
 }
 
 
@@ -114,8 +104,8 @@ HTMLElement.prototype.toggleRotation = function () {
         this.classList.add('rotateBack');
     }
 }
-HTMLElement.prototype.toggleDisplayViaBootstrap = function()
-{
+
+HTMLElement.prototype.toggleDisplayViaBootstrap = function() {
     this.classList.toggle("d-none");
 }
 

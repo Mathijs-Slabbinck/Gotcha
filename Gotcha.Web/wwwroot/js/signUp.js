@@ -1,0 +1,88 @@
+﻿"use strict";
+
+
+window.addEventListener("load", initialize);
+
+function initialize() {
+    const slcSignUpGenderInput = document.getElementById("signUpGenderInput");
+    const pInfoIcons = document.getElementsByClassName("infoIcon");
+    const spCloseButton = document.getElementsByClassName("modalClose")[0];
+
+    slcSignUpGenderInput.addEventListener("change", function () {
+        handleChangedSelection(slcSignUpGenderInput);
+    });
+
+    spCloseButton.addEventListener("click", closeInfoModal);
+
+    for (let i = 0; i < pInfoIcons.length; i++) {
+        const selectedInfoIcon = pInfoIcons[i];
+
+        selectedInfoIcon.addEventListener("click", function () {
+            const infoIconId = selectedInfoIcon.id;
+            const modalToShow = infoIconId.split("-")[1];
+            console.log(modalToShow);
+            showInfoModal(modalToShow);
+        });
+    }
+}
+
+function handleChangedSelection(select) {
+    select.remove(0);
+    select.classList.remove("text-secondary");
+}
+
+function closeInfoModal() {
+    const modalElement = document.getElementById("infoModal");
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+
+    modalInstance.hide();
+}
+
+function showInfoModal(modalToShow) {
+    const divInfoModal = new bootstrap.Modal(document.getElementById("infoModal"));
+    let infoModalTitle = document.getElementsByClassName("infoModalTitle")[0];
+    let infoModalText = document.getElementsByClassName("infoModalText")[0];
+
+    divInfoModal.show();
+
+    switch (modalToShow) {
+        case "general":
+            infoModalTitle.textContent = "General";
+            infoModalText.innerHTML = `We will only use this data in game.<br />None of your info will be sold and/or used outside the app.`
+            break;
+        case "firstName":
+            infoModalTitle.textContent = "First Name";
+            infoModalText.textContent = "We ask for your first name because, unless disabled, your name will be shown in game.";
+            break;
+        case "lastName":
+            infoModalTitle.textContent = "Last Name";
+            infoModalText.textContent = "We ask for your last name because, unless disabled, your name will be shown in game.";
+            break;
+        case "username":
+            infoModalTitle.textContent = "Last Name";
+            infoModalText.textContent = "We ask for your last name because if real names are disabled, this username will be shown by default (can be changed per game).";
+            break;
+        case "emailAdress":
+            infoModalTitle.textContent = "email adress";
+            infoModalText.innerHTML = "We ask for your email adress for account verification.<br />We will not be sending you any annoying emails."
+            break;
+        case "birthday":
+            infoModalTitle.textContent = "birthday";
+            infoModalText.textContent = "If this in game setting is enabled, players will be able to see yoru age to get a better idea of their target.";
+            break;
+        case "gender":
+            infoModalTitle.textContent = "Gender";
+            infoModalText.innerHTML = "If images are disabled we will show a template<br />(different for each gender).<br/>If enabled, we will also show your gender in game to give players a better idea of their target."
+            break;
+        case "picture":
+            infoModalTitle = "Picture";
+            infoModalText = "If enabled (enabled by default) we will show player images in game to give players an idea of what their target looks like."
+            break;
+        default:
+            infoModalTitle = "Error";
+            infoModalText = "An error has occured, please try again later.";
+            break;
+    }
+
+
+}

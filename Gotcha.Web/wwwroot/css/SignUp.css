@@ -1,0 +1,49 @@
+﻿/* #region Root Variables */
+
+@import "variables.css";
+
+/* #endregion */
+
+label {
+    padding-left: 0.2vw !important;
+}
+
+.card {
+    box-shadow: 1px 1px 10px 5px var(--primary-color-blue);
+}
+
+input[type="date"] {
+    color: #6c757d;
+    padding-top: 0.1vh;
+    padding-bottom: 0.1vh;
+}
+
+input[type="date"]:valid{
+    color: black;
+}
+
+select {
+    color: #6c757d;
+    padding-top: 0.2vh;
+    padding-bottom: 0.2vh;
+}
+
+select option[disabled]{
+    color: #6c757d;
+}
+
+select:valid{
+    color: black;
+}
+
+#signUpGenderInput {
+    margin-top: 0.2vh;
+}
+
+#infoModal{
+    top: 15vh;
+}
+
+h1{
+    margin-bottom: 4vh !important;
+}
