@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Gotcha.Web.Areas.Player.Controllers
+namespace Gotcha.Web.Controllers
 {
     public class SignUpController : Controller
     {
