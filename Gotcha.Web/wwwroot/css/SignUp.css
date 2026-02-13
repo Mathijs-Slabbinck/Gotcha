@@ -18,7 +18,7 @@ input[type="date"] {
     padding-bottom: 0.1vh;
 }
 
-input[type="date"]:valid{
+input[type="date"]:valid {
     color: black;
 }
 
@@ -32,7 +32,7 @@ select option[disabled]{
     color: #6c757d;
 }
 
-select:valid{
+select:valid {
     color: black;
 }
 
@@ -40,10 +40,10 @@ select:valid{
     margin-top: 0.2vh;
 }
 
-#infoModal{
+#infoModal {
     top: 15vh;
 }
 
-h1{
+h1 {
     margin-bottom: 4vh !important;
 }
