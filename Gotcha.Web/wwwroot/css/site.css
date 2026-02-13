@@ -1,7 +1,10 @@
-:root {
-    --primary-color-blue: #5AD6DE;
-    --background-color-black: #252729;
-}
+@import "Variables.css";
+
+/* #endregion */
+
+
+
+/* #region Standard (Auto) CSS */
 
 html {
   font-size: 14px;
@@ -27,7 +30,15 @@ body {
     background-position: center;
 }
 
-.noSelect {
+/* #endregion */
+
+
+
+
+/* #region Quick Styling Classes */
+
+.noSelect,
+.infoIcon {
     -webkit-user-select: none;
     /* Chrome all / Safari all */
     -moz-user-select: none;
@@ -38,52 +49,165 @@ body {
     /* Likely future */
 }
 
-.clickAble{
+.clickAble,
+a,
+.btn-1{
     cursor: pointer;
 }
 
-/* style a hamburger menu */
-
-.menuContainer {
-    display: inline-block;
-    cursor: pointer;
-    margin: 5vh 0 0 0;
+.color-1{
+    color: var(--primary-color-blue);
 }
 
-.bar1,
-.bar2,
-.bar3 {
-    width: 35px;
-    height: 5px;
+.color-2{
+    color: var(--secondary-color-blue);
+}
+
+.color-3{
+    color: var(--third-color-blue);
+}
+
+.bg-1{
+    background-color: var(--primary-color-blue);
+}
+
+.font-nosifer {
+    font-family: "Nosifer", sans-serif;
+    font-style: normal;
+}
+
+.font-bungee {
+    font-family: "Bungee", sans-serif;
+    font-style: normal;
+}
+
+.font-robotoSlab {
+    font-family: "Roboto Slab", serif;
+    font-style: normal;
+}
+
+.font-roboto {
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+}
+
+.btn-1 {
+    background-color: var(--primary-color-blue);
+    border: 3px solid #27bbc4;
+    border-radius: 15px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    padding: 0.2vh 0;
+}
+
+.btn-2 {
     background-color: white;
-    margin: 6px 0;
-    transition: 0.4s;
+    border: 3px solid #27bbc4;
+    border-radius: 15px;
+    font-weight: bold;
+    color: var(--primary-color-blue);
+    text-decoration: none;
+    padding: 0.2vh 0;
 }
 
-.change .bar1 {
-    transform: translate(0, 11px) rotate(-45deg);
+.btn-1:hover {
+    color: var(--primary-color-blue);
+    background-color: white;
 }
 
-.change .bar2 {
-    opacity: 0;
+.btn-2:hover {
+    color: white;
+    background-color: var(--primary-color-blue);
+    border: 3px solid white;
 }
 
-.change .bar3 {
-    transform: translate(0, -11px) rotate(45deg);
+.maxWidth100 {
+    max-width: 100%;
+}
+
+.infoIcon {
+    color: var(--secondary-color-blue);
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.infoIcon:hover {
+    color: var(--primary-color-blue);
+    cursor: pointer;
+}
+
+.modalClose {
+    position: absolute;
+    right: 1vw;
+    top: 1vh;
+}
+
+/* #region Animation Classes */
+
+.rotateForward {
+    animation: rotateForward 2s ease-out forwards;
+}
+
+.rotateBack {
+    animation: rotateBack 2s ease-out forwards;
+}
+
+/* #endregion */
+
+/* #endregion */
+
+
+
+/* #region CSS Overrides*/
+
+nav {
+    margin-bottom: 5vh;
 }
 
 nav ul {
     padding: 0;
 }
 
-.navLogoContainer{
-    margin: 2vh 0 0 1vw;
+nav ul li {
+    list-style: none;
+    color: white;
+}
+
+nav ul li a {
+    color: white !important;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    color: var(--primary-color-blue) !important;
+    text-shadow: 2px 2px 2px var(--secondary-color-blue) !important;
+}
+
+footer span {
+    color: white;
+    font-weight: bold;
+}
+
+h1 {
+    color: var(--primary-color-blue);
+    margin-top: 2vh;
+    text-shadow: 5px 5px 12px var(--secondary-color-blue);
+}
+
+/* #endregion */
+
+
+
+/* #region Nav Img Styling */
+
+.navLogoContainer {
+    margin-left: 1vw;
 }
 
 .navLogoText {
     font-weight: bold;
     font-size: 1.9rem;
-    font-family: "Nosifer", sans-serif;
     color: var(--primary-color-blue);
     position: absolute;
     left: 18vw;
@@ -102,7 +226,9 @@ nav ul {
 .navLogoBackground {
     background-color: var(--background-color-black);
     border: 3px solid var(--primary-color-blue);
-    border-radius: 35px;
+    border-radius: 15px;
+    box-shadow: 0 0 0px transparent;
+    transition: box-shadow 6s ease-in;
 }
 
 .navLogoBackgroundBigScreen {
@@ -114,27 +240,79 @@ nav ul {
     transition: width 2s;
 }
 
-.smallScreenNav figcaption {
+.smallScreenNav figure figcaption {
     color: var(--primary-color-blue);
-    font-size: 5.5vw;
+    font-size: 5vw;
     font-weight: bold;
     font-family: "Nosifer", sans-serif;
+    margin: 0.4vh 3vw 0 -12vw;
 }
 
-.smallScreenNav figure{
+.smallScreenNav figure {
     margin: 2vh 0 0 1vw;
-    max-width: 80%;
+    max-width: 85%;
+    width: 85%;
+    border-radius: 15px;
+    height: 8vh;
 }
 
-.rotateForward {
-    animation: rotateForward 2s ease-out forwards;
+.smallScreenNav figure img {
+    margin-right: 4vh;
+    max-width: 17vw;
 }
 
-.rotateBack {
-    animation: rotateBack 2s ease-out forwards;
+
+/* #region Media Queries */
+
+@media only screen and (min-width: 500px) and (max-width: 599px) {
+    .smallScreenNav figure img {
+        max-width: 14vw;
+    }
+
+    .navLogoBackground {
+        height: 13vw;
+        width: 48vw;
+        margin: -0.5vh 0 0 1vw;
+    }
+
+    .smallScreenNav figure figcaption {
+        font-size: 1.7rem;
+    }
 }
 
-@media only screen and (max-width: 599px){
+@media only screen and (min-width: 600px) and (max-width: 823px) {
+    .smallScreenNav figure img {
+        max-width: 11vw;
+    }
+
+    .navLogoBackground {
+        height: 13vw;
+        width: 45vw !important;
+        margin: -0.5vh 0 0 1vw;
+    }
+
+    .smallScreenNav figure figcaption {
+        font-size: 1.7rem;
+    }
+}
+
+@media only screen and (min-width: 824px) and (max-width: 991px) {
+    .smallScreenNav figure img {
+        max-width: 9vw;
+    }
+
+    .navLogoBackground {
+        height: 13vw;
+        width: 45vw !important;
+        margin: -0.5vh 0 0 1vw;
+    }
+
+    .smallScreenNav figure figcaption {
+        font-size: 1.7rem;
+    }
+}
+
+@media only screen and (max-width: 991px){
     .smallScreenNav{
         display: block;
     }
@@ -144,7 +322,7 @@ nav ul {
     }
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 992px){
     .bigScreenNav {
         display: block;
     }
@@ -154,78 +332,132 @@ nav ul {
     }
 
     .navLogoImage {
-        max-width: 12vw;
+        max-width: 6.5vw;
     }
 
     .navLogoBackground {
-        height: 13.7vw;
-        width: 14vw;
-        margin: 1.3vh 0 0 1vw;
+        height: 8vw;
+        width: 8vw;
+        margin: -0.85vh 0 0 1.3vw;
     }
 
-    .navLogoText{
-        font-size: 2rem;
-        top: 6vw;
-        left: 14.7vw;
+    .navLogoText {
+        font-size: 1.3rem;
+        top: 4.6vh;
+        left: 9vw;
+    }
+
+    nav ul li:not(:nth-of-type(1)) {
+        margin-bottom: 1vh;
+    }
+
+    nav {
+        margin-top: -1.5vh;
     }
 }
 
 @media only screen and (min-width: 1100px) {
     .navLogoImage {
-        max-width: 9vw;
+        max-width: 5.5vw;
     }
 
     .navLogoBackground {
-        height: 10.3vw;
-        width: 10.7vw;
-        margin: 1.3vh 0 0 1.2vw;
+        height: 7.1vw;
+        width: 7.2vw;
+        margin: -0.97vh 0 0 1.2vw;
     }
 
     .navLogoText {
-        font-size: 2rem;
-        top: 4.5vw;
-        left: 11.5vw;
+        font-size: 1.5rem;
+        top: 3.4vw;
+        left: 8.3vw;
     }
 }
 
 @media only screen and (min-width: 1300px) {
     .navLogoImage {
-        max-width: 8vw;
+        max-width: 5vw;
     }
 
     .navLogoBackground {
-        height: 9.3vw;
-        width: 9.7vw;
-        margin: 1.3vh 0 0 1.2vw;
+        height: 6.3vw;
+        width: 6.6vw;
+        margin: -0.9vh 0 0 1.2vw;
     }
 
     .navLogoText {
         font-size: 1.8rem;
-        top: 4.3vw;
-        left: 10.5vw;
+        top: 2.5vw;
+        left: 8vw;
+    }
+
+    .bigScreenNav ul li {
+        margin-top: -0.9vh;
     }
 }
 
 
 @media only screen and (min-width: 1600px){
     .navLogoImage {
-        max-width: 7vw;
+        max-width: 4vw;
         margin-left: 0;
     }
 
     .navLogoBackground {
-        height: 7.7vw;
-        width: 7.5vw;
-        margin: 1.3vh 0 0 0.8vw;
+        height: 4.8vw;
+        width: 4.9vw;
+        margin: -0.7vh 0 0 0.55vw;
+        border-radius: 17px;
     }
 
     .navLogoText {
-        font-size: 2.3rem;
-        top: 3.2vw;
-        left: 8.7vw;
+        font-size: 1.7rem;
+        top: 2.1vw;
+        left: 5.55vw;
+    }
+
+    .bigScreenNav ul li {
+        margin-top: -1.1vh;
     }
 }
 
+@media only screen and (min-width: 1700px) {
+    .navLogoImage {
+        max-width: 4vw;
+        margin-left: 0;
+    }
+
+    .navLogoBackground {
+        height: 4.8vw;
+        width: 4.9vw;
+        margin: -0.7vh 0 0 0.55vw;
+        border-radius: 17px;
+    }
+
+    .navLogoText {
+        font-size: 2rem;
+        top: 4.8vh;
+        left: 5.8vw;
+    }
+
+    .bigScreenNav ul li{
+        margin-top: -2.5vh;
+    }
+
+   .bigScreenNav{
+       margin-top: 0.5vh;
+   }
+}
+
+/* #endregion */
+
+/* #endregion */
+
+
+
+/* #region Animations */
+
+/* #region Rotate Animation */
 
 @keyframes rotateForward {
     0% {
@@ -247,46 +479,44 @@ nav ul {
     }
 }
 
-@keyframes clapOutNavImage{
-    0% {
-        .navLogoBackground {
-            height: 17vw;
-            width: 17vw;
-        }
+/* #endregion */
 
-        @media only screen and (min-width: 1200px) {
-            .navLogoBackground {
-                height: 12vw;
-                width: 12vw;
-            }
-        }
+/* #endregion */
 
-        @media only screen and (min-width: 1600px) {
-            .navLogoBackground {
-                height: 8.3vw;
-                width: 9vw;
-            }
-        }
-    }
 
-    100% {
-        .navLogoBackground {
-            height: 17vw;
-            width: 37vw;
-        }
 
-        @media only screen and (min-width: 1200px) {
-            .navLogoBackground {
-                height: 12vw;
-                width: 32vw;
-            }
-        }
 
-        @media only screen and (min-width: 1600px) {
-            .navLogoBackground {
-                height: 8.3vw;
-                width: 29vw;
-            }
-        }
-    }
+
+/* #region Hamburger Menu */
+
+.menuContainer {
+    display: inline-block;
+    cursor: pointer;
+    margin: 5vh 0 0 0;
 }
+
+.bar1,
+.bar2,
+.bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: var(--primary-color-blue);
+    margin: 6px 0;
+    transition: 0.4s;
+}
+
+.change .bar1 {
+    transform: translate(0, 11px) rotate(-45deg);
+    box-shadow: 1px 1px 30px var(--primary-color-blue);
+}
+
+.change .bar2 {
+    opacity: 0;
+    box-shadow: 1px 1px 30px var(--primary-color-blue);
+}
+
+.change .bar3 {
+    transform: translate(0, -11px) rotate(45deg);
+}
+
+/* #endregion */
