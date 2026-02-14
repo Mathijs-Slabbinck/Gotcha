@@ -159,14 +159,17 @@ a,
     margin-top: 0.3vh;
 }
 
-/* You MUST have this transition property */
 .sliding {
-    transition: height 0.35s ease; /* duration should match JS duration */
+    transition: height 0.35s ease;
     will-change: height;
 }
 
-/* #region Animation Classes */
+.fullsvh {
+    min-height: 100svh;
+    position: absolute
+}
 
+/* #region Animation Classes */
 .rotateForward {
     animation: rotateForward 2s ease-out forwards;
 }
@@ -182,6 +185,15 @@ a,
 
 
 /* #region CSS Overrides*/
+
+/* Ensure main content fills viewport */
+html, body {
+    height: 100dvh; /* Matches actual mobile viewport */
+    margin: 0 !important; /* Kill Bootstrap's body margin */
+    padding: 0 !important;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
 
 nav {
     margin-bottom: 5vh;

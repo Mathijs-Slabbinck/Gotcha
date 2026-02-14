@@ -60,6 +60,6 @@ textarea::-webkit-scrollbar {
     display: none;
 }
 
-html, body {
-    overflow: hidden;
+body {
+    min-height: 96svh;
 }
