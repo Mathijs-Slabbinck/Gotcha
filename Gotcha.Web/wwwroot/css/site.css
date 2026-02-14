@@ -169,6 +169,26 @@ a,
     position: absolute
 }
 
+.cursor {
+    border-right: 2px solid var(--primary-color-blue); /* Vertical line */
+    animation: blink 0.7s infinite; /* Blink speed */
+    display: inline;
+    background-color: gray;
+    margin-left: 2px; /* Overlap slightly for seamless look */
+}
+
+@keyframes blink {
+    0%, 50% {
+        border-color: var(--primary-color-blue);
+    }
+    /* Visible */
+    51%, 100% {
+        border-color: transparent;
+    }
+    /* Hidden */
+}
+
+
 /* #region Animation Classes */
 .rotateForward {
     animation: rotateForward 2s ease-out forwards;

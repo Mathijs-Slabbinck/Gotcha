@@ -4,6 +4,7 @@
 }
 
 <link rel="stylesheet" href="~/css/Index.css" />
+<script src="~/js/Index.js"></script>
 
 <div class="pageToHide">
 	<h1 class="fw-bold font-bungee text-center mb-5">Welcome to GOTCHA!</h1>
@@ -22,7 +23,12 @@
 								</div>
 								<div class="row justify-content-center form-group mt-4">
 									<label class="col-7 fw-bold color-2 mb-1 font-roboto fs-6" for="loginPasswordInput">Password:</label>
-									<input id="loginPasswordInput" class="col-7 text-center mb-4" type="password" placeholder="password" />
+									<div class="col-7">
+										<div class="row justify-content-end">
+											<input id="loginPasswordInput" class="col-12 text-center mb-4" type="password" placeholder="password" />
+											<p class="col-1 clickAble eye d-flex justify-content-end" id="eye-login">&#x1F441;</p>
+										</div>
+									</div>
 								</div>
 							</div>
 							<input type="submit" id="loginSignInButton" class="btn-1 col-5 mb-4 mx-auto" value="log in">

@@ -16,6 +16,11 @@
     h1 {
         margin-top: 5vh;
     }
+
+    #eye-login, eye {
+        margin-top: 3.3vh !important;
+        width: 5% !important;
+    }
 }
 
 #loginSingUpButton {

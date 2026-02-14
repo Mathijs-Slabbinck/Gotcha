@@ -2,3 +2,33 @@
 
 	ViewData["Title"] = "Home";
 }
+
+<link rel="stylesheet" href="~/css/Home.css" />
+<script src="~/js/Home.js"></script>
+
+<div class="pageToHide">
+	<h1 class="fw-bold font-bungee text-center mb-5">Welcome <span id="userNameInTitle"></span></h1>
+</div>
+
+<div class="pageToHide">
+	<p class="d-none" id="username">TheLegend27</p>
+
+	<div class="row justify-content-center">
+		<div class="col-10 glowingCard">
+			<div class="row justify-content-between">
+				<div class="col-12 col-lg-4 justify-content-center d-flex">
+						<img class="card-img img-fluid glowingCard rounded-circle playerImage my-5" src="~/images/male-placeholder.png" alt="Male image placeholder" />
+				</div>
+				<div class="col-12 col-lg-8 border-left d-flex align-items-center"> 
+					<ul class="playerStats row">
+						<li class="col-12 my-1">Games Played:</li>
+						<li class="col-12 my-1">Games Won:</li>
+						<li class="col-12 my-1">Total Kills:</li>
+						<li class="col-12 my-1">Biggest Kill Streak:</li>
+						<li class="col-12 my-1">Account Created:</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

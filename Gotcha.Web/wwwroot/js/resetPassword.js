@@ -21,7 +21,6 @@ function initialize() {
 }
 
 function showPassword(inputField) {
-    console.log("test");
     if (inputField.type === "password") {
         inputField.type = "text";
     }

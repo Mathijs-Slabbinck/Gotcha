@@ -1,0 +1,25 @@
+﻿/* #region Root Variables */
+
+@import "Variables.css";
+
+/* #endregion */
+
+.playerImage {
+    max-width: 80%;
+    max-height: auto;
+    margin: 0 auto;
+}
+
+.playerStats {
+
+}
+
+
+.playerStats li {
+    color: var(--primary-color-blue);
+    list-style-type: none;
+    font-size: 1.2rem;
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: bold;
+}
