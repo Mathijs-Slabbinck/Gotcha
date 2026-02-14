@@ -18,8 +18,36 @@ input[type="date"] {
     padding-bottom: 0.1vh;
 }
 
-input[type="date"]:valid {
-    color: black;
+input, select {
+    background-color: #FFFFFF40;
+    color: white;
+}
+
+input::placeholder {
+    color: #9ae6eb !important;
+}
+
+select option {
+    color: black !important;
+}
+
+#signUpGenderInput {
+    color: #9ae6eb;
+    margin-top: 0.2vh;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    /* Filter berekend voor hex #27bbc4 */
+    filter: invert(62%) sepia(85%) saturate(395%) hue-rotate(133deg) brightness(88%) contrast(92%);
+    cursor: pointer;
+}
+
+input[type=date]:invalid {
+    color: #9ae6eb !important;
+}
+
+input[type=date]:valid {
+    color: white !important;
 }
 
 select {
@@ -32,18 +60,70 @@ select option[disabled]{
     color: #6c757d;
 }
 
-select:valid {
-    color: black;
-}
-
-#signUpGenderInput {
-    margin-top: 0.2vh;
-}
-
 #infoModal {
     top: 15vh;
 }
 
 h1 {
     margin-bottom: 4vh !important;
+}
+
+@media only screen and (max-width: 375px) {
+    .eye1 {
+        left: 75% !important;
+    }
+
+    .eye2 {
+        right: 17.5% !important;
+    }
+}
+
+@media only screen and (min-width: 376px) and (max-width: 480px) {
+    .eye1 {
+        left: 78% !important;
+    }
+
+    .eye2 {
+        right: 13.5% !important;
+    }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 767px) {
+    .eye1 {
+        left: 80% !important;
+    }
+
+    .eye2 {
+        right: 11.5% !important;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 992px){
+    .eye1 {
+        left: 81% !important;
+    }
+
+    .eye2 {
+        right: 10.5% !important;
+    }
+}
+
+@media only screen and (min-width: 993px) and (max-width: 1999px) {
+    .eye1 {
+        left: 39.5% !important;
+    }
+
+    .eye2 {
+        right: 2.5% !important;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .eye1 {
+        left: 40.5% !important;
+    }
+
+    .eye2 {
+        right: 1.5% !important;
+    }
 }
