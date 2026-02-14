@@ -159,6 +159,12 @@ a,
     margin-top: 0.3vh;
 }
 
+/* You MUST have this transition property */
+.sliding {
+    transition: height 0.35s ease; /* duration should match JS duration */
+    will-change: height;
+}
+
 /* #region Animation Classes */
 
 .rotateForward {
@@ -190,7 +196,8 @@ nav ul li {
     color: white;
 }
 
-nav ul li a {
+nav ul li a,
+.menuOpenNav ul li a {
     color: white !important;
     text-decoration: none;
 }
@@ -209,6 +216,30 @@ h1 {
     color: var(--primary-color-blue);
     margin-top: 2vh;
     text-shadow: 5px 5px 12px var(--secondary-color-blue);
+}
+
+.menuOpenNav {
+    border-radius: 25px;
+    display: none;
+    max-width: 100%;
+}
+
+.menuOpenNav ul {
+    background-color: var(--background-color-blue);
+}
+
+.menuOpenNav ul li {
+    list-style-type: none;
+    text-align: center;
+    font-size: 1.3rem;
+    font-family: "Bungee", sans-serif;
+    font-style: normal;
+    color: white;
+    cursor: pointer;
+}
+
+.menuOpenNav ul li:hover {
+    background-color: #1e929a40;
 }
 
 input[type=text],

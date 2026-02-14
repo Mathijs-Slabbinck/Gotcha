@@ -6,41 +6,43 @@
 <link rel="stylesheet" href="~/css/Contact.css" />
 <script src="~/js/Contact.js"></script>
 
-<h1 class="fw-bold font-bungee text-center mb-5">Contact</h1>
+<div class="pageToHide">
+	<h1 class="fw-bold font-bungee text-center mb-5">Contact</h1>
 
-<div class="row justify-content-center">
-	<div class="col-10">
-		<form class="card formBg glowingCard">
-			<div class="row justify-content-center">
-				<div class="col-8 col-lg-6">
-					<div class="row form-group">
-						<div class="col-12 col-lg-8">
-							<div class="row">
-								<label for="contactReason" class="col-12 fs-5 color-2 font-roboto fw-bold mb-1 mt-4 p-0">Reason for contact:</label>
-								<select id="contactReason" class="col-12 mb-4">
-									<option disabled selected>Select an Option</option>
-									<option>Bug Report</option>
-									<option>Suggestion</option>
-									<option>Feedback</option>
-									<option>Request Custom App or Website</option>
-									<option>Other</option>
-								</select>
+	<div class="row justify-content-center">
+		<div class="col-12 col-lg-10">
+			<form class="card formBg glowingCard">
+				<div class="row justify-content-center">
+					<div class="col-8 col-lg-6">
+						<div class="row form-group">
+							<div class="col-12 col-lg-8">
+								<div class="row">
+									<label for="contactReason" class="col-12 fs-5 color-2 font-roboto fw-bold mb-1 mt-4 p-0">Reason for contact:</label>
+									<select id="contactReason" class="col-12 mb-4">
+										<option disabled selected>Select an Option</option>
+										<option>Bug Report</option>
+										<option>Suggestion</option>
+										<option>Feedback</option>
+										<option>Request Custom App or Website</option>
+										<option>Other</option>
+									</select>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="row justify-content-center">
-				<div class="col-8 col-lg-6">
-					<div class="row form-group justify-content-center">
-						<label for="messageField" class="col-12 fs-5 color-2 font-roboto fw-bold p-0 mb-1">Message:</label>
-						<textarea id="messageField" class="col-12 text-white mb-4" rows="10" maxlength="4000"></textarea>
+				<div class="row justify-content-center">
+					<div class="col-8 col-lg-6">
+						<div class="row form-group justify-content-center">
+							<label for="messageField" class="col-12 fs-5 color-2 font-roboto fw-bold p-0 mb-1">Message:</label>
+							<textarea id="messageField" class="col-12 text-white mb-4" rows="10" maxlength="4000"></textarea>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="row justify-content-center">
-				<input type="submit" value="submit" class="btn-1 col-2 mt-1 mb-4" />
-			</div>
-		</form>
+				<div class="row justify-content-center">
+					<input type="submit" value="submit" class="btn-1 col-2 mt-1 mb-4" />
+				</div>
+			</form>
+		</div>
 	</div>
 </div>
