@@ -72,13 +72,12 @@ function showInfoModal(modalToShow) {
     const divInfoModal = new bootstrap.Modal(document.getElementById("infoModal"));
     let infoModalTitle = document.getElementsByClassName("infoModalTitle")[0];
     let infoModalText = document.getElementsByClassName("infoModalText")[0];
-
     divInfoModal.show();
 
     switch (modalToShow) {
         case "general":
             infoModalTitle.textContent = "General";
-            infoModalText.innerHTML = `We will only use this data in game.<br />None of your info will be sold and/or used outside the app.<br />All data is stored safely and your privacy is respected!`
+            infoModalText.innerHTML = `We will only use this data in game.<br />None of your info will be sold and/or used outside the app.<br />All data is stored safely and your privacy is respected!`;
             break;
         case "firstName":
             infoModalTitle.textContent = "First Name";
@@ -94,7 +93,7 @@ function showInfoModal(modalToShow) {
             break;
         case "emailAdress":
             infoModalTitle.textContent = "Email Adress";
-            infoModalText.innerHTML = "We ask for your email adress for account verification.<br />We will not be sending you any emails."
+            infoModalText.innerHTML = "We ask for your email adress for account verification.<br />We will not be sending you any emails.";
             break;
         case "password":
             infoModalTitle.textContent = "Password";
@@ -102,23 +101,23 @@ function showInfoModal(modalToShow) {
             break;
         case "repeatPassword":
             infoModalTitle.textContent = "Repeat Password";
-            infoModalText.textContent = "We ask to repeat your password to be certain that there were no typos."
+            infoModalText.textContent = "We ask to repeat your password to be certain that there were no typos.";
             break;
         case "birthday":
             infoModalTitle.textContent = "Birthday";
-            infoModalText.textContent = "If this in game setting is enabled, players will be able to see yoru age to get a better idea of their target.";
+            infoModalText.textContent = "If this in game setting is enabled, players will be able to see your age to get a better idea of their target.";
             break;
         case "gender":
             infoModalTitle.textContent = "Gender";
-            infoModalText.innerHTML = "If images are disabled we will show a template<br />(different for each gender).<br/>If enabled, we will also show your gender in game to give players a better idea of their target."
+            infoModalText.innerHTML = "If images are disabled we will show a template<br />(different for each gender).<br/>If enabled, we will also show your gender in game to give players a better idea of their target.";
             break;
         case "picture":
-            infoModalTitle = "Picture";
-            infoModalText = "If enabled (enabled by default) we will show player images in game to give players an idea of what their target looks like."
+            infoModalTitle.textContent = "Picture";
+            infoModalText.textContent = "If enabled (enabled by default) we will show player images in game to give players an idea of what their target looks like.";
             break;
         default:
-            infoModalTitle = "Error";
-            infoModalText = "An error has occured, please try again later.";
+            infoModalTitle.textContent = "Error";
+            infoModalText.textContent = "An error has occured, please try again later.";
             break;
     }
 }

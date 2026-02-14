@@ -6,39 +6,41 @@
 <link rel="stylesheet" href="~/css/ResetPassword.css" />
 <script src="~/js/resetPassword.js"></script>
 
-<h1 class="fw-bold font-bungee text-center mb-5">Welcome to GOTCHA!</h1>
+<div class="pageToHide">
+	<h1 class="fw-bold font-bungee text-center mb-5">Welcome Back!</h1>
 
-<div class="row my-5">
-	<form class="card mt-3 col-10 mx-auto flex-row justify-content-center glowingCard formBg">
-		<div class="row justify-content-center">
-			<h2 class="col-12 text-center font-robotoSlab fw-bold card-header mb-4 fs-3 py-3 color-2">Reset Password</h2>
-			<div class="col-6">
-				<div class="row">
-					<div class="col-12">
-						<div class="row form-group">
-							<label for="resetPassword" class="col-12 fw-bold font-roboto color-2 fs-6 mt-4 mb-1 p-0">Enter new password:</label>
-							<div class="col-12">
-								<div class="row">
-									<input id="resetPassword" type="password" placeholder="password" class="col-12 mt-1" />
-									<p class="col-1 clickAble eye" id="eye-reset-1">&#x1F441;</p>
+	<div class="row my-5">
+		<form class="card mt-3 col-10 mx-auto flex-row justify-content-center glowingCard formBg">
+			<div class="row justify-content-center">
+				<h2 class="col-12 text-center font-robotoSlab fw-bold card-header mb-4 fs-3 py-3 color-2">Reset Password</h2>
+				<div class="col-6">
+					<div class="row">
+						<div class="col-12">
+							<div class="row form-group">
+								<label for="resetPassword" class="col-12 fw-bold font-roboto color-2 fs-6 mt-4 mb-1 p-0">Enter new password:</label>
+								<div class="col-12">
+									<div class="row">
+										<input id="resetPassword" type="password" placeholder="password" class="col-12 mt-1" />
+										<p class="col-1 clickAble eye" id="eye-reset-1">&#x1F441;</p>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-12">
-						<div class="row form-group">
-							<label for="repeatResetPassword" class="col-12 fw-bold font-roboto color-2 fs-6 mt-5 mb-1 p-0">Repeat new password:</label>
-							<div class="col-12">
-								<div class="row">
-									<input id="repeatResetPassword" type="password" placeholder="password" class="col-12 mt-1 mb-5" />
-									<p class="col-1 clickAble eye" id="eye-reset-2">&#x1F441;</p>
+						<div class="col-12">
+							<div class="row form-group">
+								<label for="repeatResetPassword" class="col-12 fw-bold font-roboto color-2 fs-6 mt-5 mb-1 p-0">Repeat new password:</label>
+								<div class="col-12">
+									<div class="row">
+										<input id="repeatResetPassword" type="password" placeholder="password" class="col-12 mt-1 mb-5" />
+										<p class="col-1 clickAble eye" id="eye-reset-2">&#x1F441;</p>
+									</div>
 								</div>
 							</div>
 						</div>
+						<input id="confirmResetPassword" class="btn-1 col-6 mx-auto mb-5" type="submit" />
 					</div>
-					<input id="confirmResetPassword" class="btn-1 col-6 mx-auto mb-5" type="submit" />
 				</div>
 			</div>
-		</div>
-	</form>
+		</form>
+	</div>
 </div>

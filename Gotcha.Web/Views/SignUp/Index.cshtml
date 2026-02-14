@@ -6,147 +6,149 @@
 <link rel="stylesheet" href="~/css/SignUp.css" />
 <script src="~/js/signUp.js" ></script>
 
-<h1 class="fw-bold font-bungee text-center">Welcome to GOTCHA!</h1>
+<div class="pageToHide">
+	<h1 class="fw-bold font-bungee text-center">Welcome to GOTCHA!</h1>
 
-<form class="card glowingCard col-11 mx-auto formBg">
-	<div class="card-header row">
-		<div class="col-12 d-flex justify-content-center">
-			<h2 class="text-center font-robotoSlab fw-bold mt-2 color-3 pt-2 pd-1">SIGN UP</h2>
-			<p class="text-end infoIcon" id="info-general" data-toggle="modal" data-target="#infoModal">&#9432;</p>
-		</div>
-	</div>
-	<div class="card-body row mt-3 py-2">
-		<div class="col-12 col-lg-6">
-			<div class="row justify-content-center form-group">
-				<div class="col-9">
-					<div class="row align-items-end">
-						<label class="fw-bold color-2 mb-2 fs-6 font-roboto col-10 p-0" for="signUpFirstNameInput">First Name: *</label>
-						<p class="text-end col-2 infoIcon" id="info-firstName" data-toggle="modal" data-target="#infoModal">&#9432;</p>
-					</div>
-				</div>
-				<input class="col-9" id="signUpFirstNameInput" type="text" placeholder="John" required />
+	<form class="card glowingCard col-11 mx-auto formBg">
+		<div class="card-header row">
+			<div class="col-12 d-flex justify-content-center">
+				<h2 class="text-center font-robotoSlab fw-bold mt-2 color-3 pt-2 pd-1">SIGN UP</h2>
+				<p class="text-end infoIcon" id="info-general" data-toggle="modal" data-target="#infoModal">&#9432;</p>
 			</div>
 		</div>
-		<div class="col-12 col-lg-6 mt-lg-0 mt-2 justify-content-center">
-			<div class="row justify-content-center form-group">
-				<div class="col-9">
-					<div class="row align-items-end">
-						<label class="fw-bold color-2 mb-2 fs-6 font-roboto col-10 p-0" for="signUpLastNameInput">Last Name: *</label>
-						<p class="text-end col-2 infoIcon" id="info-lastName">&#9432;</p>
+		<div class="card-body row mt-3 py-2">
+			<div class="col-12 col-lg-6">
+				<div class="row justify-content-center form-group">
+					<div class="col-9">
+						<div class="row align-items-end">
+							<label class="fw-bold color-2 mb-2 fs-6 font-roboto col-10 p-0" for="signUpFirstNameInput">First Name: *</label>
+							<p class="text-end col-2 infoIcon" id="info-firstName" data-toggle="modal" data-target="#infoModal">&#9432;</p>
+						</div>
 					</div>
+					<input class="col-9" id="signUpFirstNameInput" type="text" placeholder="John" required />
 				</div>
-				<input class="col-9" id="signUpLastNameInput" type="text" placeholder="Doe" required />
 			</div>
-		</div>
-	</div>
-	<div class="card-body row py-2">
-		<div class="col-12 col-lg-6">
-			<div class="row justify-content-center form-group">
-				<div class="col-9">
-					<div class="row align-items-end">
-						<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpUsernameInput">Username: *</label>
-						<p class="text-end col-2 infoIcon" id="info-username">&#9432;</p>
+			<div class="col-12 col-lg-6 mt-lg-0 mt-2 justify-content-center">
+				<div class="row justify-content-center form-group">
+					<div class="col-9">
+						<div class="row align-items-end">
+							<label class="fw-bold color-2 mb-2 fs-6 font-roboto col-10 p-0" for="signUpLastNameInput">Last Name: *</label>
+							<p class="text-end col-2 infoIcon" id="info-lastName">&#9432;</p>
+						</div>
 					</div>
-				</div>
-				<input class="col-9" id="signUpUsernameInput" type="text" placeholder="TheLegend27" required />
-			</div>
-		</div>
-		<div class="col-12 col-lg-6">
-			<div class="row justify-content-center form-group">
-				<div class="col-9">
-					<div class="row align-items-end">
-						<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpUsernameInput">Email Adress: *</label>
-						<p class="text-end col-2 infoIcon" id="info-emailAdress">&#9432;</p>
-					</div>
-				</div>
-				<input class="col-9" id="signUpEmailInput" type="text" placeholder="john.doe@example.com" required />
-			</div>
-		</div>
-	</div>
-	<div class="card-body row py-2">
-		<div class="col-12 col-lg-6">
-			<div class="row justify-content-center form-group">
-				<div class="col-9">
-					<div class="row align-items-end">
-						<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpPasswordInput">Password: *</label>
-						<p class="text-end col-2 infoIcon" id="info-password">&#9432;</p>
-					</div>
-				</div>
-				<div class="col-9">
-					<div class="row">
-						<input class="col-12" id="signUpPasswordInput" type="password" placeholder="password" required />
-						<p class="col-1 clickAble eye eye1" id="eye-signUp-1">&#x1F441;</p>
-					</div>
+					<input class="col-9" id="signUpLastNameInput" type="text" placeholder="Doe" required />
 				</div>
 			</div>
 		</div>
-		<div class="col-12 col-lg-6">
-			<div class="row justify-content-center form-group">
-				<div class="col-9">
-					<div class="row align-items-end">
-						<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpRepeatPasswordInput">Repeat Password: *</label>
-						<p class="text-end col-2 infoIcon" id="info-repeatPassword">&#9432;</p>
+		<div class="card-body row py-2">
+			<div class="col-12 col-lg-6">
+				<div class="row justify-content-center form-group">
+					<div class="col-9">
+						<div class="row align-items-end">
+							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpUsernameInput">Username: *</label>
+							<p class="text-end col-2 infoIcon" id="info-username">&#9432;</p>
+						</div>
+					</div>
+					<input class="col-9" id="signUpUsernameInput" type="text" placeholder="TheLegend27" required />
+				</div>
+			</div>
+			<div class="col-12 col-lg-6">
+				<div class="row justify-content-center form-group">
+					<div class="col-9">
+						<div class="row align-items-end">
+							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpUsernameInput">Email Adress: *</label>
+							<p class="text-end col-2 infoIcon" id="info-emailAdress">&#9432;</p>
+						</div>
+					</div>
+					<input class="col-9" id="signUpEmailInput" type="text" placeholder="john.doe@example.com" required />
+				</div>
+			</div>
+		</div>
+		<div class="card-body row py-2">
+			<div class="col-12 col-lg-6">
+				<div class="row justify-content-center form-group">
+					<div class="col-9">
+						<div class="row align-items-end">
+							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpPasswordInput">Password: *</label>
+							<p class="text-end col-2 infoIcon" id="info-password">&#9432;</p>
+						</div>
+					</div>
+					<div class="col-9">
+						<div class="row">
+							<input class="col-12" id="signUpPasswordInput" type="password" placeholder="password" required />
+							<p class="col-1 clickAble eye eye1" id="eye-signUp-1">&#x1F441;</p>
+						</div>
 					</div>
 				</div>
-				<div class="col-9">
-					<div class="row">
-						<input class="col-12" id="signUpRepeatPasswordInput" type="password" placeholder="password" required />
-						<p class="col-1 clickAble eye eye2" id="eye-signUp-2">&#x1F441;</p>
+			</div>
+			<div class="col-12 col-lg-6">
+				<div class="row justify-content-center form-group">
+					<div class="col-9">
+						<div class="row align-items-end">
+							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpRepeatPasswordInput">Repeat Password: *</label>
+							<p class="text-end col-2 infoIcon" id="info-repeatPassword">&#9432;</p>
+						</div>
+					</div>
+					<div class="col-9">
+						<div class="row">
+							<input class="col-12" id="signUpRepeatPasswordInput" type="password" placeholder="password" required />
+							<p class="col-1 clickAble eye eye2" id="eye-signUp-2">&#x1F441;</p>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="card-body row py-2">
-		<div class="col-12 col-lg-6 mt-lg-0 mt-2">
-			<div class="row justify-content-center form-group">
-				<div class="col-9">
-					<div class="row align-items-end">
-						<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpBirthDayInput">BirthDay: *</label>
-						<p class="text-end col-2 infoIcon" id="info-birthday">&#9432;</p>
+		<div class="card-body row py-2">
+			<div class="col-12 col-lg-6 mt-lg-0 mt-2">
+				<div class="row justify-content-center form-group">
+					<div class="col-9">
+						<div class="row align-items-end">
+							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpBirthDayInput">BirthDay: *</label>
+							<p class="text-end col-2 infoIcon" id="info-birthday">&#9432;</p>
+						</div>
 					</div>
+					<input class="col-9" id="signUpBirthDayInput" type="date" required />
 				</div>
-				<input class="col-9" id="signUpBirthDayInput" type="date" required />
+			</div>
+			<div class="col-12 col-lg-6 mt-lg-0 mt-2">
+				<div class="row justify-content-center form-group">
+					<div class="col-9">
+						<div class="row align-items-end">
+							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpGenderInput">Gender: *</label>
+							<p class="text-end col-2 infoIcon" id="info-gender">&#9432;</p>
+						</div>
+					</div>
+					<select class="col-9" id="signUpGenderInput" required>
+						<option disabled selected>Select a Gender</option>
+						<option>Male</option>
+						<option>Female</option>
+						<option>Other</option>
+					</select>
+				</div>
 			</div>
 		</div>
-		<div class="col-12 col-lg-6 mt-lg-0 mt-2">
-			<div class="row justify-content-center form-group">
-				<div class="col-9">
-					<div class="row align-items-end">
-						<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpGenderInput">Gender: *</label>
-						<p class="text-end col-2 infoIcon" id="info-gender">&#9432;</p>
-					</div>
-				</div>
-				<select class="col-9" id="signUpGenderInput" required>
-					<option disabled selected>Select a Gender</option>
-					<option>Male</option>
-					<option>Female</option>
-					<option>Other</option>
-				</select>
-			</div>
-		</div>
-	</div>
-	<div class="card-body row justify-content-center mt-2">
-		<div class="col-12 col-lg-6">
-			<div class="row justify-content-center">
-				<div class="col-9">
-					<div class="row align-items-end">
-						<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpImageInput">Picture:</label>
-						<p class="text-end col-2 infoIcon" id="info-picture">&#9432;</p>
-					</div>
-				</div>
+		<div class="card-body row justify-content-center mt-2">
+			<div class="col-12 col-lg-6">
 				<div class="row justify-content-center">
-					<div class="col-10 align-items-end">
-						<input id="signUpImageInput" type="file" accept="image/*" class="form-control">
+					<div class="col-9">
+						<div class="row align-items-end">
+							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpImageInput">Picture:</label>
+							<p class="text-end col-2 infoIcon" id="info-picture">&#9432;</p>
+						</div>
+					</div>
+					<div class="row justify-content-center">
+						<div class="col-10 align-items-end">
+							<input id="signUpImageInput" type="file" accept="image/*" class="form-control">
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="row justify-content-center my-3">
-		<input type="submit" class="btn-1 col-2 mb-2" />
-	</div>
-</form>
+		<div class="row justify-content-center my-3">
+			<input type="submit" class="btn-1 col-2 mb-2" />
+		</div>
+	</form>
+</div>
 
 <div class="modal fade" id="infoModal" role="dialog" tabindex="-1">
 	<div class="modal-dialog" role="document">

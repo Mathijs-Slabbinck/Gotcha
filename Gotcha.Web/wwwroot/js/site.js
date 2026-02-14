@@ -7,9 +7,13 @@ window.addEventListener("load", initialize);
 function initialize() {
     const figNavLogoContainer = document.getElementsByClassName("navLogoContainer")[0];
     const menuContainer = document.querySelector(".menuContainer");
+    const divMenuOpenNav = document.getElementsByClassName("menuOpenNav")[0];
+    const divPageToHide = document.getElementsByClassName("pageToHide")[0];
 
     menuContainer.addEventListener("click", function () {
         this.classList.toggle("change");
+        divMenuOpenNav.slideToggle(350);
+        divPageToHide.toggleDisplay();
     });
 
     figNavLogoContainer.addEventListener("click", toggleNavImageSlider);
@@ -88,6 +92,62 @@ function slideInNavImage() {
     }, 2000);
 }
 
+function slideToggle(element, duration = 300, callback = null) {
+    // If already animating → skip or you can force with data attribute
+    if (element.classList.contains('sliding')) return;
+
+    const isHidden = !element.offsetHeight || getComputedStyle(element).display === 'none';
+
+    if (isHidden) {
+        // 1. Prepare for opening
+        element.style.display = 'flex';
+        element.style.overflow = 'hidden';
+        element.style.height = '0px';
+        element.classList.add('sliding');
+
+        // Force reflow so transition works
+        element.offsetHeight;
+
+        // 2. Animate to natural height
+        const targetHeight = element.scrollHeight + 'px';
+        element.style.height = targetHeight;
+
+        // 3. Clean up after animation
+        setTimeout(() => {
+            element.style.height = '';
+            element.style.overflow = '';
+            element.classList.remove('sliding');
+            if (callback) callback(element);
+        }, duration);
+
+    } else {
+        // 1. Prepare for closing
+        element.style.overflow = 'hidden';
+        element.style.height = element.offsetHeight + 'px';
+        element.classList.add('sliding');
+
+        // Force reflow
+        element.offsetHeight;
+
+        // 2. Collapse
+        element.style.height = '0px';
+
+        // 3. Clean up after animation
+        setTimeout(() => {
+            element.style.display = 'none';
+            element.style.height = '';
+            element.style.overflow = '';
+            element.classList.remove('sliding');
+            if (callback) callback(element);
+        }, duration);
+    }
+}
+
+// Optional: very convenient wrapper
+Element.prototype.slideToggle = function (duration = 300, callback) {
+    slideToggle(this, duration, callback);
+    return this;
+};
 
 HTMLElement.prototype.toggleRotation = function () {
     if (!(this.classList.contains('rotateBack')) && !(this.classList.contains('rotateForward')))
