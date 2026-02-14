@@ -1,15 +1,29 @@
 ﻿"use strict";
 
 
+let isBlocked = false;
+
 window.addEventListener("load", initialize);
 
 function initialize() {
     const slcSignUpGenderInput = document.getElementById("signUpGenderInput");
     const pInfoIcons = document.getElementsByClassName("infoIcon");
     const spCloseButton = document.getElementsByClassName("modalClose")[0];
+    const inpSignUpPasswordInput = document.getElementById("signUpPasswordInput");
+    const inpSignUpRepeatPasswordInput = document.getElementById("signUpRepeatPasswordInput");
+    const eyeIcon1 = document.getElementById("eye-signUp-1");
+    const eyeIcon2 = document.getElementById("eye-signUp-2");
 
     slcSignUpGenderInput.addEventListener("change", function () {
         handleChangedSelection(slcSignUpGenderInput);
+    });
+
+    eyeIcon1.addEventListener("click", function () {
+        showPassword(inpSignUpPasswordInput);
+    });
+
+    eyeIcon2.addEventListener("click", function () {
+        showPassword(inpSignUpRepeatPasswordInput);
     });
 
     spCloseButton.addEventListener("click", closeInfoModal);
@@ -26,9 +40,25 @@ function initialize() {
     }
 }
 
+function showPassword(inputField) {
+    console.log("test");
+    if (inputField.type === "password") {
+        inputField.type = "text";
+    }
+    else {
+        inputField.type = "password";
+    }
+}
+
 function handleChangedSelection(select) {
+    if (isBlocked) {
+        return;
+    }
+
     select.remove(0);
     select.classList.remove("text-secondary");
+    select.style.color = "white";
+    isBlocked = true;
 }
 
 function closeInfoModal() {
@@ -48,7 +78,7 @@ function showInfoModal(modalToShow) {
     switch (modalToShow) {
         case "general":
             infoModalTitle.textContent = "General";
-            infoModalText.innerHTML = `We will only use this data in game.<br />None of your info will be sold and/or used outside the app.`
+            infoModalText.innerHTML = `We will only use this data in game.<br />None of your info will be sold and/or used outside the app.<br />All data is stored safely and your privacy is respected!`
             break;
         case "firstName":
             infoModalTitle.textContent = "First Name";
@@ -63,11 +93,19 @@ function showInfoModal(modalToShow) {
             infoModalText.textContent = "We ask for your last name because if real names are disabled, this username will be shown by default (can be changed per game).";
             break;
         case "emailAdress":
-            infoModalTitle.textContent = "email adress";
-            infoModalText.innerHTML = "We ask for your email adress for account verification.<br />We will not be sending you any annoying emails."
+            infoModalTitle.textContent = "Email Adress";
+            infoModalText.innerHTML = "We ask for your email adress for account verification.<br />We will not be sending you any emails."
+            break;
+        case "password":
+            infoModalTitle.textContent = "Password";
+            infoModalText.textContent = "Your password is encrypted and kept safe.<br/>We take cyber security serious<br />(but we suggest using a unique password to be extra safe)!";
+            break;
+        case "repeatPassword":
+            infoModalTitle.textContent = "Repeat Password";
+            infoModalText.textContent = "We ask to repeat your password to be certain that there were no typos."
             break;
         case "birthday":
-            infoModalTitle.textContent = "birthday";
+            infoModalTitle.textContent = "Birthday";
             infoModalText.textContent = "If this in game setting is enabled, players will be able to see yoru age to get a better idea of their target.";
             break;
         case "gender":
@@ -83,6 +121,4 @@ function showInfoModal(modalToShow) {
             infoModalText = "An error has occured, please try again later.";
             break;
     }
-
-
 }

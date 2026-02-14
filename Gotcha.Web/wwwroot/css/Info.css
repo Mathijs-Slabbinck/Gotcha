@@ -1,0 +1,19 @@
+﻿/* #region Root Variables */
+
+@import "Variables.css";
+
+/* #endregion */
+
+#infoBlock {
+    background-color: var(--background-color-blue);
+    border: 3px solid var(--secondary-color-blue);
+    border-radius: 5px;
+    color: white;
+}
+
+#infoBlock p {
+    margin: 0 auto;
+    padding: 0.4vh 0;
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+}

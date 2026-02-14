@@ -1,0 +1,65 @@
+﻿/* #region Root Variables */
+
+@import "Variables.css";
+
+/* #endregion */
+
+h1 {
+    text-shadow: 5px 5px 12px var(--secondary-color-blue);
+}
+
+
+@media only screen and (max-width: 991px){
+    #loginFormCardLeft input:last-of-type {
+        margin-top: 3vh !important;
+    }
+
+    #loginFormCardRight p {
+        font-size: 1rem;
+    }
+
+    h1 {
+        margin-top: 5vh;
+    }
+}
+
+#loginSingUpButton {
+    margin-top: 2.3vh !important;
+    padding: 0.35vh 0;
+}
+
+input:not(input[type=submit]), select {
+    background-color: #FFFFFF40 !important;
+    color: var(--secondary-color-blue);
+}
+
+select option{
+    color: black;
+}
+
+select {
+    padding-top: 0.2vh;
+    padding-bottom: 0.2vh;
+}
+
+select option[disabled]{
+    color: #6c757d;
+}
+
+#messageField {
+    background-color: #5AD6DE40;
+    resize: none;
+    /* Firefox */
+    scrollbar-width: none;
+    /* IE/Edge */
+    -ms-overflow-style: none;
+}
+
+/* WebKit (Chrome, Safari, Edge) */
+textarea::-webkit-scrollbar {
+    display: none;
+}
+
+html, body {
+    overflow: hidden;
+}

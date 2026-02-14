@@ -38,7 +38,8 @@ body {
 /* #region Quick Styling Classes */
 
 .noSelect,
-.infoIcon {
+.infoIcon,
+.eye {
     -webkit-user-select: none;
     /* Chrome all / Safari all */
     -moz-user-select: none;
@@ -143,6 +144,21 @@ a,
     top: 1vh;
 }
 
+.glowingCard {
+    box-shadow: 1px 1px 10px 5px var(--primary-color-blue);
+}
+
+.formBg {
+    background-color: var(--background-color-blue) !important;
+}
+
+.eye {
+    font-family: sefif;
+    color: var(--third-color-blue);
+    position: absolute;
+    margin-top: 0.3vh;
+}
+
 /* #region Animation Classes */
 
 .rotateForward {
@@ -193,6 +209,31 @@ h1 {
     color: var(--primary-color-blue);
     margin-top: 2vh;
     text-shadow: 5px 5px 12px var(--secondary-color-blue);
+}
+
+input[type=text],
+input[type=password],
+input[type=date],
+input[type=file],
+select {
+    border: 2px solid var(--secondary-color-blue);
+}
+
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=date]:focus,
+input[type=file]:focus,
+select:focus{
+    border: 2px solid var(--secondary-color-blue);
+    outline: none;
+    box-shadow: 0 0 10px var(--primary-color-blue);
+}
+
+.form-group:has(input:focus, select:focus) label,
+.form-group:has(textarea:focus, select:focus) label {
+    color: var(--secondary-color-blue);
+    text-shadow: 0 0 15px var(--primary-color-blue);
+    transition: all 0.3s ease;
 }
 
 /* #endregion */
