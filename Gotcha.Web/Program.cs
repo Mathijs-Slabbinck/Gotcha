@@ -1,12 +1,19 @@
+using Gotcha.Core.Data;
 using Gotcha.Core.Services.Repository;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// we need this line so the DI (Dependency Injection) can work in this Service
-// (because we did it like this we will also need to inject this service if we want to use it later)
+// Database
+builder.Services.AddDbContext<GotchaDbContext>(
+    options => options
+    .UseSqlServer(builder.Configuration.GetConnectionString("GotchaDbContext"))
+);
+
+// Services
 builder.Services.AddScoped<LogRepoService>();
 
 var app = builder.Build();

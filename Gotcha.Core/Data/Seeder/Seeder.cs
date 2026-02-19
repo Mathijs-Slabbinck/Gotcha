@@ -1,80 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Gotcha.Core.Entities;
 using Gotcha.Core.Enums;
-using Microsoft.EntityFrameworkCore;
 
 namespace Gotcha.Core.Data.Seeder
 {
     public class Seeder
     {
-        public static void Seed(ModelBuilder modelBuilder)
+        public static async Task SeedAsync(GotchaDbContext context)
         {
+            // Don't seed if data already exists
+            if (context.Users.Any()) return;
+
             #region Users
 
-            List<User> usersList = new List<User>();
-
-            string[] firstNames = { "John",
-                                    "Jane",
-                                    "Alice",
-                                    "Tom",
-                                    "Tamara",
-                                    "Johnny",
-                                    "Jeremy",
-                                    "Hakim",
-                                    "Jiminy",
-                                    "Jefried",
-            };
-
-            string[] lastNames = { "Doe",
-                                   "Dane",
-                                   "Van Den Bosche",
-                                   "Aat",
-                                   "Smith",
-                                   "Kartonnie",
-                                   "De Naaktgeborene",
-                                   "Sharifi",
-                                   "Jaxon",
-                                   "Samson"
-            };
-
-            string[] userNames = { "TheLegend27",
-                                   "Parzival",
-                                   "EpicNPCMan",
-                                   "PoopHead27",
-                                   "NoobMaster69",
-                                   "Pafkantoor",
-                                   "Ben Dover",
-                                   "Username",
-                                   "NoName",
-                                   "Ligma Balls"
-            };
-
-            string[] emails = { "hohn.doe@example.com",
-                                "hane.dane@example.com",
-                                "alice.vandenbosche@example.com",
-                                "tom.aat@example.com",
-                                "tamara.smith@example.com",
-                                "johnny.kartonnie@example.com",
-                                "jemery.denaaktgeborene@example.com",
-                                "hakim.sharifi@example.com",
-                                "jimini.jaxon@example.com",
-                                "jefried.samson@example.com"
-
-            };
-
-            DateTime[] birthDates = { new DateTime(1990, 1, 1),
-                                      new DateTime(1992, 2, 2),
-                                      new DateTime(1994, 1, 3),
-                                      new DateTime(1996, 2, 5),
-                                      new DateTime(1998, 6, 7),
-                                      new DateTime(1969, 6, 9),
-                                      new DateTime(1978, 7, 1),
-                                      new DateTime(2000, 1, 3),
-                                      new DateTime(1998, 3, 7),
-                                      new DateTime(2001, 2, 9)
-            };
+            string[] firstNames =   { "John", "Jane", "Alice", "Tom", "Tamara", "Johnny", "Jeremy", "Hakim", "Jiminy", "Jefried" };
+            string[] lastNames =    { "Doe", "Dane", "Van Den Bosche", "Aat", "Smith", "Kartonnie", "De Vries", "Sharifi", "Jaxon", "Samson" };
+            string[] userNames =    { "TheLegend27", "Parzival", "EpicNPCMan", "ShadowFox", "StormBreaker", "IronVault", "NightOwl", "QuickDraw", "PhantomX", "GhostRunner" };
+            string[] emails =       { "john.doe@example.com", "jane.dane@example.com", "alice.vandenbosche@example.com", "tom.aat@example.com", "tamara.smith@example.com", "johnny.kartonnie@example.com",                   "jeremy.devries@example.com", "hakim.sharifi@example.com", "jiminy.jaxon@example.com", "jefried.samson@example.com" };
+            DateTime[] birthDates = { new(1990, 1, 1), new(1992, 2, 2), new(1994, 1, 3), new(1996, 2, 5), new(1998, 6, 7), new(1969, 6, 9), new(1978, 7, 1), new(2000, 1, 3), new(1998, 3, 7), new(2001, 2, 9) };
 
             if (!(firstNames.Length == lastNames.Length &&
                  lastNames.Length == userNames.Length &&
@@ -84,47 +26,100 @@ namespace Gotcha.Core.Data.Seeder
                 throw new Exception("The data seeding data arrays for User are not the same size!");
             }
 
+            List<User> users = new List<User>();
             for (int i = 0; i < firstNames.Length; i++)
             {
-                User user = new User(firstNames[i], lastNames[i], userNames[i], emails[i], birthDates[i]);
-                usersList.Add(user);
+                users.Add(new User
+                {
+                    FirstName = firstNames[i],
+                    LastName = lastNames[i],
+                    Username = userNames[i],
+                    Email = emails[i],
+                    BirthDate = birthDates[i]
+                });
             }
 
-            User[] users = usersList.ToArray();
+            context.Users.AddRange(users);
+            await context.SaveChangesAsync();
 
             #endregion
 
             #region Rules
+
             // standard rules
             Rules rules1 = new Rules();
-            // assassing gameMode
-            Rules rules2 = new Rules(GameModes.Assassin);
+
+            // assassin gamemode
+            Rules rules2 = new Rules { IsAssassin = true };
+
             // enforce player images
-            Rules rules3 = new Rules(GameModes.Gotcha, true, true);
-            // timed game (TimeSpan(2, 0, 0, 0) =  2d, 0u, 0m, 0S)
-            Rules rules4 = new Rules(Guid.NewGuid(), GameModes.Gotcha, true, true, true, true, true, new TimeSpan(2, 0, 0, 0), "", false, new List<string>(), false, false, Timeout.InfiniteTimeSpan);
-            // chaos game (TimeSpan(1, 0, 0, 0) =  1d, 0u, 0m, 0S)
-            Rules rules5 = new Rules(Guid.NewGuid(), GameModes.Gotcha, true, true, true, true, false, Timeout.InfiniteTimeSpan, "Lorem ipsum est", false, new List<string>(), false, true, new TimeSpan(1, 0, 0, 0));
+            Rules rules3 = new Rules
+            {
+                ShowPlayerImages = true,
+                EnforcePlayerImages = true
+            };
 
-            List<Rules> rulesList = new List<Rules> { rules1, rules2, rules3, rules4, rules5 };
+            // timed game
+            Rules rules4 = new Rules
+            {
+                ShowPlayerImages = true,
+                EnforcePlayerImages = true,
+                ShowRealNames = true,
+                ShowUsernames = true,
+                IsTimed = true,
+                TargetTimeOut = new TimeSpan(2, 0, 0, 0),
+                KillConfirmationTimer = Timeout.InfiniteTimeSpan
+            };
 
-            Rules[] rules = rulesList.ToArray();
+            // chaos game
+            Rules rules5 = new Rules
+            {
+                ShowPlayerImages = true,
+                EnforcePlayerImages = true,
+                ShowRealNames = true,
+                ShowUsernames = true,
+                IsChaos = true,
+                ChaosTimer = new TimeSpan(0, 12, 0, 0),
+                CustomRules = "Lorem ipsum est",
+                KillConfirmationTimer = new TimeSpan(1, 0, 0, 0)
+            };
+
             #endregion
 
             #region Games
-            List<Game> gamesList = new List<Game>();
 
-            Game game1 = new Game("Game1", rules1);
-            Game game2 = new Game("Game2", rules2);
-            Game game3 = new Game("Game3", rules3);
-            Game game4 = new Game("Game4", rules4);
-            Game game5 = new Game("Game5", rules5);
+            Game game1 = new Game { Name = "Game1", Rules = rules1 };
+            Game game2 = new Game { Name = "Game2", Rules = rules2 };
+            Game game3 = new Game { Name = "Game3", Rules = rules3 };
+            Game game4 = new Game { Name = "Game4", Rules = rules4 };
+            Game game5 = new Game { Name = "Game5", Rules = rules5 };
+
+            context.Games.AddRange(game1, game2, game3, game4, game5);
+            await context.SaveChangesAsync();
+
             #endregion
 
             #region Players
-            List<Player> playersList = new List<Player>();
 
-            Player player = new Player(users[0], game1);
+            // Game 1 - standard rules (3 players)
+            Player player1 = new Player { UserId = users[0].Id, User = users[0], GameId = game1.Id, Game = game1, Username = users[0].Username };
+            Player player2 = new Player { UserId = users[1].Id, User = users[1], GameId = game1.Id, Game = game1, Username = users[1].Username };
+            Player player3 = new Player { UserId = users[2].Id, User = users[2], GameId = game1.Id, Game = game1, Username = users[2].Username };
+
+            // Game 2 - assassin mode (4 players)
+            Player player4 = new Player { UserId = users[3].Id, User = users[3], GameId = game2.Id, Game = game2, Username = users[3].Username };
+            Player player5 = new Player { UserId = users[4].Id, User = users[4], GameId = game2.Id, Game = game2, Username = users[4].Username };
+            Player player6 = new Player { UserId = users[5].Id, User = users[5], GameId = game2.Id, Game = game2, Username = users[5].Username };
+            Player player7 = new Player { UserId = users[6].Id, User = users[6], GameId = game2.Id, Game = game2, Username = users[6].Username };
+
+            // Game 3 - enforce player images (3 players)
+            Player player8 = new Player { UserId = users[7].Id, User = users[7], GameId = game3.Id, Game = game3, Username = users[7].Username };
+            Player player9 = new Player { UserId = users[8].Id, User = users[8], GameId = game3.Id, Game = game3, Username = users[8].Username };
+            Player player10 = new Player { UserId = users[9].Id, User = users[9], GameId = game3.Id, Game = game3, Username = users[9].Username };
+
+            context.Players.AddRange(player1, player2, player3, player4, player5, player6, player7, player8, player9, player10);
+            await context.SaveChangesAsync();
+
             #endregion
         }
     }

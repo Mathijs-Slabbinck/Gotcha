@@ -1,11 +1,21 @@
-﻿using Gotcha.Core.Entities;
-using Microsoft.Extensions.Configuration;
-using Gotcha.Core.Services.ResultModel;
-
 namespace Gotcha.Core.Services.ValidationServices
 {
     public static class LastLineValidationService
     {
+        private static readonly HashSet<string> ReservedUsernames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "admin",
+            "system",
+            "root",
+            "null",
+            "undefined",
+            "void",
+            "nan",
+            "[object object]",
+            "gotcha",
+            "moderator"
+        };
+
         internal static bool IsValidEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
@@ -24,11 +34,10 @@ namespace Gotcha.Core.Services.ValidationServices
 
         internal static bool IsReservedUsername(string username)
         {
-            UserNameValidationHelper usernameValidationService = new UserNameValidationHelper(new ConfigurationBuilder()
-                                                                                                        .AddJsonFile("appsettings.json")
-                                                                                                        .Build());
+            if (string.IsNullOrWhiteSpace(username))
+                return false;
 
-            return usernameValidationService.IsReservedUsername(username.Trim());
+            return ReservedUsernames.Contains(username.Trim());
         }
 
         internal static bool IsAllowedImageUrl(string? url)
@@ -47,15 +56,6 @@ namespace Gotcha.Core.Services.ValidationServices
             {
                 return false;
             }
-
-            /*
-            // Optional: Block certain domains
-            string[] blockedDomains = { "example-malicious-site.com" };
-            if (blockedDomains.Any(d => uri.Host.Contains(d, StringComparison.OrdinalIgnoreCase)))
-            {
-                return false;
-            }
-            */
 
             return true;
         }
@@ -82,38 +82,5 @@ namespace Gotcha.Core.Services.ValidationServices
 
             return true;
         }
-        
-        /*
-        public static Task<ResultModel<Attacker>> LogAttacker(string trigger, string input, HttpRequest httpRequest)
-        {
-        */
-            /* !!! TO DO !!! */
-            // check if the attacked is logged in
-            // if logged in set the UserId in the Attacker entity's UserId property
-
-        /*
-
-            Guid UserId = Guid.Empty; // get the UserId from the session or authentication context
-
-            if (string.IsNullOrEmpty(trigger))
-                trigger = "Unknown Trigger";
-
-            if (string.IsNullOrEmpty(input))
-                input = "Unknown Input";
-
-
-            Attacker attacker = new Attacker()
-            {
-                IpAdress = httpRequest.HttpContext.Connection.RemoteIpAddress?.ToString(),
-                UserAgent = httpRequest.Headers["User-Agent"].ToString(),
-                Referer = httpRequest.Headers["Referer"].ToString(),
-                TimeStamp = DateTime.UtcNow,
-                Path = httpRequest.Path,
-                InvalidInput = input,
-                SessionId = httpRequest.HttpContext.Session.Id,
-                UserId = UserId,
-            };
-        }
-        */
     }
 }

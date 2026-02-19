@@ -4,7 +4,6 @@ using Gotcha.Core.Entities.Logging.LogEntities;
 using Gotcha.Core.Enums;
 using Gotcha.Core.Interfaces;
 using Gotcha.Core.Services.ResultModel;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gotcha.Core.Services.Repository
@@ -20,7 +19,6 @@ namespace Gotcha.Core.Services.Repository
             _logRepoService = logRepoService;
         }
 
-        [HttpGet]
         public async Task<ResultModel<List<Game>>> GetAllAsync()
         {
             ResultModel<List<Game>> resultModel = new ResultModel<List<Game>>();
@@ -64,7 +62,6 @@ namespace Gotcha.Core.Services.Repository
             return resultModel;
         }
 
-        [HttpGet]
         public async Task<ResultModel<Game>> GetByIdAsync(Guid id)
         {
             ResultModel<Game> resultModel = new ResultModel<Game>();
@@ -105,7 +102,6 @@ namespace Gotcha.Core.Services.Repository
         }
 
 
-        [HttpPost]
         public async Task<ResultModel<Game>> AddAsync(Game game)
         {
             ResultModel<Game> resultModel = new ResultModel<Game>();
@@ -145,7 +141,6 @@ namespace Gotcha.Core.Services.Repository
             return resultModel;
         }
 
-        [HttpPost]
         public async Task<ResultModel<Game>> UpdateAsync(Game game)
         {
             ResultModel<Game> resultModel = new ResultModel<Game>();
@@ -185,7 +180,6 @@ namespace Gotcha.Core.Services.Repository
             return resultModel;
         }
 
-        [HttpPost]
         public async Task<ResultModel<Game>> DeleteAsync(Guid id)
         {
             ResultModel<Game> resultModel = new ResultModel<Game>();
