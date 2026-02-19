@@ -77,7 +77,7 @@ namespace Gotcha.Core.Entities
                 UserNameValidationHelper usernameValidationService = new UserNameValidationHelper(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
                 if (usernameValidationService.IsReservedUsername(value))
                 {
-                    throw new ValidationException("Firstname", "The provided first name is reserved and cannot be used.");
+                    throw new ValidationException("Firstname", "User", "The provided first name is reserved and cannot be used.");
                 }
                 else
                 {
@@ -94,11 +94,12 @@ namespace Gotcha.Core.Entities
                 UserNameValidationHelper usernameValidationService = new UserNameValidationHelper(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
                 if (usernameValidationService.IsReservedUsername(value))
                 {
-                    throw new ValidationException("LastName", "The provided first name is reserved and cannot be used.");
+                    throw new ValidationException("LastName", "User", "The provided last name is reserved and cannot be used.");
                 }
                 else
                 {
-                    lastName = value;                }
+                    lastName = value;
+                }
             }
         }
 
@@ -110,7 +111,7 @@ namespace Gotcha.Core.Entities
                 UserNameValidationHelper usernameValidationService = new UserNameValidationHelper(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
                 if (usernameValidationService.IsReservedUsername(value))
                 {
-                    throw new ValidationException("Username", "The provided username is reserved and cannot be used.");
+                    throw new ValidationException("Username", "User", "The provided username is reserved and cannot be used.");
                 }
                 else
                 {
@@ -130,7 +131,7 @@ namespace Gotcha.Core.Entities
                 }
                 else
                 {
-                    throw new ValidationException("email", "The email is invalid!.");
+                    throw new ValidationException("email", "User", "The email is invalid!.");
                 }
             }
         }
@@ -145,11 +146,11 @@ namespace Gotcha.Core.Entities
 
                 if (age < 0)
                 {
-                    throw new ValidationException("BirthDate", "Birthdate cannot be in the future.");
+                    throw new ValidationException("BirthDate", "User", "Birthdate cannot be in the future.");
                 }
                 else if (age > 150)
                 {
-                    throw new ValidationException("BirthDate", "Birthdate indicates age over 150 years, which is not allowed.");
+                    throw new ValidationException("BirthDate", "User", "Birthdate indicates age over 150 years, which is not allowed.");
                 }
 
                 birthDate = value;
@@ -167,7 +168,7 @@ namespace Gotcha.Core.Entities
                 }
                 else
                 {
-                    throw new ValidationException("ProfileImageSource", "Invalid characters in profile image source.");
+                    throw new ValidationException("ProfileImageSource", "User", "Invalid characters in profile image source.");
                 }
             }
         }

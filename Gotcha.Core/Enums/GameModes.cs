@@ -8,7 +8,7 @@ namespace Gotcha.Core.Enums
 {
     public enum GameModes
     {
-        Gotcha,
-        Assassin
+        Gotcha, // standard Gotcha
+        Assassin, // players can kill people who they suspect are their killer. If they are right the killer dies, if they are wrong they die
     }
 }

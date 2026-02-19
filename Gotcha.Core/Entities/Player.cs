@@ -13,8 +13,10 @@ namespace Gotcha.Core.Entities
     {
         private readonly Guid _id;
         private readonly Guid _userId;
+        private readonly User _user;
         private readonly Guid _gameId;
-        private readonly string _playerName;
+        private readonly Game _game;
+        private string username;
         public string? profileImageSource;
         public bool IsAlive { get; set; }
         public string Notes { get; set; }
@@ -27,14 +29,12 @@ namespace Gotcha.Core.Entities
             _id = Guid.NewGuid();
             _userId = user.Id;
             _gameId = game.Id;
+            _user = user;
+            _game = game;
 
-            if (game.Rules.UseRealNames)
+            if (game.Rules.ShowUsernames)
             {
-                _playerName = user.FirstName + " " + user.LastName;
-            }
-            else
-            {
-                _playerName = user.Username;
+                Username = user.Username;
             }
 
             if (game.Rules.EnforcePlayerImages && user.ProfileImageSource == null)
@@ -49,52 +49,34 @@ namespace Gotcha.Core.Entities
             TargetAssignments = new List<TargetAssignment>();
         }
 
+
         /* Constructor to set a custom username
          * Only used if the game rules do not enforce real names */
         public Player(User user, Game game, string username) : this(user, game)
         {
-            if (game.Rules.UseRealNames)
-            {
-                _playerName = user.FirstName + " " + user.LastName;
-                // throw an error since this should never happen; makes debugging easier
-                throw new ArgumentException("The game is set to use real names, so a custom username cannot be set.");
-            }
-            else
-            {
-                _playerName = username;
-            }
+            Username = username; // checks are done in the property setter
         }
 
         /* Constructor to set a custom username (optionally) and profile image (optionally)
          * Used when creating a new player using custom rules */
         public Player(User user, Game game, string? username, string? profileImageSource) : this(user, game)
         {
-            if (game.Rules.UseRealNames && username != null)
+            if(username == null)
             {
-                _playerName = user.FirstName + " " + user.LastName;
-                // throw an error since this should never happen; makes debugging easier
-                throw new ArgumentException("The game is set to use real names, so a custom username cannot be set.");
-            }
-            else
-            {
-                if(username == null)
-                {
-                    username = user.Username;
-                }
-                _playerName = username;
+                username = user.Username;
             }
 
-            // checks are done in the property setter
-            ProfileImageSource = profileImageSource;
+            Username = username; // checks are done in the property setter
+            ProfileImageSource = profileImageSource; // checks are done in the property setter
         }
 
-        public Player(Guid id, Guid userId, User user, Guid gameId, Game game, string playerName, string? profileImageSource, bool isAlive, string notes, ICollection<TargetAssignment> targetAssignments)
+        public Player(Guid id, Guid userId, User user, Guid gameId, Game game, string? username, string? profileImageSource, bool isAlive, string notes, ICollection<TargetAssignment> targetAssignments) : this (user, game, username, profileImageSource)
         {
             _id = id;
             _userId = userId;
+            _user = user;
             _gameId = gameId;
-            _playerName = playerName;
-            ProfileImageSource = profileImageSource;
+            _game = game;
             IsAlive = isAlive;
             Notes = notes;
             TargetAssignments = targetAssignments;
@@ -114,6 +96,7 @@ namespace Gotcha.Core.Entities
         {
             get
             {
+                return _user;
                 throw new NotImplementedException("FIX THIS SHIT");
             }
         }
@@ -127,13 +110,81 @@ namespace Gotcha.Core.Entities
         {
             get
             {
+                return _game;
                 throw new NotImplementedException("FIX THIS SHIT");
             }
         }
 
-        public string PlayerName
+        public string Username
         {
-            get { return _playerName; }
+            get {
+                if (Game.Rules.ShowUsernames)
+                {
+                    if (username != null)
+                    {
+                        return username;
+                    }
+                    else
+                    {
+                        Console.WriteLine("⚠️⚠⚠️ Show Usernames are turned ON but but parameter username in Player constructor is null.\nReturning user's standard username in stead!");
+                        return User.Username;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("⚠️⚠️ Show Usernames are turned OFF but but Username getter was accessed.\nReturning user's standard username in stead!");
+                    return User.Username;
+                }
+            }
+
+            set {
+                if (Game.Rules.ShowUsernames)
+                {
+                    if(username != null)
+                    {
+                        if (LastLineValidationService.IsReservedUsername(value))
+                        {
+                            throw new ValidationException("username", "Player", "This username is reserved and cannot be used.");
+                        }
+                        else
+                        {
+                            username = value;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("⚠️⚠️ Show usernames are turned ON in this game and username was set to null.\nSetting to user's default username in stead!");
+                        username = User.Username;
+                    }
+                }
+                else
+                {
+                    throw new GameRuleViolationException("ShowUsernames", "Show Usernames are turned OFF but but parameter username in Player constructor was set.");
+                }
+            }
+        }
+
+        public string DisplayName
+        {
+            get
+            {
+                if (Game.Rules.ShowUsernames && !Game.Rules.ShowRealNames)
+                {
+                    return Username;
+                }
+                else if (Game.Rules.ShowUsernames && Game.Rules.ShowRealNames)
+                {
+                    return $"{User.FirstName} {User.LastName} ({Username})";
+                }
+                else if(!Game.Rules.ShowUsernames && Game.Rules.ShowUsernames)
+                {
+                    return $"{User.FirstName} {User.LastName}";
+                }
+                else
+                {
+                    throw new GameStateException("Showusernames and ShowRealNames cannot both be false in Player entity!");
+                }
+            }
         }
 
         public string? ProfileImageSource
@@ -157,20 +208,20 @@ namespace Gotcha.Core.Entities
                 }
                 else
                 {
-                    throw new ValidationException("ProfileImageSource", "Invalid characters in profile image source.");
+                    throw new ValidationException("ProfileImageSource", "Player", "Invalid characters in profile image source.");
                 }
             }
         }
         public override string ToString()
         {
-            return PlayerName;
+            return Username;
         }
 
         public Player GetCurrentTarget()
         {
             if (!IsAlive)
             {
-                throw new GameStateException($"Player {PlayerName} is not alive and has no current target.");
+                throw new GameStateException($"Player {Username} is not alive and has no current target.");
             }
 
             if (!Game.HasStarted)
@@ -179,7 +230,8 @@ namespace Gotcha.Core.Entities
             }
 
             TargetAssignment? currentAssignment = TargetAssignments
-                                        .FirstOrDefault(ta => ta.TargetId == this.Id && ta.AssignmentStatus == Enums.AssignmentStatus.Ongoing);
+                                                            .FirstOrDefault(ta => ta.TargetId == this.Id &&
+                                                                                  ta.AssignmentStatus == Enums.AssignmentStatus.Ongoing);
 
             if (currentAssignment == null)
             {
@@ -197,7 +249,8 @@ namespace Gotcha.Core.Entities
         public Player GetCurrentHunter()
         {
             TargetAssignment? currentAssignment = TargetAssignments
-                                        .FirstOrDefault(ta => ta.TargetId == this.Id && ta.AssignmentStatus == Enums.AssignmentStatus.Ongoing);
+                                                            .FirstOrDefault(ta => ta.TargetId == this.Id &&
+                                                                                  ta.AssignmentStatus == Enums.AssignmentStatus.Ongoing);
             
             if (currentAssignment == null)
             {
@@ -213,9 +266,9 @@ namespace Gotcha.Core.Entities
         public List<Player> GetKilledPlayers()
         {
             List<Player> killedPlayers = TargetAssignments
-                                            .Where(ta => ta.Kill != null)
-                                            .Select(ta => ta.Target)
-                                            .ToList();
+                                                    .Where(ta => ta.Kill != null)
+                                                    .Select(ta => ta.Target)
+                                                    .ToList();
 
             return killedPlayers;
         }
@@ -223,7 +276,7 @@ namespace Gotcha.Core.Entities
         public Player? GetKiller()
         {
             TargetAssignment? killAssignment = TargetAssignments
-                                     .FirstOrDefault(ta => ta.Kill != null);
+                                                        .FirstOrDefault(ta => ta.Kill != null);
 
             return killAssignment?.Hunter;
         }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Gotcha.Core.Enums;
 using Gotcha.Core.Exceptions;
+using Gotcha.Core.Exceptions.NotFound;
 using Gotcha.Core.Services.ValidationServices;
 
 namespace Gotcha.Core.Entities
@@ -24,111 +25,40 @@ namespace Gotcha.Core.Entities
         private Guid? winnerId;
         private List<Guid> adminIds;
         private int maxPlayers;
-        private Guid _creatorId;
+        private Guid creatorId;
         #endregion
 
         #region Constructors
 
         #region New Game Constructors
 
-        /* Constructor for creating a new game with only the creation player (before they add others)
-         * The creator will be the only player and admin initially
-         * Used when a player creates a new game without adding other players or admins */
-        public Game(string name, Player creationPlayer, Rules rules)
+        public Game()
         {
-            Name = name;
+            Name = "New game";
             _creationDate = DateTime.UtcNow;
-            Players = new List<Player> { creationPlayer };
+            Players = new List<Player>();
             Kills = new List<Kill>();
-            Rules = rules;
+            Rules = new Rules();
             HasStarted = false;
             IsFinished = false;
-            Admins = new List<Player> { creationPlayer };
-
-            if (creationPlayer.User.UserPlan == Plan.Standard)
-            {
-                MaxPlayers = 50;
-            }
-
-            if (creationPlayer.User.UserPlan == Plan.Premium)
-            {
-                MaxPlayers = 250;
-            }
-
-            if (creationPlayer.User.UserPlan == Plan.Deluxe)
-            {
-                MaxPlayers = 750;
-            }
-
-            _creatorId = creationPlayer.Id;
+            Admins = new List<Player>();
+            creatorId = Guid.Empty;
+            MaxPlayers = 1; // set to 1 initially, when the first user joins we set it to their plan
         }
 
-        /* Constructor for creating a new game with multiple players but no admins were selected
-         * Se we request the admin param as the creator will be the only admin initially
-         * Used when a player creates a new game and adds other players but no admins */
-        public Game(string name, List<Player> players, Rules rules, Player admin)
+        public Game(Rules rules) : this()
         {
-            Name = name;
-            _creationDate = DateTime.UtcNow;
-            Players = players;
-            Kills = new List<Kill>();
             Rules = rules;
-            HasStarted = false;
-            IsFinished = false;
-            Admins = new List<Player> { admin };
-
-            if (admin.User.UserPlan == Plan.Standard)
-            {
-                MaxPlayers = 50;
-            }
-
-            if (admin.User.UserPlan == Plan.Premium)
-            {
-                MaxPlayers = 250;
-            }
-
-            if (admin.User.UserPlan == Plan.Deluxe)
-            {
-                MaxPlayers = 750;
-            }
-
-            _creatorId = admin.Id;
         }
 
-        /* Constructor for creating a new game with multiple players and multiple admins
-         * Used when a player creates a new game and adds other players and admins */
-        public Game(string name, List<Player> players, Rules rules, List<Player> admins, Player creator)
+        public Game(string name, Rules rules) : this(rules)
         {
             Name = name;
-            _creationDate = DateTime.UtcNow;
-            Players = players;
-            Kills = new List<Kill>();
-            Rules = rules;
-            HasStarted = false;
-            IsFinished = false;
-            Admins = admins;
-
-            if (creator.User.UserPlan == Plan.Standard)
-            {
-                MaxPlayers = 50;
-            }
-
-            if (creator.User.UserPlan == Plan.Premium)
-            {
-                MaxPlayers = 250;
-            }
-
-            if (creator.User.UserPlan == Plan.Deluxe)
-            {
-                MaxPlayers = 750;
-            }
-
-            _creatorId = creator.Id;
         }
         #endregion
 
         /* Constructor for pre-started games loaded from the database
-         * Used when trying to load a game from the database that hasn't started yet and doesn't have a start dare set  */
+         * Used when trying to load a game from the database that hasn't started yet and doesn't have a start date set  */
         public Game(Guid id, string name, List<Player> players, Rules rules, DateTime creationDate, List<Player> admins, Player creator)
         {
             _id = id;
@@ -140,7 +70,7 @@ namespace Gotcha.Core.Entities
             HasStarted = false;
             IsFinished = false;
             Admins = admins;
-            _creatorId = creator.Id;
+            creatorId = creator.Id;
         }
 
         /* Constructor for pre-started games loaded from the database
@@ -189,7 +119,7 @@ namespace Gotcha.Core.Entities
             set {
                 if (LastLineValidationService.IsReservedUsername(value))
                 {
-                    throw new ValidationException("Name property in the Game class", value);
+                    throw new ValidationException("Name", "Game", value);
                 }
                 else
                 {
@@ -231,7 +161,7 @@ namespace Gotcha.Core.Entities
         public List<Player> Players
         {
             get { return players; }
-            set { 
+            private set { 
                 if(value.Count() > MaxPlayers)
                 {
                     throw new GameStateException($"Number of players cannot exceed the maximum of {MaxPlayers} for this game.");
@@ -389,12 +319,42 @@ namespace Gotcha.Core.Entities
         public Player Creator
         {
             get {
-                Player? creator = Players.FirstOrDefault(p => p.Id == _creatorId);
+                Player? creator = Players.FirstOrDefault(p => p.Id == creatorId);
                 if (creator == null)
                 {
-                    throw new PlayerNotFoundException(_creatorId);
+                    throw new PlayerNotFoundException(creatorId);
                 }
                 return creator;
+            }
+        }
+
+        // use this method to let players join this game
+        public void JoinPlayer(Player player, bool isAdmin = false)
+        {
+            if(Players.Count() == 0)
+            {
+                creatorId = player.Id;
+                isAdmin = true;
+                
+                if(player.User.UserPlan == Plan.Standard)
+                {
+                    maxPlayers = 50;
+                }
+                else if(player.User.UserPlan == Plan.Premium)
+                {
+                    maxPlayers = 100;
+                }
+                else if(player.User.UserPlan == Plan.Deluxe)
+                {
+                    maxPlayers = 1000;
+                }
+            }
+
+            Players.Add(player);
+
+            if (isAdmin)
+            {
+                adminIds.Add(player.Id);
             }
         }
 
@@ -417,12 +377,12 @@ namespace Gotcha.Core.Entities
 
             if (killer == null)
             {
-                throw new ArgumentNullException(nameof(killer));
+                throw new ArgumentNullException("Killer parameter in HandleValidKill() in Game entity cannot be null!");
             }
 
             if (victim == null)
             {
-                throw new ArgumentNullException(nameof(victim));
+                throw new ArgumentNullException("Victim parameter in HandleValidKill() in Game entity cannot be null!");
             }
 
             if (killer.Id == victim.Id)
@@ -432,12 +392,12 @@ namespace Gotcha.Core.Entities
 
             if (!killer.IsAlive)
             {
-                throw new GameStateException($"Killer {killer.PlayerName} is not alive.");
+                throw new GameStateException($"Killer {killer.DisplayName} is not alive.");
             }
 
             if (!victim.IsAlive)
             {
-                throw new GameStateException($"Victim {victim.PlayerName} is already dead.");
+                throw new GameStateException($"Victim {victim.DisplayName} is already dead.");
             }
 
             if (!Players.Any(p => p.Id == killer.Id))
@@ -448,11 +408,6 @@ namespace Gotcha.Core.Entities
             if (!Players.Any(p => p.Id == victim.Id))
             {
                 throw new PlayerNotFoundException(victim.Id);
-            }
-
-            if (killer == null || victim == null)
-            {
-                throw new ArgumentNullException("Killer or victim cannot be null.");
             }
 
             if (!Rules.CustomKillMethods && weapon != null)
@@ -487,11 +442,11 @@ namespace Gotcha.Core.Entities
 
             // Check if the victim is the hunter of the killer
             TargetAssignment? killersHunterAssignment = Players
-                .SelectMany(p => p.TargetAssignments)
-                .FirstOrDefault(ta => ta.HunterId == victim.Id &&
-                                     ta.TargetId == killer.Id &&
-                                     ta.Kill == null &&
-                                     ta.AssignmentStatus == AssignmentStatus.Ongoing);
+                                                            .SelectMany(p => p.TargetAssignments)
+                                                            .FirstOrDefault(ta => ta.HunterId == victim.Id &&
+                                                                                  ta.TargetId == killer.Id &&
+                                                                                  ta.Kill == null &&
+                                                                                  ta.AssignmentStatus == AssignmentStatus.Ongoing);
 
             if (killersHunterAssignment != null)
             {
@@ -517,9 +472,9 @@ namespace Gotcha.Core.Entities
             {
                 // Standard logic for updating the victim's target assignment
                 TargetAssignment? victimsTargetAssignment = victim.TargetAssignments
-                    .FirstOrDefault(ta => ta.HunterId == victim.Id &&
-                                         ta.Kill == null &&
-                                         ta.AssignmentStatus == AssignmentStatus.Ongoing);
+                                                                            .FirstOrDefault(ta => ta.HunterId == victim.Id &&
+                                                                                                  ta.Kill == null          &&
+                                                                                                  ta.AssignmentStatus == AssignmentStatus.Ongoing);
 
                 if (victimsTargetAssignment == null)
                 {
@@ -549,37 +504,37 @@ namespace Gotcha.Core.Entities
         {
             if (!HasStarted)
             {
-                throw new GameStateException("Cannot register kills before game has started.");
+                throw new GotchaInvalidOperationsExceptions("Cannot register kills before game has started.");
             }
 
             if (IsFinished)
             {
-                throw new GameStateException("Cannot register kills after game has finished.");
+                throw new GotchaInvalidOperationsExceptions("Cannot register kills after game has finished.");
             }
 
             if (killer == null)
             {
-                throw new ArgumentNullException(nameof(killer));
+                throw new ArgumentNullException("Killer parameter cannot be null in HandleInValidKill() in Game entity.");
             }
 
             if (victim == null)
             {
-                throw new ArgumentNullException(nameof(victim));
+                throw new ArgumentNullException("Victim parameter cannot be null in HandleInValidKill() in Game entity.");
             }
 
             if (killer.Id == victim.Id)
             {
-                throw new InvalidOperationException("A player cannot kill themselves.");
+                throw new InvalidTargetAssignmentException(killer.Id, victim.Id, $"A player cannot kill themselves\nThe same player was passed as both killer and target!.");
             }
 
             if (!killer.IsAlive)
             {
-                throw new GameStateException($"Killer {killer.PlayerName} is not alive.");
+                throw new InvalidTargetAssignmentException(killer.Id, victim.Id, $"Killer is not alive.");
             }
 
             if (!victim.IsAlive)
             {
-                throw new GameStateException($"Victim {victim.PlayerName} is already dead.");
+                throw new InvalidTargetAssignmentException(killer.Id, victim.Id, $"Victim is not alive.");
             }
 
             if (!Players.Any(p => p.Id == killer.Id))
@@ -592,31 +547,26 @@ namespace Gotcha.Core.Entities
                 throw new PlayerNotFoundException(victim.Id);
             }
 
-            if (killer == null || victim == null)
-            {
-                throw new ArgumentNullException("Killer or victim cannot be null.");
-            }
-
             if (!Rules.CustomKillMethods && weapon != null)
             {
-                throw new InvalidOperationException("Custom weapons are not allowed in this game.");
+                throw new GameRuleViolationException("CustomKillMethods", "Custom weapons are not allowed in this game.");
             }
 
             if (Rules.CustomKillMethods && weapon == null)
             {
-                throw new InvalidOperationException("Custom weapons are on so weapon cannot be null.");
+                throw new GameRuleViolationException("CustomKillMethods", "Custom weapons are on so weapon cannot be null.");
             }
 
             TargetAssignment? targetAssignment = Players
-                .Where(p => p.Id == killer.Id || p.Id == victim.Id)
-                .SelectMany(p => p.TargetAssignments)
-                .FirstOrDefault(ta => ta.HunterId == killer.Id &&
-                                      ta.TargetId == victim.Id &&
-                                      ta.Kill == null);
+                                                    .Where(p => p.Id == killer.Id || p.Id == victim.Id)
+                                                    .SelectMany(p => p.TargetAssignments)
+                                                    .FirstOrDefault(ta => ta.HunterId == killer.Id &&
+                                                                          ta.TargetId == victim.Id &&
+                                                                          ta.Kill == null);
 
             if (targetAssignment == null)
             {
-                throw new InvalidOperationException("No valid target assignment found for the given killer and victim.");
+                throw new TargetAssignmentNotFoundException(killer.Id, victim.Id);
             }
 
             if(reason == null)
@@ -711,12 +661,12 @@ namespace Gotcha.Core.Entities
         {
             if (!Rules.CustomKillMethods && weapons != null)
             {
-                throw new InvalidOperationException("Custom weapons are not allowed in this game.");
+                throw new GameRuleViolationException("CustomKillMethods", "Custom weapons are not allowed in this game.");
             }
 
             if (Rules.CustomKillMethods && weapons == null)
             {
-                throw new InvalidOperationException("Custom weapons are on so weapon cannot be null.");
+                throw new GameRuleViolationException("CustomKillMethods", "Custom weapons are on so weapon cannot be null.");
             }
 
             List<Player> players = GetLivingPlayers();
@@ -730,7 +680,7 @@ namespace Gotcha.Core.Entities
             {
                 if (players.Count() > weapons.Count())
                 {
-                    throw new InvalidOperationException("Not enough weapons provided for the number of players.");
+                    throw new GameStateException("Not enough weapons provided for the number of players.");
                 }
 
                 for (int i = 0; i < playerCount; i++)
@@ -760,12 +710,12 @@ namespace Gotcha.Core.Entities
         {
             if (!Rules.CustomKillMethods && weapons != null)
             {
-                throw new InvalidOperationException("Custom weapons are not allowed in this game.");
+                throw new GameRuleViolationException("CustomKillMethods", "Custom weapons are not allowed in this game.");
             }
 
             if (Rules.CustomKillMethods && weapons == null)
             {
-                throw new InvalidOperationException("Custom weapons are on so weapon cannot be null.");
+                throw new GameRuleViolationException("CustomKillMethods", "Custom weapons are on so weapon cannot be null.");
             }
 
             List<Player> players = GetLivingPlayers();
@@ -774,7 +724,7 @@ namespace Gotcha.Core.Entities
             // Cannot assign unique targets with less than 2 players
             if (playerCount < 2)
             {
-                throw new InvalidOperationException("At least two players are required for target assignment.");
+                throw new GameRuleViolationException("CustomKillMethods", "At least two players are required for target assignment.");
             }
 
             // Shuffle players

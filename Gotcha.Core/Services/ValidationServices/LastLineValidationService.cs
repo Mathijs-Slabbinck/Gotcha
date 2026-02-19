@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using Gotcha.Core.Entities;
 using Microsoft.Extensions.Configuration;
+using Gotcha.Core.Services.ResultModel;
 
 namespace Gotcha.Core.Services.ValidationServices
 {
@@ -87,5 +82,38 @@ namespace Gotcha.Core.Services.ValidationServices
 
             return true;
         }
+        
+        /*
+        public static Task<ResultModel<Attacker>> LogAttacker(string trigger, string input, HttpRequest httpRequest)
+        {
+        */
+            /* !!! TO DO !!! */
+            // check if the attacked is logged in
+            // if logged in set the UserId in the Attacker entity's UserId property
+
+        /*
+
+            Guid UserId = Guid.Empty; // get the UserId from the session or authentication context
+
+            if (string.IsNullOrEmpty(trigger))
+                trigger = "Unknown Trigger";
+
+            if (string.IsNullOrEmpty(input))
+                input = "Unknown Input";
+
+
+            Attacker attacker = new Attacker()
+            {
+                IpAdress = httpRequest.HttpContext.Connection.RemoteIpAddress?.ToString(),
+                UserAgent = httpRequest.Headers["User-Agent"].ToString(),
+                Referer = httpRequest.Headers["Referer"].ToString(),
+                TimeStamp = DateTime.UtcNow,
+                Path = httpRequest.Path,
+                InvalidInput = input,
+                SessionId = httpRequest.HttpContext.Session.Id,
+                UserId = UserId,
+            };
+        }
+        */
     }
 }

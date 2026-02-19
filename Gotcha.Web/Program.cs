@@ -1,7 +1,13 @@
+using Gotcha.Core.Services.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// we need this line so the DI (Dependency Injection) can work in this Service
+// (because we did it like this we will also need to inject this service if we want to use it later)
+builder.Services.AddScoped<LogRepoService>();
 
 var app = builder.Build();
 
