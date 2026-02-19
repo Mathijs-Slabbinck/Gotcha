@@ -33,8 +33,8 @@ namespace Gotcha.Core.Services.Repository
                 if(rulesList == null)
                 {
                     Error error = new Error(LogSubTypes.Error_DbGet_Null,
-                                            "Couldn't fetch the kills from the server. Please try again later!",
-                                            "Error in GetAllAsync() in KillRepoService");
+                                            "Couldn't fetch the rules from the server. Please try again later!",
+                                            "Error in GetAllAsync() in RulesRepoService");
                     resultModel.Errors.Add(error);
                 }
 
@@ -45,8 +45,8 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbGet_TimeOut_Exception,
-                                        "The server took too long to fetch the kills. Please try again later!",
-                                        "Error in GetAllAsync() in KillRepoService");
+                                        "The server took too long to fetch the rules. Please try again later!",
+                                        "Error in GetAllAsync() in RulesRepoService");
 
                 resultModel.Errors.Add(error);
             }
@@ -54,8 +54,8 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                         LogSubTypes.Error_DbGet_Exception,
-                        "Something went wrong while trying to fetch the kills. Please try again later!",
-                        "Error in GetAllAsync() in KillRepoService");
+                        "Something went wrong while trying to fetch the rules. Please try again later!",
+                        "Error in GetAllAsync() in RulesRepoService");
 
                 resultModel.Errors.Add(error);
             }
@@ -76,8 +76,8 @@ namespace Gotcha.Core.Services.Repository
                 if(rules == null)
                 {
                     Error error = new Error(LogSubTypes.Error_DbGet_Null,
-                        $"Couldn't fetch the kill with id {id} from the server. Please try again later!",
-                        "Error in GetByIdAsync() in KillRepoService");
+                        "Couldn't fetch the rules from the server. Please try again later!",
+                        $"Error in GetByIdAsync() in RulesRepoService. Rules id: {id}.");
                     resultModel.Errors.Add(error);
                 }
 
@@ -87,16 +87,16 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbGet_TimeOut_Exception,
-                                        $"Server timed out trying to fetch kill with id {id} from the server. Please try again later!",
-                                        "Error in GetByIdAsync() in KillRepoService");
+                                        "Server timed out trying to fetch rules from the server. Please try again later!",
+                                        $"Error in GetByIdAsync() in RulesRepoService. Rules id: {id}.");
                 resultModel.Errors.Add(error);
             }
             catch (Exception ex)
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbGet_Exception,
-                                        $"Something went wrong while trying to fetch kill with id {id}. Please try again later!",
-                                        "Error in GetByIdAsync() in KillRepoService");
+                                        "Something went wrong while trying to fetch rules. Please try again later!",
+                                        $"Error in GetByIdAsync() in RulesRepoService. Rules id: {id}.");
                 resultModel.Errors.Add(error);
             }
 
@@ -120,24 +120,24 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbAdd_Concurrency_Exception,
-                                        "It looks like the kill details changed recently. To avoid overwriting other changes, please try again!",
-                                        "Error in AddAsync() in KillRepoService");
+                                        "It looks like the rules details changed recently. To avoid overwriting other changes, please try again!",
+                                        "Error in AddAsync() in RulesRepoService");
                 resultModel.Errors.Add(error);
             }
             catch (TimeoutException ex)
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbAdd_TimeOut_Exception,
-                                        "Server timed out trying to add kill. Please try again later!",
-                                        "Error in AddAsync() in KillRepoService");
+                                        "Server timed out trying to add rules. Please try again later!",
+                                        "Error in AddAsync() in RulesRepoService");
                 resultModel.Errors.Add(error);
             }
             catch (Exception ex)
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbAdd_Exception,
-                                        "Something went wrong while trying to create this kill. Please try again!",
-                                        "Error in AddAsync() in KillRepoService");
+                                        "Something went wrong while trying to create this rules. Please try again!",
+                                        "Error in AddAsync() in RulesRepoService");
                 resultModel.Errors.Add(error);
             }
 
@@ -160,24 +160,24 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbUpdate_Concurrency_Exception,
-                                        "It looks like the kill details changed recently. To avoid overwriting other changes, please try again!",
-                                        "Error in UpdateAsync() in KillRepoService");
+                                        "It looks like the rules details changed recently. To avoid overwriting other changes, please try again!",
+                                        "Error in UpdateAsync() in RulesRepoService");
                 resultModel.Errors.Add(error);
             }
             catch (TimeoutException ex)
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbUpdate_TimeOut_Exception,
-                                        "Server timed out trying to update kill. Please try again later!",
-                                        "Error in UpdateAsync() in KillRepoService");
+                                        "Server timed out trying to update rules. Please try again later!",
+                                        "Error in UpdateAsync() in RulesRepoService");
                 resultModel.Errors.Add(error);
             }
             catch (Exception ex)
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbUpdate_Exception,
-                                        "Something went wrong while trying to update kill. Please try again later!",
-                                        "Error in UpdateAsync() in KillRepoService");
+                                        "Something went wrong while trying to update rules. Please try again later!",
+                                        "Error in UpdateAsync() in RulesRepoService");
                 resultModel.Errors.Add(error);
             }
 
@@ -198,8 +198,8 @@ namespace Gotcha.Core.Services.Repository
                 if (rules == null)
                 {
                     Error error = new Error(LogSubTypes.Error_DbGet_Null,
-                                            $"Couldn't find kill with id {id} from the server (to delete it). Please try again later!",
-                                            "Error in DeleteAsync() in LogRepoService");
+                                            "Couldn't find rules from the server (to delete it). Please try again later!",
+                                            $"Error in DeleteAsync() in RulesRepoService. Rules id: {id}.");
                     resultModel.Errors.Add(error);
                     return resultModel;
                 }
@@ -213,24 +213,24 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_Concurrency_Exception,
-                                        $"It looks like the kill with id {id}'s details changed recently. Please try again!",
-                                        "Error in DeleteAsync() in LogRepoService");
+                                        "It looks like the rules' details changed recently. Please try again!",
+                                        $"Error in DeleteAsync() in RulesRepoService. Rules id: {id}.");
                 resultModel.Errors.Add(error);
             }
             catch (TimeoutException ex)
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_TimeOut_Exception,
-                                        "Server timed out trying to delete kill. Please try again later!",
-                                        "Error in DeleteAsync() in LogRepoService");
+                                        "Server timed out trying to delete rules. Please try again later!",
+                                        "Error in DeleteAsync() in RulesRepoService");
                 resultModel.Errors.Add(error);
             }
             catch (Exception ex)
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_Exception,
-                                        "Something went wrong while trying to remove kill. Please try again later!",
-                                        "Error in DeleteAsync() in LogRepoService");
+                                        "Something went wrong while trying to remove rules. Please try again later!",
+                                        "Error in DeleteAsync() in RulesRepoService");
                 resultModel.Errors.Add(error);
             }
 

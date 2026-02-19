@@ -76,8 +76,8 @@ namespace Gotcha.Core.Services.Repository
                 if(player == null)
                 {
                     Error error = new Error(LogSubTypes.Error_DbGet_Null,
-                        $"Couldn't fetch the player with id {id} from the server. Please try again later!",
-                        "Error in GetByIdAsync() in PlayerRepoService");
+                        "Couldn't fetch the player from the server. Please try again later!",
+                        $"Error in GetByIdAsync() in PlayerRepoService. Player id: {id}.");
                     resultModel.Errors.Add(error);
                 }
 
@@ -87,16 +87,16 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbGet_TimeOut_Exception,
-                                        $"Server timed out trying to fetch player with id {id} from the server. Please try again later!",
-                                        "Error in GetByIdAsync() in PlayerRepoService");
+                                        "Server timed out trying to fetch player from the server. Please try again later!",
+                                        $"Error in GetByIdAsync() in PlayerRepoService. Player id: {id}.");
                 resultModel.Errors.Add(error);
             }
             catch (Exception ex)
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbGet_Exception,
-                                        $"Something went wrong while trying to fetch player with id {id}. Please try again later!",
-                                        "Error in GetByIdAsync() in PlayerRepoService");
+                                        "Something went wrong while trying to fetch player. Please try again later!",
+                                        $"Error in GetByIdAsync() in PlayerRepoService. Player id: {id}.");
                 resultModel.Errors.Add(error);
             }
 
@@ -198,8 +198,8 @@ namespace Gotcha.Core.Services.Repository
                 if (player == null)
                 {
                     Error error = new Error(LogSubTypes.Error_DbGet_Null,
-                                            $"Couldn't find player with id {id} from the server (to delete it). Please try again later!",
-                                            "Error in DeleteAsync() in LogRepoService");
+                                            "Couldn't find player from the server (to delete it). Please try again later!",
+                                            $"Error in DeleteAsync() in PlayerRepoService. Player id: {id}.");
                     resultModel.Errors.Add(error);
                     return resultModel;
                 }
@@ -213,8 +213,8 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_Concurrency_Exception,
-                                        $"It looks like the player with id {id}'s details changed recently. Please try again!",
-                                        "Error in DeleteAsync() in LogRepoService");
+                                        "It looks like the player's details changed recently. Please try again!",
+                                        $"Error in DeleteAsync() in PlayerRepoService. Player id: {id}.");
                 resultModel.Errors.Add(error);
             }
             catch (TimeoutException ex)
@@ -222,7 +222,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_TimeOut_Exception,
                                         "Server timed out trying to delete player. Please try again later!",
-                                        "Error in DeleteAsync() in LogRepoService");
+                                        "Error in DeleteAsync() in PlayerRepoService");
                 resultModel.Errors.Add(error);
             }
             catch (Exception ex)
@@ -230,7 +230,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_Exception,
                                         "Something went wrong while trying to remove player. Please try again later!",
-                                        "Error in DeleteAsync() in LogRepoService");
+                                        "Error in DeleteAsync() in PlayerRepoService");
                 resultModel.Errors.Add(error);
             }
 

@@ -625,9 +625,6 @@ namespace Gotcha.Core.Entities
                 // Log the error and provide context
                 throw new GameStateException("Failed to start game due to target assignment error.", ex);
             }
-
-            HasStarted = true;
-            startDate = DateTime.UtcNow;
         }
 
         public List<Player> GetLivingPlayers()

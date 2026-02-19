@@ -188,8 +188,8 @@ namespace Gotcha.Core.Services.Repository
                 if (log == null)
                 {
                     Error error = new Error(LogSubTypes.Error_DbGet_Null,
-                                            $"Couldn't fetch log with id {id} from the server. Please try again later!",
-                                            "Error in GetByIdAsync() in LogRepoService");
+                                            "Couldn't fetch the log from the server. Please try again later!",
+                                            $"Error in GetByIdAsync() in LogRepoService. Log id: {id}.");
                     resultModel.Errors.Add(error);
                 }
 
@@ -199,16 +199,16 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbGet_TimeOut_Exception,
-                                        $"Server timed out trying to fetch log with id {id} from the server. Please try again later!",
-                                        "Error in GetByIdAsync() in LogRepoService");
+                                        "Server timed out trying to fetch log from the server. Please try again later!",
+                                        $"Error in GetByIdAsync() in LogRepoService. Log id: {id}.");
                 resultModel.Errors.Add(error);
             }
             catch (Exception ex)
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbGet_Exception,
-                                        $"Something went wrong while trying to fetch log with id {id}. Please try again later!",
-                                        "Error in GetByIdAsync() in LogRepoService");
+                                        "Something went wrong while trying to fetch log. Please try again later!",
+                                        $"Error in GetByIdAsync() in LogRepoService. Log id: {id}.");
                 resultModel.Errors.Add(error);
             }
 
@@ -230,8 +230,8 @@ namespace Gotcha.Core.Services.Repository
                 if (logs == null)
                 {
                     Error error = new Error(LogSubTypes.Error_DbGet_Null,
-                                            $"Couldn't fetch logs with type {logType.ToString()} from the server. Please try again later!",
-                                            "Error in GetByTypeAsync() in LogRepoService");
+                                            "Couldn't fetch the logs from the server. Please try again later!",
+                                            $"Error in GetByTypeAsync() in LogRepoService. LogType: {logType}.");
                     resultModel.Errors.Add(error);
                 }
 
@@ -241,16 +241,16 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbGet_TimeOut_Exception,
-                                        $"Server timed out trying to fetch logs with type {logType.ToString()} from the server. Please try again later!",
-                                        "Error in GetByTypeAsync() in LogRepoService");
+                                        "Server timed out trying to fetch logs from the server. Please try again later!",
+                                        $"Error in GetByTypeAsync() in LogRepoService. LogType: {logType}.");
                 resultModel.Errors.Add(error);
             }
             catch (Exception ex)
             {
                 Error error = new Error(ex,
                         LogSubTypes.Error_DbGet_Exception,
-                        $"Something went wrong while trying to fetch logs with type {logType.ToString()}. Please try again later!",
-                        "Error in GetByTypeAsync() in LogRepoService");
+                        "Something went wrong while trying to fetch logs. Please try again later!",
+                        $"Error in GetByTypeAsync() in LogRepoService. LogType: {logType}.");
                 resultModel.Errors.Add(error);
             }
 
@@ -309,8 +309,8 @@ namespace Gotcha.Core.Services.Repository
                 if (log == null)
                 {
                     Error error = new Error(LogSubTypes.Error_DbGet_Null,
-                                            $"Couldn't find log with id {id} from the server (to delete it). Please try again later!",
-                                            "Error in DeleteAsync() in LogRepoService");
+                                            "Couldn't find log from the server (to delete it). Please try again later!",
+                                            $"Error in DeleteAsync() in LogRepoService. Log id: {id}.");
                     resultModel.Errors.Add(error);
                     return resultModel;
                 }
@@ -324,8 +324,8 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_Concurrency_Exception,
-                                        $"It looks like the log with id {id}'s details changed recently. Please try again!",
-                                        "Error in DeleteAsync() in LogRepoService");
+                                        "It looks like the log's details changed recently. Please try again!",
+                                        $"Error in DeleteAsync() in LogRepoService. Log id: {id}.");
                 resultModel.Errors.Add(error);
             }
             catch (TimeoutException ex)
