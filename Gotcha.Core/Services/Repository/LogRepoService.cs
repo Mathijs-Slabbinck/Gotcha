@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Gotcha.Core.Enums;
 using Gotcha.Core.Interfaces;
 using Gotcha.Core.Entities.Logging.LogEntities;
-using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
 namespace Gotcha.Core.Services.Repository
@@ -40,7 +39,14 @@ namespace Gotcha.Core.Services.Repository
 
             foreach (Error error in resultModel.Errors)
             {
-                Log log = new Log(LogTypes.Error, error.LogSubType, error.Message, error.ExtraInfo, groupId);
+                Log log = new Log
+                {
+                    LogType = LogTypes.Error,
+                    LogSubType = error.LogSubType,
+                    Message = error.Message,
+                    ExtraInfo = error.ExtraInfo,
+                    LogGroupId = groupId
+                };
                 ResultModel<Log> result = await AddAsync(log);
 
                 // If logging failed, try to log the logging failure itself (with retry limit)
@@ -67,7 +73,14 @@ namespace Gotcha.Core.Services.Repository
 
             foreach (Warning warning in resultModel.Warnings)
             {
-                Log log = new Log(LogTypes.Warning, warning.LogSubType, warning.Message, warning.ExtraInfo, groupId);
+                Log log = new Log
+                {
+                    LogType = LogTypes.Warning,
+                    LogSubType = warning.LogSubType,
+                    Message = warning.Message,
+                    ExtraInfo = warning.ExtraInfo,
+                    LogGroupId = groupId
+                };
                 ResultModel<Log> result = await AddAsync(log);
 
                 if (!result.FullSuccess)
@@ -85,7 +98,6 @@ namespace Gotcha.Core.Services.Repository
             }
         }
 
-        [HttpPost]
         public async Task<ResultModel<Log>> AddAsync(Log log)
         {
             ResultModel<Log> resultModel = new ResultModel<Log>();
@@ -134,7 +146,6 @@ namespace Gotcha.Core.Services.Repository
             return resultModel;
         }
 
-        [HttpGet]
         public async Task<ResultModel<List<Log>>> GetAllAsync()
         {
             ResultModel<List<Log>> resultModel = new ResultModel<List<Log>>();
@@ -175,7 +186,6 @@ namespace Gotcha.Core.Services.Repository
             return resultModel;
         }
 
-        [HttpGet]
         public async Task<ResultModel<Log>> GetByIdAsync(Guid id)
         {
             ResultModel<Log> resultModel = new ResultModel<Log>();
@@ -215,7 +225,6 @@ namespace Gotcha.Core.Services.Repository
             return resultModel;
         }
 
-        [HttpGet]
         public async Task<ResultModel<List<Log>>> GetByTypeAsync(LogTypes logType)
         {
             ResultModel<List<Log>> resultModel = new ResultModel<List<Log>>();
@@ -257,7 +266,6 @@ namespace Gotcha.Core.Services.Repository
             return resultModel;
         }
 
-        [HttpPost]
         public async Task<ResultModel<Log>> UpdateAsync(Log log)
         {
             ResultModel<Log> resultModel = new ResultModel<Log>();
@@ -296,7 +304,6 @@ namespace Gotcha.Core.Services.Repository
             return resultModel;
         }
 
-        [HttpPost]
         public async Task<ResultModel<Log>> DeleteAsync(Guid id)
         {
             ResultModel<Log> resultModel = new ResultModel<Log>();

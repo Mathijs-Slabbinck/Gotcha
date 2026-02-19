@@ -1,7 +1,7 @@
-﻿// ResultModel.cs
 using Gotcha.Core.Entities.Logging.LogEntities;
 using Gotcha.Core.Enums;
 using Gotcha.Core.Services.ResultModel.Base;
+using System.Collections;
 
 namespace Gotcha.Core.Services.ResultModel
 {
@@ -14,43 +14,26 @@ namespace Gotcha.Core.Services.ResultModel
             get { return _data; }
             set
             {
-                ValidateData(value);
+                CheckIfEmptyList(value);
                 _data = value;
             }
         }
 
-        private void ValidateData(T? value)
+        private void CheckIfEmptyList(T? value)
         {
-            if (value is System.Collections.IEnumerable enumerable && value is not string)
-            {
-                var enumerator = enumerable.GetEnumerator();
-                try
-                {
-                    if (!enumerator.MoveNext())
-                    {
-                        Warning warning = new Warning(
-                            LogSubTypes.Warning_DbGet_Empty,
-                            "Data in ResultModel is an empty list",
-                            $"Requested Data: ({GetFriendlyTypeName(typeof(T))})");
-                        Warnings.Add(warning);
-                    }
-                }
-                finally
-                {
-                    // Dispose enumerator if it's IDisposable
-                    (enumerator as IDisposable)?.Dispose();
-                }
-            }
-        }
+            // Skip if value is null or a plain string
+            if (value == null || value is string)
+                return;
 
-        private string GetFriendlyTypeName(Type type)
-        {
-            if (type.IsGenericType)
+            // If the data is a list/collection, warn when it's empty
+            if (value is ICollection collection && collection.Count == 0)
             {
-                var genericArgs = string.Join(", ", type.GetGenericArguments().Select(GetFriendlyTypeName));
-                return $"{type.Name.Split('`')[0]}<{genericArgs}>";
+                Warning warning = new Warning(
+                    LogSubTypes.Warning_DbGet_Empty,
+                    "Data in ResultModel is an empty list",
+                    $"Requested Data: {typeof(T).Name}");
+                Warnings.Add(warning);
             }
-            return type.Name;
         }
     }
 }
