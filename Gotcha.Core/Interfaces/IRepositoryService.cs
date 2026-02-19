@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Gotcha.Core.Services.ResultModel;
-using Gotcha.Core.Entities;
+﻿using Gotcha.Core.Services.ResultModel;
 
 namespace Gotcha.Core.Interfaces
 {

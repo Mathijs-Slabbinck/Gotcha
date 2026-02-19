@@ -1,7 +1,7 @@
 ﻿using Gotcha.Core.Data;
 using Gotcha.Core.Services.ResultModel;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
+
 using Gotcha.Core.Entities.Logging;
 using Gotcha.Core.Entities.Logging.LogEntities;
 using Gotcha.Core.Enums;
@@ -20,7 +20,6 @@ namespace Gotcha.Core.Services.Repository
             _logRepoService = logRepoService;
         }
 
-        [HttpGet]
         public async Task<ResultModel<List<Attacker>>> GetAllAsync()
         {
             ResultModel<List<Attacker>> resultModel = new ResultModel<List<Attacker>>();
@@ -65,7 +64,6 @@ namespace Gotcha.Core.Services.Repository
             return resultModel;
         }
 
-        [HttpGet]
         public async Task<ResultModel<Attacker>> GetByIdAsync(Guid id)
         {
             ResultModel<Attacker> resultModel = new ResultModel<Attacker>();
@@ -107,7 +105,6 @@ namespace Gotcha.Core.Services.Repository
         }
 
 
-        [HttpPost]
         public async Task<ResultModel<Attacker>> AddAsync(Attacker attacker)
         {
             ResultModel<Attacker> resultModel = new ResultModel<Attacker>();
@@ -147,7 +144,6 @@ namespace Gotcha.Core.Services.Repository
             return resultModel;
         }
 
-        [HttpPost]
         public async Task<ResultModel<Attacker>> UpdateAsync(Attacker attacker)
         {
             ResultModel<Attacker> resultModel = new ResultModel<Attacker>();
@@ -187,7 +183,6 @@ namespace Gotcha.Core.Services.Repository
             return resultModel;
         }
 
-        [HttpPost]
         public async Task<ResultModel<Attacker>> DeleteAsync(Guid id)
         {
             ResultModel<Attacker> resultModel = new ResultModel<Attacker>();
@@ -232,7 +227,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_Exception,
                                         "Something went wrong while trying to remove attacker. Please try again later!",
-                                        $"Error in DeleteAsync() in AttackerRepoService. Attcker id: {id}.");
+                                        $"Error in DeleteAsync() in AttackerRepoService. Attacker id: {id}.");
                 resultModel.Errors.Add(error);
             }
 

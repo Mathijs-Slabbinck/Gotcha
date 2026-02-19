@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.Extensions.Configuration;
+using System.ComponentModel.DataAnnotations;
+using Gotcha.Core.Services.ValidationServices;
 
 namespace Gotcha.Core.Validation.DataAnnotations
 {
@@ -8,18 +8,19 @@ namespace Gotcha.Core.Validation.DataAnnotations
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             if (value is not string username)
-                return ValidationResult.Success!;
+                return ValidationResult.Success!; // we return null on purpose (hence the !) [validation passed]
 
-            UserNameValidationHelper validationService = new UserNameValidationHelper(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
-
-            if (validationService.IsReservedUsername(username))
+            if (LastLineValidationService.IsReservedUsername(username))
             {
-                return new ValidationResult(
-                    ErrorMessage ?? "This username is not allowed. Please choose another."
-                );
+                string? errormMessage = ErrorMessage;
+
+                if (errormMessage == null)
+                    errormMessage = "This username is not allowed. Please choose another.";
+
+                return new ValidationResult(errormMessage);
             }
 
-            return ValidationResult.Success!;
+            return ValidationResult.Success!; // we return null on purpose (hence the !) [validation passed]
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Gotcha.Core.Enums
+﻿namespace Gotcha.Core.Enums
 {
     public enum LogTypes
     {

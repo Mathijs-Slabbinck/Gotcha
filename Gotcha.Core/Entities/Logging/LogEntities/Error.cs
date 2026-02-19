@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Gotcha.Core.Entities.Logging.LogEntities.Base;
+﻿using Gotcha.Core.Entities.Logging.LogEntities.Base;
 using Gotcha.Core.Enums;
-using Gotcha.Core.Interfaces;
 
 namespace Gotcha.Core.Entities.Logging.LogEntities
 {
-    public class Error : LogTypesBase, ILogEntity
+    public class Error : LogTypesBase
     {
         private Exception? _exception;
 
