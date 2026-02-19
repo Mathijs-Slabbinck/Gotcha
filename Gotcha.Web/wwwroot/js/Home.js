@@ -5,9 +5,8 @@ window.addEventListener("load", initialize);
 
 function initialize() {
     const username = document.getElementById("username").innerText;
-    const spanUsernameInTitle = document.getElementById("userNameInTitle");
-    console.log(spanUsernameInTitle);
-    typeWriter(username, spanUsernameInTitle);
+    const title = document.getElementsByClassName("typeWriter")[0];
+    typeWriter(username, title);
 }
 
 function typeWriter(text, field, speed = 80, i = 0) {

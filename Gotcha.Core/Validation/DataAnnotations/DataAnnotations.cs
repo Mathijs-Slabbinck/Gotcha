@@ -11,6 +11,7 @@ namespace Gotcha.Core.Validation.DataAnnotations
                 return ValidationResult.Success!;
 
             UserNameValidationHelper validationService = new UserNameValidationHelper(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build());
+
             if (validationService.IsReservedUsername(username))
             {
                 return new ValidationResult(
