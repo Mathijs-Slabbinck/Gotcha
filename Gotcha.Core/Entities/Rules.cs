@@ -127,7 +127,7 @@ namespace Gotcha.Core.Entities
 
         public Guid Id
         {
-            get { return Id; }
+            get { return _id; }
         }
         public GameModes GameMode
         {

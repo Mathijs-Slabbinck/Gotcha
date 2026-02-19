@@ -35,7 +35,7 @@ namespace Gotcha.Core.Services.Repository
                 {
                     Error error = new Error(LogSubTypes.Error_DbGet_Null,
                                             "Couldn't fetch the attackers from the server. Please try again later!",
-                                            "Error in GetAllAsync() in AttackerRepoService");
+                                            "Error in GetAllAsync() in AttackerRepoService.");
                     resultModel.Errors.Add(error);
                 }
 
@@ -47,7 +47,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbGet_TimeOut_Exception,
                                         "The server took too long to fetch the attackers. Please try again later!",
-                                        "Error in GetAllAsync() in AttackerRepoService");
+                                        "Error in GetAllAsync() in AttackerRepoService.");
 
                 resultModel.Errors.Add(error);
             }
@@ -56,7 +56,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                         LogSubTypes.Error_DbGet_Exception,
                         "Something went wrong while trying to fetch the attackers. Please try again later!",
-                        "Error in GetAllAsync() in AttackerRepoService");
+                        "Error in GetAllAsync() in AttackerRepoService.");
 
                 resultModel.Errors.Add(error);
             }
@@ -78,8 +78,8 @@ namespace Gotcha.Core.Services.Repository
                 if(attacker == null)
                 {
                     Error error = new Error(LogSubTypes.Error_DbGet_Null,
-                        $"Couldn't fetch the attacker with id {id} from the server. Please try again later!",
-                        "Error in GetByIdAsync() in AttackerRepoService");
+                        "Couldn't fetch the attacker from the server. Please try again later!",
+                        $"Error in GetByIdAsync() in AttackerRepoService. Attacker id: {id}.");
                     resultModel.Errors.Add(error);
                 }
 
@@ -89,16 +89,16 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbGet_TimeOut_Exception,
-                                        $"Server timed out trying to fetch attacker with id {id} from the server. Please try again later!",
-                                        "Error in GetByIdAsync() in AttackerRepoService");
+                                        "Server timed out trying to fetch attacker from the server. Please try again later!",
+                                        $"Error in GetByIdAsync() in AttackerRepoService. Attacker id: {id}.");
                 resultModel.Errors.Add(error);
             }
             catch (Exception ex)
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbGet_Exception,
-                                        $"Something went wrong while trying to fetch attacker with id {id}. Please try again later!",
-                                        "Error in GetByIdAsync() in AttackerRepoService");
+                                        "Something went wrong while trying to fetch attacker. Please try again later!",
+                                        $"Error in GetByIdAsync() in AttackerRepoService. Attacker id: {id}.");
                 resultModel.Errors.Add(error);
             }
 
@@ -123,7 +123,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbAdd_Concurrency_Exception,
                                         "It looks like the attacker details changed recently. To avoid overwriting other changes, please try again!",
-                                        "Error in AddAsync() in AttackerRepoService");
+                                        "Error in AddAsync() in AttackerRepoService.");
                 resultModel.Errors.Add(error);
             }
             catch (TimeoutException ex)
@@ -131,7 +131,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbAdd_TimeOut_Exception,
                                         "Server timed out trying to add attacker. Please try again later!",
-                                        "Error in AddAsync() in AttackerRepoService");
+                                        "Error in AddAsync() in AttackerRepoService.");
                 resultModel.Errors.Add(error);
             }
             catch (Exception ex)
@@ -139,7 +139,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbAdd_Exception,
                                         "Something went wrong while trying to create this attacker. Please try again!",
-                                        "Error in AddAsync() in AttackerRepoService");
+                                        "Error in AddAsync() in AttackerRepoService.");
                 resultModel.Errors.Add(error);
             }
 
@@ -163,7 +163,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbUpdate_Concurrency_Exception,
                                         "It looks like the attacker details changed recently. To avoid overwriting other changes, please try again!",
-                                        "Error in UpdateAsync() in AttackerRepoService");
+                                        "Error in UpdateAsync() in AttackerRepoService.");
                 resultModel.Errors.Add(error);
             }
             catch (TimeoutException ex)
@@ -171,7 +171,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbUpdate_TimeOut_Exception,
                                         "Server timed out trying to update attacker. Please try again later!",
-                                        "Error in UpdateAsync() in AttackerRepoService");
+                                        "Error in UpdateAsync() in AttackerRepoService.");
                 resultModel.Errors.Add(error);
             }
             catch (Exception ex)
@@ -179,7 +179,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbUpdate_Exception,
                                         "Something went wrong while trying to update attacker. Please try again later!",
-                                        "Error in UpdateAsync() in AttackerRepoService");
+                                        "Error in UpdateAsync() in AttackerRepoService.");
                 resultModel.Errors.Add(error);
             }
 
@@ -200,8 +200,8 @@ namespace Gotcha.Core.Services.Repository
                 if (attacker == null)
                 {
                     Error error = new Error(LogSubTypes.Error_DbGet_Null,
-                                            $"Couldn't find attacker with id {id} from the server (to delete it). Please try again later!",
-                                            "Error in DeleteAsync() in AttackerRepoService");
+                                            "Couldn't find attacker from the server (to delete it). Please try again later!",
+                                            $"Error in DeleteAsync() in AttackerRepoService. Attacker id: {id}.");
                     resultModel.Errors.Add(error);
                     return resultModel;
                 }
@@ -215,8 +215,8 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_Concurrency_Exception,
-                                        $"It looks like the attackers with id {id}'s details changed recently. Please try again!",
-                                        "Error in DeleteAsync() in AttackerRepoService");
+                                        "It looks like the attacker's details changed recently. Please try again!",
+                                        $"Error in DeleteAsync() in AttackerRepoService. Attacker id: {id}.");
                 resultModel.Errors.Add(error);
             }
             catch (TimeoutException ex)
@@ -224,7 +224,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_TimeOut_Exception,
                                         "Server timed out trying to delete attacker. Please try again later!",
-                                        "Error in DeleteAsync() in AttackerRepoService");
+                                        $"Error in DeleteAsync() in AttackerRepoService. Attacker id: {id}.");
                 resultModel.Errors.Add(error);
             }
             catch (Exception ex)
@@ -232,7 +232,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_Exception,
                                         "Something went wrong while trying to remove attacker. Please try again later!",
-                                        "Error in DeleteAsync() in AttackerRepoService");
+                                        $"Error in DeleteAsync() in AttackerRepoService. Attcker id: {id}.");
                 resultModel.Errors.Add(error);
             }
 

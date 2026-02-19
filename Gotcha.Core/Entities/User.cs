@@ -224,16 +224,14 @@ namespace Gotcha.Core.Entities
         public List<Kill> GetAllKills()
         {
             return PlayerAccounts
-                    .SelectMany(p => p.Game.Kills)
-                    .Where(k => k.KillerId == this.Id && k.IsValid)
+                    .SelectMany(p => p.Game.Kills.Where(k => k.KillerId == p.Id && k.IsValid))
                     .ToList();
         }
 
         public List<Kill> GetAllDeaths()
         {
             return PlayerAccounts
-                    .SelectMany(p => p.Game.Kills)
-                    .Where(k => k.VictimId == this.Id)
+                    .SelectMany(p => p.Game.Kills.Where(k => k.VictimId == p.Id))
                     .ToList();
         }
 

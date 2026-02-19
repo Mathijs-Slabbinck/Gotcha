@@ -76,8 +76,8 @@ namespace Gotcha.Core.Services.Repository
                 if(user == null)
                 {
                     Error error = new Error(LogSubTypes.Error_DbGet_Null,
-                        $"Couldn't fetch the user with id {id} from the server. Please try again later!",
-                        "Error in GetByIdAsync() in UserRepoService");
+                        "Couldn't fetch the user from the server. Please try again later!",
+                        $"Error in GetByIdAsync() in UserRepoService. User id: {id}.");
                     resultModel.Errors.Add(error);
                 }
 
@@ -87,16 +87,16 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbGet_TimeOut_Exception,
-                                        $"Server timed out trying to fetch user with id {id} from the server. Please try again later!",
-                                        "Error in GetByIdAsync() in UserRepoService");
+                                        "Server timed out trying to fetch user from the server. Please try again later!",
+                                        $"Error in GetByIdAsync() in UserRepoService. User id: {id}.");
                 resultModel.Errors.Add(error);
             }
             catch (Exception ex)
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbGet_Exception,
-                                        $"Something went wrong while trying to fetch user with id {id}. Please try again later!",
-                                        "Error in GetByIdAsync() in UserRepoService");
+                                        "Something went wrong while trying to fetch user. Please try again later!",
+                                        $"Error in GetByIdAsync() in UserRepoService. User id: {id}.");
                 resultModel.Errors.Add(error);
             }
 
@@ -198,8 +198,8 @@ namespace Gotcha.Core.Services.Repository
                 if (user == null)
                 {
                     Error error = new Error(LogSubTypes.Error_DbGet_Null,
-                                            $"Couldn't find user with id {id} from the server (to delete it). Please try again later!",
-                                            "Error in DeleteAsync() in LogRepoService");
+                                            "Couldn't find user from the server (to delete it). Please try again later!",
+                                            $"Error in DeleteAsync() in UserRepoService. User id: {id}.");
                     resultModel.Errors.Add(error);
                     return resultModel;
                 }
@@ -213,8 +213,8 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_Concurrency_Exception,
-                                        $"It looks like the user with id {id}'s details changed recently. Please try again!",
-                                        "Error in DeleteAsync() in LogRepoService");
+                                        "It looks like the user's details changed recently. Please try again!",
+                                        $"Error in DeleteAsync() in UserRepoService. User id: {id}.");
                 resultModel.Errors.Add(error);
             }
             catch (TimeoutException ex)
@@ -222,7 +222,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_TimeOut_Exception,
                                         "Server timed out trying to delete user. Please try again later!",
-                                        "Error in DeleteAsync() in LogRepoService");
+                                        "Error in DeleteAsync() in UserRepoService");
                 resultModel.Errors.Add(error);
             }
             catch (Exception ex)
@@ -230,7 +230,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_Exception,
                                         "Something went wrong while trying to remove user. Please try again later!",
-                                        "Error in DeleteAsync() in LogRepoService");
+                                        "Error in DeleteAsync() in UserRepoService");
                 resultModel.Errors.Add(error);
             }
 

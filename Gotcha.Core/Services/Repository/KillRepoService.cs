@@ -76,8 +76,8 @@ namespace Gotcha.Core.Services.Repository
                 if(kill == null)
                 {
                     Error error = new Error(LogSubTypes.Error_DbGet_Null,
-                        $"Couldn't fetch the kill with id {id} from the server. Please try again later!",
-                        "Error in GetByIdAsync() in KillRepoService");
+                        "Couldn't fetch the kill from the server. Please try again later!",
+                        $"Error in GetByIdAsync() in KillRepoService. Kill id: {id}.");
                     resultModel.Errors.Add(error);
                 }
 
@@ -87,16 +87,16 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbGet_TimeOut_Exception,
-                                        $"Server timed out trying to fetch kill with id {id} from the server. Please try again later!",
-                                        "Error in GetByIdAsync() in KillRepoService");
+                                        "Server timed out trying to fetch kill from the server. Please try again later!",
+                                        $"Error in GetByIdAsync() in KillRepoService. Kill id: {id}.");
                 resultModel.Errors.Add(error);
             }
             catch (Exception ex)
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbGet_Exception,
-                                        $"Something went wrong while trying to fetch kill with id {id}. Please try again later!",
-                                        "Error in GetByIdAsync() in KillRepoService");
+                                        "Something went wrong while trying to fetch kill. Please try again later!",
+                                        $"Error in GetByIdAsync() in KillRepoService. Kill id: {id}.");
                 resultModel.Errors.Add(error);
             }
 
@@ -198,8 +198,8 @@ namespace Gotcha.Core.Services.Repository
                 if (kill == null)
                 {
                     Error error = new Error(LogSubTypes.Error_DbGet_Null,
-                                            $"Couldn't find kill with id {id} from the server (to delete it). Please try again later!",
-                                            "Error in DeleteAsync() in LogRepoService");
+                                            "Couldn't find kill from the server (to delete it). Please try again later!",
+                                            $"Error in DeleteAsync() in KillRepoService. Kill id: {id}.");
                     resultModel.Errors.Add(error);
                     return resultModel;
                 }
@@ -213,8 +213,8 @@ namespace Gotcha.Core.Services.Repository
             {
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_Concurrency_Exception,
-                                        $"It looks like the kill with id {id}'s details changed recently. Please try again!",
-                                        "Error in DeleteAsync() in LogRepoService");
+                                        "It looks like the kill's details changed recently. Please try again!",
+                                        $"Error in DeleteAsync() in KillRepoService. Kill id: {id}.");
                 resultModel.Errors.Add(error);
             }
             catch (TimeoutException ex)
@@ -222,7 +222,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_TimeOut_Exception,
                                         "Server timed out trying to delete kill. Please try again later!",
-                                        "Error in DeleteAsync() in LogRepoService");
+                                        "Error in DeleteAsync() in KillRepoService");
                 resultModel.Errors.Add(error);
             }
             catch (Exception ex)
@@ -230,7 +230,7 @@ namespace Gotcha.Core.Services.Repository
                 Error error = new Error(ex,
                                         LogSubTypes.Error_DbRemove_Exception,
                                         "Something went wrong while trying to remove kill. Please try again later!",
-                                        "Error in DeleteAsync() in LogRepoService");
+                                        "Error in DeleteAsync() in KillRepoService");
                 resultModel.Errors.Add(error);
             }
 

@@ -176,7 +176,7 @@ namespace Gotcha.Core.Entities
                 {
                     return $"{User.FirstName} {User.LastName} ({Username})";
                 }
-                else if(!Game.Rules.ShowUsernames && Game.Rules.ShowUsernames)
+                else if(!Game.Rules.ShowUsernames && Game.Rules.ShowRealNames)
                 {
                     return $"{User.FirstName} {User.LastName}";
                 }
@@ -230,17 +230,17 @@ namespace Gotcha.Core.Entities
             }
 
             TargetAssignment? currentAssignment = TargetAssignments
-                                                            .FirstOrDefault(ta => ta.TargetId == this.Id &&
+                                                            .FirstOrDefault(ta => ta.HunterId == Id &&
                                                                                   ta.AssignmentStatus == Enums.AssignmentStatus.Ongoing);
 
             if (currentAssignment == null)
             {
-                throw new InvalidTargetAssignmentException(this.Id, Guid.Empty, "No ongoing target assignment found for this player.");
+                throw new InvalidTargetAssignmentException(Id, Guid.Empty, "No ongoing target assignment found for this player.");
             }
 
             if(currentAssignment.Target == null)
             {
-                throw new InvalidTargetAssignmentException(this.Id, currentAssignment.TargetId, "The current target assignment does not have a valid target.");
+                throw new InvalidTargetAssignmentException(Id, currentAssignment.TargetId, "The current target assignment does not have a valid target.");
             }
 
             return currentAssignment.Target;
