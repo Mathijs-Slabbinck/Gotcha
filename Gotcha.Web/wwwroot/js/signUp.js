@@ -8,7 +8,6 @@ window.addEventListener("load", initialize);
 function initialize() {
     const slcSignUpGenderInput = document.getElementById("signUpGenderInput");
     const pInfoIcons = document.getElementsByClassName("infoIcon");
-    const spCloseButton = document.getElementsByClassName("modalClose")[0];
     const inpSignUpPasswordInput = document.getElementById("signUpPasswordInput");
     const inpSignUpRepeatPasswordInput = document.getElementById("signUpRepeatPasswordInput");
     const eyeIcon1 = document.getElementById("eye-signUp-1");
@@ -25,8 +24,6 @@ function initialize() {
     eyeIcon2.addEventListener("click", function () {
         showPassword(inpSignUpRepeatPasswordInput);
     });
-
-    spCloseButton.addEventListener("click", closeInfoModal);
 
     for (let i = 0; i < pInfoIcons.length; i++) {
         const selectedInfoIcon = pInfoIcons[i];
@@ -59,17 +56,10 @@ function handleChangedSelection(select) {
     isBlocked = true;
 }
 
-function closeInfoModal() {
-    const modalElement = document.getElementById("infoModal");
-    const modalInstance = bootstrap.Modal.getInstance(modalElement);
-
-    modalInstance.hide();
-}
-
 function showInfoModal(modalToShow) {
     const divInfoModal = new bootstrap.Modal(document.getElementById("infoModal"));
-    let infoModalTitle = document.getElementsByClassName("infoModalTitle")[0];
-    let infoModalText = document.getElementsByClassName("infoModalText")[0];
+    const infoModalTitle = document.getElementsByClassName("infoModalTitle")[0];
+    const infoModalText = document.getElementsByClassName("infoModalText")[0];
     divInfoModal.show();
 
     switch (modalToShow) {
@@ -95,7 +85,7 @@ function showInfoModal(modalToShow) {
             break;
         case "password":
             infoModalTitle.textContent = "Password";
-            infoModalText.textContent = "Your password is encrypted and kept safe.<br/>We take cyber security serious<br />(but we suggest using a unique password to be extra safe)!";
+            infoModalText.innerHTML = "Your password is encrypted and kept safe.<br/>We take cyber security serious<br />(but we suggest using a unique password to be extra safe)!";
             break;
         case "repeatPassword":
             infoModalTitle.textContent = "Repeat Password";
@@ -115,7 +105,7 @@ function showInfoModal(modalToShow) {
             break;
         default:
             infoModalTitle.textContent = "Error";
-            infoModalText.textContent = "An error has occured, please try again later.";
+            infoModalText.textContent = "An error has occurred, please try again later.";
             break;
     }
 }

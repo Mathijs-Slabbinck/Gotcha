@@ -15,7 +15,7 @@ function typeWriter(text, field, speed = 80, i = 0) {
     }
     if (i < text.length) {
         field.innerHTML = text.slice(0, i + 1) + '<span class="cursor"></span>';
-        setTimeout(() => typeWriter(text, field, speed, i + 1), speed);
+        setTimeout(function () { typeWriter(text, field, speed, i + 1); }, speed);
     }
     else {
         setTimeout(function () {
