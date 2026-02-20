@@ -34,14 +34,12 @@ function initialize() {
         selectedInfoIcon.addEventListener("click", function () {
             const infoIconId = selectedInfoIcon.id;
             const modalToShow = infoIconId.split("-")[1];
-            console.log(modalToShow);
             showInfoModal(modalToShow);
         });
     }
 }
 
 function showPassword(inputField) {
-    console.log("test");
     if (inputField.type === "password") {
         inputField.type = "text";
     }
@@ -88,12 +86,12 @@ function showInfoModal(modalToShow) {
             infoModalText.textContent = "We ask for your last name because, unless disabled, your name will be shown in game.";
             break;
         case "username":
-            infoModalTitle.textContent = "Last Name";
-            infoModalText.textContent = "We ask for your last name because if real names are disabled, this username will be shown by default (can be changed per game).";
+            infoModalTitle.textContent = "Username";
+            infoModalText.textContent = "We ask for your username because if real names are disabled, this username will be shown by default (can be changed per game).";
             break;
-        case "emailAdress":
-            infoModalTitle.textContent = "Email Adress";
-            infoModalText.innerHTML = "We ask for your email adress for account verification.<br />We will not be sending you any emails.";
+        case "emailAddress":
+            infoModalTitle.textContent = "Email Address";
+            infoModalText.innerHTML = "We ask for your email address for account verification.<br />We will not be sending you any emails.";
             break;
         case "password":
             infoModalTitle.textContent = "Password";
