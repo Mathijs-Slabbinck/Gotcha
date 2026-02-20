@@ -4,7 +4,7 @@
 }
 
 <link rel="stylesheet" href="~/css/SignUp.css" />
-<script src="~/js/SignUp.js" ></script>
+<script src="~/js/signUp.js" ></script>
 
 <div class="pageToHide">
 	<h1 class="fw-bold font-bungee text-center">Welcome to GOTCHA!</h1>
@@ -13,7 +13,7 @@
 		<div class="card-header row">
 			<div class="col-12 d-flex justify-content-center">
 				<h2 class="text-center font-robotoSlab fw-bold mt-2 color-3 pt-2 pd-1">SIGN UP</h2>
-				<p class="text-end infoIcon" id="info-general" data-toggle="modal" data-target="#infoModal">&#9432;</p>
+				<p class="text-end infoIcon" id="info-general" data-bs-toggle="modal" data-bs-target="#infoModal">&#9432;</p>
 			</div>
 		</div>
 		<div class="card-body row mt-2 py-2">
@@ -22,7 +22,7 @@
 					<div class="col-9">
 						<div class="row align-items-end">
 							<label class="fw-bold color-2 mb-2 fs-6 font-roboto col-10 p-0" for="signUpFirstNameInput">First Name: *</label>
-							<p class="text-end col-2 infoIcon" id="info-firstName" data-toggle="modal" data-target="#infoModal">&#9432;</p>
+							<p class="text-end col-2 infoIcon" id="info-firstName" data-bs-toggle="modal" data-bs-target="#infoModal">&#9432;</p>
 						</div>
 					</div>
 					<input class="col-9" id="signUpFirstNameInput" type="text" placeholder="John" required />
@@ -156,9 +156,7 @@
 		<div class="modal-content">
 			<div class="modal-header justify-content-center">
 				<h5 class="modal-title infoModalTitle">Modal title</h5>
-				<button type="button" class="close modalClose" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<button type="button" class="btn-close modalClose" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body text-center">
 				<p class="infoModalText">Modal body text goes here.</p>
