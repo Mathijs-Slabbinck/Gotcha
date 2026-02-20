@@ -1,8 +1,6 @@
 ﻿"use strict";
 
 
-let isBlocked = false;
-
 window.addEventListener("load", initialize);
 
 function initialize() {

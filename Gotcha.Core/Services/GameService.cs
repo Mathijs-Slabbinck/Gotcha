@@ -389,6 +389,9 @@ namespace Gotcha.Core.Services
             else
                 defaultReason = "No reason provided.";
 
+            if (reason == null)
+                reason = defaultReason;
+
             return new Kill
             {
                 GameId = game.Id,
@@ -400,7 +403,7 @@ namespace Gotcha.Core.Services
                 Moment = killMoment,
                 Weapon = weapon,
                 IsValid = isValid,
-                Reason = reason ?? defaultReason,
+                Reason = reason,
                 KillMessage = killMessage,
                 TimeSinceAssignedTarget = timeSinceAssigned
             };
