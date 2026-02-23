@@ -1,0 +1,54 @@
+/* #region Root Variables */
+
+@import "Variables.css";
+
+/* #endregion */
+
+label {
+    padding-left: 0.2vw !important;
+}
+
+input[type="date"] {
+    color: #6c757d;
+    padding-top: 0.1vh;
+    padding-bottom: 0.1vh;
+}
+
+input {
+    background-color: #FFFFFF40;
+    color: white;
+}
+
+input::placeholder {
+    color: #9ae6eb !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    /* Filter berekend voor hex #27bbc4 */
+    filter: invert(62%) sepia(85%) saturate(395%) hue-rotate(133deg) brightness(88%) contrast(92%);
+    cursor: pointer;
+}
+
+input[type=date]:invalid {
+    color: #9ae6eb !important;
+}
+
+input[type=date]:valid {
+    color: white !important;
+}
+
+h1 {
+    margin-bottom: 4vh !important;
+}
+
+.bottomLinks p,
+.bottomLinks a {
+    font-size: 0.9rem;
+}
+
+@media only screen and (min-width: 992px){
+    .bottomLinks {
+        max-width: 80%;
+        margin: 0 auto;
+    }
+}

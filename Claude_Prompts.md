@@ -1,0 +1,208 @@
+# Claude Prompts
+
+## prompt 1
+https://claude.ai/share/8a9ed166-1da5-477c-b3ba-fd03036e8edb https://github.com/users/Mathijs-Slabbinck/projects/4 I want you to help me with this project. I am a student (pre junior) dev. I have mastered front end since this is my passion, I am pretty new to backend. I want you to be me copilot in this project. Don't do the work for me but let me know where and how to improve my app. I value code readability since it's easier to debug and read. The core values should be 1) safety (this is my first project, that means I should take extra steps (as much as possible) towards safety (no data leaks etc)) 2) maintaince 3) performance
+Always take safety over performance or maintance.
+Guide me as well as you can; act like a senior dev that is doing the work for me or telling me what to do but helps to explore my ideas and guide me in the process
+
+## prompt 2
+Ask me everything you need to know. More info: I am a student Graduate programmer at Howest, I have system and software IT in high school. I have been coding front end between that. Howest has partnered with Microsoft so we use .Net and Microsoft powered tools and frameworks by default. We learned MVC and databases and I can use link and use a database (CRUD) (a local one but that's a problem for later).  I know they will teach us in the Maui framework so my first build is going to be in that since it's a good way to practice. I am using Visual Studio (ASP.NET Core Web App (MVC), nullable disabled, no AI powered features. I just made the first version of the enitities but I am still reworking and making sure they are fully finished, foolproof and can be counted on for the rest of the project. My main concern is learning; I am not sure if I will release this version (I am think of rewriting it in react later but I need to learn Maui now) but I wanna do it in a way where I teach myself right and where it is safe and could be pushed online if it ends up being a solid working project. Make sure to ask me more questions if you need more info; best to get us on a straight line before heading in and tackling the project.
+
+## prompt 3
+Ask me everything you need to know. More info: I am a student Graduate programmer at Howest, I have system and software IT in high school. I have been coding front end between that. Howest has partnered with Microsoft so we use .Net and Microsoft powered tools and frameworks by default. We learned MVC and databases and I can use link and use a database (CRUD) (a local one but that's a problem for later).  I know they will teach us in the Maui framework so my first build is going to be in that since it's a good way to practice. I am using Visual Studio (ASP.NET Core Web App (MVC), nullable disabled, no AI powered features. I just made the first version of the enitities but I am still reworking and making sure they are fully finished, foolproof and can be counted on for the rest of the project. My main concern is learning; I am not sure if I will release this version (I am think of rewriting it in react later but I need to learn Maui now) but I wanna do it in a way where I teach myself right and where it is safe and could be pushed online if it ends up being a solid working project. Make sure to ask me more questions if you need more info; best to get us on a straight line before heading in and tackling the project.
+
+## prompt 4
+I was gonna do Model Validation attributes + EF Core standard + Controller checks + front end security (doesn't really help but still) + enitity checks and extra checks using that ThirdLineValidationService
+
+## prompt 5
+That's where it is, on entity level in the business logic. Its the very very last line after all checks have already passed.  Could it be usefull to improve the service or is it best to remove it (except the email). I would use ValidateAntiForgeryToken, ModelState.IsValid, [Required] etc since we have also learned all of this.
+
+## prompt 6
+// Sanitize input for XSS and basic SQL injection public static string SaniziteInput(string input) { if (string.IsNullOrEmpty(input)) { return input; } // HTML encode to prevent XSS // &copy; => ©; &amp; => &; &lt; => <; &gt; => > ... string sanitized = WebUtility.HtmlEncode(input); // If there are any remaining raw HTML tags, delete them sanitized = Regex.Replace(sanitized, @"<.*?>", string.Empty); if(!IsInputClean(sanitized)) { throw new ArgumentException("Input still contains potentially dangerous content after sanitization!"); } return sanitized; }
+public static bool IsValidLength(string input, int minLength, int maxLength) { if (string.IsNullOrEmpty(input)) return false; return input.Length >= minLength && input.Length <= maxLength; }
+public static bool IsCleanProfileImageSource(string? profileImageSource) { // Null or empty is considered clean if (string.IsNullOrEmpty(profileImageSource)) { return true; } // Check for valid URL format (basic check) if (!Uri.TryCreate(profileImageSource, UriKind.Absolute, out var uriResult) || uriResult.Scheme != Uri.UriSchemeHttp && uriResult.Scheme != Uri.UriSchemeHttps) { return false; } return IsInputClean(profileImageSource); }
+public static bool IsValidEmail(string email) { if (string.IsNullOrWhiteSpace(email)) return false; // More robust regex pattern string pattern = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"; if (!Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase)) { return false; } // Additional validation using MailAddress to catch edge cases try { var addr = new System.Net.Mail.MailAddress(email); return addr.Address == email; } catch { return false; } }
+public static bool IsInputClean(string input) { if(input.Equals("null", StringComparison.OrdinalIgnoreCase) || input.Equals("void", StringComparison.OrdinalIgnoreCase) || input.Equals("undefined", StringComparison.OrdinalIgnoreCase) || input.Equals("NaN", StringComparison.OrdinalIgnoreCase) || input.Equals("[Object Object]", StringComparison.OrdinalIgnoreCase) ) { return false; } return true; }
+What about changing it to this? (Does .Net also check if emails are valid and if images are clean or not, if they do those can be deleted, same with HTML sanitization (can't hurt to have it, > remains >, but if it auto happens it's a bad idea)
+
+## prompt 7
+IsInputClean, I have this because I don't want users with usernames like [Object Object] or void or so in my database as I don't want unneeded headaches later
+
+## prompt 8
+/init
+
+## prompt 9
+Add claude.md file
+
+## promp 10
+git push
+
+## prompt 11
+Please review the .core and tell me what can be improved or won't work
+
+## prompt 12
+Fix GetAllKills() and GetAllDeaths()
+
+## prompt 13
+I changed the AttackerRepoService messages in the Errors, can you do the other files where it’s needed the same way.
+
+## prompt 14
+now move the {id} in the first message in the repo services in the Error entities to the 2nd message like I did in the AttackerRepoService
+
+## prompt 15
+Finish the seeder for me
+
+## prompt 16
+I’m guessing it’s better to get all logic out of the entities.
+
+## prompt 17
+What about the Game entity? (and it’s methods)
+
+## prompt 18
+I now have a GameRepoService, best to move em here?
+
+## prompt 19
+Start by creating the GameService file first
+
+## prompt 20
+yes
+
+## prompt 21
+Best to simplify even further or not?
+
+## prompt 22
+yes
+
+## prompt 23
+Now can’t we get rid of the constructors?
+
+## prompt 24
+Yes, with get; init; to lock it down
+
+## prompt 25
+Update the User entity the same way
+
+## prompt 26
+Now TargetAssignment entity
+
+## prompt 27
+Clean up the remaining entities (Kill, Player, Rules, Log, Attacker)
+
+## prompt 28
+/upgrade
+
+## prompt 29
+Update seeder now
+
+## prompt 30
+You mentioned GameService needs updates, lets fix that first
+
+## prompt 31
+Keep this in mind for the rest of the project: I can use AI for this but I will need to present it and may need to explain code on the spot. I want it to be super readable. I refactored GetMaxPlayersForLobbySize and CreateKill in GameService as example. Try to avoid lambda, I can read it so if it’s clearly best it’s fine but I prefer simple if else. Use the simple switch statement etc etc. Readability is important
+
+## prompt 32
+Now save these learnings to memory.md
+
+## prompt 33
+Go trough the core project and see what needs improvement or fixing
+
+## prompt 34
+Fix them in order
+
+## prompt 35
+Lets rewrite the username validation; it’s way to complex. Remove it from the config and make a simple list check in the validation service.
+
+## prompt 36
+Recheck the core app to see if we missed anything or anything can use improvement. Also look for code that could be written better (readability). I need to be able to explain all code on the spot under stress.
+
+## prompt 37
+yes
+
+## prompt 38
+Save the next to your memory :try to avoid ?? where you can as well
+
+## prompt 39
+Go trough the .Web project and see what needs improvement
+
+## prompt 30
+yes
+
+## prompt 31
+Save to memory and commit
+
+## prompt 32
+push it
+
+## prompt 33
+add-migration "InitialMigration"
+Build started...
+Build succeeded.
+The pipeline has been stopped.
+PM> add-migration "InitialMigration"
+Build started...
+Build succeeded.
+The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: C:\Users\yolow\Desktop\eigen projecten\Gotcha\Gotcha\Gotcha.Web\Gotcha.Web.csproj : warning NU1510: PackageReference Microsoft.Extensions.Configuration.Json will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.
+
+
+## prompt 34
+Add-migration « InitialMigration »
+
+## prompt 35
+stop
+
+## prompt 36
+git pull
+
+## prompt 37
+I did the pull, it should be fixed now. Check the web project again pls.
+
+## prompt 38
+yes
+
+## prompt 39
+Save to memory and commit
+
+## prompt 41
+Now recheck the js files for improvements
+
+## prompt 42
+yes
+
+## prompt 43
+commit and push
+
+## prompt 44
+Since the last refactors we did the navbar in _layout (the regular one, not in area) got messed up. Can you check all classes you changed in html tags, if they add margin or padding (if it was a typo that did nothing and now it does it added margin or padding) and list them for me pls
+
+## prompt 45
+Create a new view for logged in users (inside the area) for the user settings (settings.cshtml). The user should be able to change their firstname, lastname, username, image, birthday and email. There should also be a link to the userSettings page. Make the view in the same style as the others. Take note of the signup page since that one is most similar.
+
+## prompt 46
+I made a new word doc in the project. This document lists all prompts in this chat. When I give you a new prompt; can you add it to the word file automatically so I have a clean log of all prompts?
+
+## prompt 47
+Switch to md
+
+## prompt 48
+I made the new md file myself (Claude prompts.md). Can you use this file to log all prompts (including this one) so I have a clear overview of all prompts used in this project
+
+## prompt 49
+rename it to Claude_Prompts
+
+## prompt 50
+save to your memory that you have to log every prompt in that file in this project
+
+## prompt 51
+in the settings page the bday input field placeholder is white. it should be same blue as the others, untill a date is entered (then it turns white) (like in signup) fix this pls
+
+## prompt 52
+the view needs 2 links, 1 to resetPassword (don't add the asp-link yet, this will send an email first) and a link to the "Unlock Features (shop)" page (doesn't exist yet, so don't add the asp-link itself yet)
+### prompt 52.2
+pick whatever is most professional given the context
+
+## prompt 53
+when you ask for sub-prompts (like Where should the two links go — below the Save button, or somewhere else?) also log the answer prompts in the Claude-Prompts file like I did right now.
+*(copy pasted 52 and 52.2 for context here)*
+
+## prompt 54
+I worked a bit on the links, I gave a good idea of what I want it to look but the 2nd link has different margin/padding than the first. Can you find the cause and fix it
