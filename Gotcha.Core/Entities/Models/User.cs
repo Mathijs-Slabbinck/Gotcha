@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gotcha.Core.Enums;
 
-namespace Gotcha.Core.Entities
+namespace Gotcha.Core.Entities.Models
 {
     public class User
     {
@@ -13,6 +14,7 @@ namespace Gotcha.Core.Entities
         public string Username { get; set; }
         public string Email { get; set; }
         public string? ProfileImageSource { get; set; }
+        public Genders Gender { get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime AccountCreationDate { get; init; } = DateTime.UtcNow;
         public List<Player> PlayerAccounts { get; set; } = new List<Player>();

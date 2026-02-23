@@ -1,4 +1,4 @@
-namespace Gotcha.Core.Entities.Logging
+namespace Gotcha.Core.Entities.Logging.Models
 {
     // Stores info about users who triggered security violations (e.g. invalid input, suspicious requests)
     public class Attacker

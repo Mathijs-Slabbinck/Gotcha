@@ -1,4 +1,4 @@
-using Gotcha.Core.Entities;
+using Gotcha.Core.Entities.Models;
 using Gotcha.Core.Enums;
 using Gotcha.Core.Exceptions;
 using Gotcha.Core.Exceptions.NotFound;

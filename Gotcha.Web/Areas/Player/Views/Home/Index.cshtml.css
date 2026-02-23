@@ -1,10 +1,4 @@
-.playerImage {
-    max-width: 80%;
-    max-height: auto;
-    margin: 0 auto;
-}
-
-.playerStats li {
+﻿.glowingCard p {
     color: var(--primary-color-blue);
     list-style-type: none;
     font-size: 1.2rem;

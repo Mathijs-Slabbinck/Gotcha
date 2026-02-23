@@ -1,8 +1,7 @@
-namespace Gotcha.Core.Entities
+namespace Gotcha.Core.Entities.Models
 {
     public class Kill
     {
-        #region Properties
         public Guid Id { get; init; } = Guid.NewGuid();
         public Guid GameId { get; init; }
         public Game Game { get; init; }
@@ -16,6 +15,5 @@ namespace Gotcha.Core.Entities
         public bool IsValid { get; set; } = true;
         public string KillMessage { get; init; } = string.Empty;
         public TimeSpan TimeSinceAssignedTarget { get; init; } = TimeSpan.Zero;
-        #endregion
     }
 }

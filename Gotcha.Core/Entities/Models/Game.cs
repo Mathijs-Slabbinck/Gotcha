@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Gotcha.Core.Entities
+namespace Gotcha.Core.Entities.Models
 {
     public class Game
     {

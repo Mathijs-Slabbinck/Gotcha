@@ -1,6 +1,6 @@
 using Gotcha.Core.Enums;
 
-namespace Gotcha.Core.Entities
+namespace Gotcha.Core.Entities.Models
 {
     public class Player
     {

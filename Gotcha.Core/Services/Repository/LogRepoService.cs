@@ -1,11 +1,11 @@
 ﻿using Gotcha.Core.Data;
 using Gotcha.Core.Services.ResultModel;
-using Gotcha.Core.Entities.Logging;
 using Microsoft.EntityFrameworkCore;
 using Gotcha.Core.Enums;
 using Gotcha.Core.Interfaces;
 using Gotcha.Core.Entities.Logging.LogEntities;
 using System.Data;
+using Gotcha.Core.Entities.Logging.Models;
 
 namespace Gotcha.Core.Services.Repository
 {

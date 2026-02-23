@@ -1,6 +1,6 @@
 ﻿using Gotcha.Core.Data;
-using Gotcha.Core.Entities;
 using Gotcha.Core.Entities.Logging.LogEntities;
+using Gotcha.Core.Entities.Models;
 using Gotcha.Core.Enums;
 using Gotcha.Core.Interfaces;
 using Gotcha.Core.Services.ResultModel;

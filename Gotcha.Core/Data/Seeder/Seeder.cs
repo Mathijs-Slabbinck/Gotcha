@@ -1,4 +1,4 @@
-using Gotcha.Core.Entities;
+using Gotcha.Core.Entities.Models;
 using Gotcha.Core.Enums;
 
 namespace Gotcha.Core.Data.Seeder

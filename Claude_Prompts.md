@@ -232,3 +232,27 @@ can you fix the homecontroller in player area so it will show the correct layout
 
 ## prompt 62
 InvalidOperationException: Unable to resolve service for type 'Gotcha.Core.Services.Repository.UserRepoService' while attempting to activate 'Gotcha.Web.Controllers.SignUpController'.
+
+## prompt 63
+add and commit the changes
+
+## prompt 64
+How would I add "admin" to the navbar? Could I write logic for this in _layout or this is bad practise?
+
+## prompt 65
+I wanna do the player _layout with 1 _layout file using partials. I have already created the files. Could you implement it this way?
+
+## prompt 66
+I have 3 files with the same layout, just a different navbar (and area). Is there a clean way to use 1 _Layout and use partials for loading them in or is this bad practise given the areas
+
+## prompt 67
+I enabled nullable. This shouldn't be an issue since I used ? to define nullable vars all over but can you check to be sure
+
+## prompt 68
+I am working on the player home, now we use ViewData for things like IsAdmin, IsAlive. Can you check the ViewModel I made so far and see if we should move that logic there (I am thinking not because it affects the navbar and thus also other views so may be good to keep it separate). Also, I should use the ViewModel instead of ViewData for the rest right?
+
+## prompt 69
+ArgumentOutOfRangeException: Token 2000000 in player home, why? It works if I just do simple p tags in the first if, but I want the block I added (but this causes the error).
+
+## prompt 70
+yes fix it

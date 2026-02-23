@@ -1,6 +1,6 @@
 using Gotcha.Core.Enums;
 
-namespace Gotcha.Core.Entities.Logging
+namespace Gotcha.Core.Entities.Logging.Models
 {
     public class Log
     {

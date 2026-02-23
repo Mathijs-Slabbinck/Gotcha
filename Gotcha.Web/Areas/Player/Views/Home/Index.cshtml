@@ -1,1 +1,105 @@
-﻿
+﻿@using Gotcha.Core.Enums;
+
+@{
+	ViewData["Title"] = "Player Home";
+}
+
+@model Gotcha.Web.Areas.Player.ViewModels.HomeViewModel
+
+@if(ViewData["IsAlive"] is true)
+{
+	<div class="row">
+		<h1 class="col-12 text-center">Status:</h1>
+
+		<div class="card glowingCard formBg mt-4 col-10 col-lg-12 mx-auto p-0 mb-5">
+			<div class="card-header row">
+				<h2 class="col-12 text-center font-robotoSlab fw-bold color-3 mt-3">Current Target:</h2>
+			</div>
+			<div class="row justify-content-center">
+				@if(Model.ProfileImgSource != null && !String.IsNullOrEmpty(Model.ProfileImgSource))
+				{
+					<img class="img-fluid rounded-circle targetImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="placeholder image" src="@Model.ProfileImgSource" />
+				}
+				else
+				{
+					switch (Model.Gender)
+					{
+						case Genders.Male:
+							<img class="img-fluid rounded-circle targetImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Male placeholder image" src="~/images/male-placeholder.png" />
+							break;
+						case Genders.Female:
+							<img class="img-fluid rounded-circle targetImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Female placeholder image" src="~/images/female-placeholder.png" />
+							break;
+						default:
+							<img class="img-fluid rounded-circle targetImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Other gender placeholder image" src="~/images/other-placeholder.png" />
+							break;
+					}
+				}
+			</div>
+			<div class="row justify-content-center">
+				@if (Model.FullName != null && !String.IsNullOrEmpty(Model.FullName))
+				{
+					<div class="col-12">
+						<div class="row justify-content-center">
+							<div class="col-10 col-md-8 col-xl-6">
+								<div class="row justify-content-around">
+									<p class="col-5 text-start fs-2 text-nowrap">Target Name:</p>
+									<p class="col-5 text-end fs-3 text-nowrap">@Model.FullName</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+				
+				@if (Model.Username != null && !String.IsNullOrEmpty(Model.Username))
+				{
+					<div class="col-12">
+						<div class="row justify-content-center">
+							<div class="col-10 col-md-8 col-xl-6">
+								<div class="row justify-content-around">
+									<p class="col-5 text-start fs-2 text-nowrap">Target Username:</p>
+									<p class="col-5 text-end fs-3 text-nowrap">@Model.Username</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+
+				@if(Model.Weapon != null && !String.IsNullOrEmpty(Model.Weapon))
+				{
+					<div class="col-12">
+						<div class="row justify-content-center">
+							<div class="col-10 col-md-8 col-xl-6">
+								<div class="row justify-content-around">
+									<p class="col-5 text-start fs-2 text-nowrap">Weapon:</p>
+									<p class="col-5 text-end fs-3 text-nowrap">@Model.Weapon</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+
+				@if(Model.AssignmentExpirationDate != null)
+				{
+					TimeSpan timeDifference = (TimeSpan)(Model.AssignmentExpirationDate - DateTime.UtcNow);
+					int dd = timeDifference.Days; // days difference
+					int hd = timeDifference.Hours; // hours difference
+					int md = timeDifference.Minutes; // minutes difference
+					int sd = timeDifference.Seconds; // seconds difference
+
+					<div class="col-12 my-4">
+						<div class="row justify-content-center">
+							<p class="col-12 text-center fs-2 text-nowrap my-0">Time Left:</p>
+							<p class="col-12 text-center fs-3 text-nowrap">@($"{dd} Days, {hd} Hours, {md} Minutes, {sd} Seconds")</p>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+}
+else
+{
+	<h1>Welcome to the Player Home</h1>
+	<h1>Your current status is: Dead</h1>
+}

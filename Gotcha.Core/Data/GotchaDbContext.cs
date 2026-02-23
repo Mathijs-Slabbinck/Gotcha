@@ -1,5 +1,5 @@
-using Gotcha.Core.Entities;
-using Gotcha.Core.Entities.Logging;
+using Gotcha.Core.Entities.Logging.Models;
+using Gotcha.Core.Entities.Models;
 using Microsoft.EntityFrameworkCore;
 
 
