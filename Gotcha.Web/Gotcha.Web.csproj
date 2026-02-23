@@ -24,4 +24,9 @@
     <ProjectReference Include="..\Gotcha.Core\Gotcha.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Player\ViewModels\" />
+    <Folder Include="Areas\User\ViewModels\" />
+  </ItemGroup>
+
 </Project>

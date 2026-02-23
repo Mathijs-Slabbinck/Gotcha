@@ -1,4 +1,5 @@
 using Gotcha.Core.Data;
+using Gotcha.Core.Services;
 using Gotcha.Core.Services.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,8 +14,17 @@ builder.Services.AddDbContext<GotchaDbContext>(
     .UseSqlServer(builder.Configuration.GetConnectionString("GotchaDbContext"))
 );
 
-// Services
+// Repository Services
+builder.Services.AddScoped<AttackerRepoService>();
+builder.Services.AddScoped<GameRepoService>();
+builder.Services.AddScoped<KillRepoService>();
 builder.Services.AddScoped<LogRepoService>();
+builder.Services.AddScoped<PlayerRepoService>();
+builder.Services.AddScoped<RulesRepoService>();
+builder.Services.AddScoped<UserRepoService>();
+
+// Business Logic Services
+builder.Services.AddScoped<GameService>();
 
 var app = builder.Build();
 

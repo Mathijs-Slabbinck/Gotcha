@@ -3,14 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Gotcha.Web</title>
+    <title>GOTCHA - @ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/Layout.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Gotcha.Web.styles.css" asp-append-version="true" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nosifer&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Nosifer&family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="57x57" href="~/images/favicons/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="~/images/favicons/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="~/images/favicons/apple-icon-72x72.png">
@@ -33,23 +34,35 @@
     <div id="bodyBackground">
     <header>
         <nav class="noSelect bigScreenNav">
-            <ul class="row">
-                <li class="col-4">
-                    <span class="navLogoBackground navLogoBackgroundBigScreen"></span>
-                    <figure class="navLogoContainer clickAble">
-                        <img class="navLogoImage img-fluid" src="~/images/logoFullPng.png" />
-                            <figcaption class="navLogoText">GOTCHA</figcaption>
-                    </figure>
-                </li>
-            </ul>
+                <div class="row maxWidth100">
+                <div class="col-12 col-xl-10">
+                    <ul class="row align-items-center justify-content-between">
+                        <li class="col-2">
+                            <span class="navLogoBackground navLogoBackgroundBigScreen"></span>
+                            <figure class="navLogoContainer clickAble">
+                                <img class="navLogoImage img-fluid" src="~/images/logoFullPng.png" />
+                                <figcaption class="navLogoText font-nosifer">GOTCHA</figcaption>
+                            </figure>
+                        </li>
+                        <li class="col-8 col-lg-9 pt-5 mt-3">
+                            <ul class="row justify-content-between">
+                                <li class="col-2 text-center fw-bold fs-4 font-robotoSlab text-nowrap"><a asp-controller="Home" asp-action="Index">Target Info</a></li>
+                                <li class="col-2 text-center fw-bold fs-4 font-robotoSlab text-nowrap"><a asp-controller="ConfirmKill" asp-action="Index">Confirm Kill</a></li>
+                                <li class="col-2 text-center fw-bold fs-4 font-robotoSlab text-nowrap"><a asp-controller="Settings" asp-action="Index">Player Settings</a></li>
+                                <li class="col-2 text-center fw-bold fs-4 font-robotoSlab text-nowrap"><a asp-controller="Admin" asp-action="Index">Admin</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
 
         <nav class="noSelect smallScreenNav">
             <ul class="row align-items-center justify-content-between">
                 <li class="col-8 justify-content-center d-flex">
-                    <figure class="navLogoBackground clickAble d-flex flex-row align-items-center justify-content-around row">
+                    <figure class="navLogoBackground clickAble d-flex flex-row align-items-center justify-content-between row">
                         <img class="img-fluid col-5" src="~/images/logoFullPng.png" />
-                        <figcaption class="col-7">GOTCHA</figcaption>
+                        <figcaption class="col-7 font-nosifer">GOTCHA</figcaption>
                     </figure>
                 </li>
                 <li class="col-3 pb-3">
@@ -61,19 +74,29 @@
                 </li>
             </ul>
         </nav>
-
     </header>
+
+    <div class="menuOpenNavContainer">
+        <div class="row justify-content-center menuOpenNav mx-auto">
+            <div class="col-10">
+                <ul class="row card glowingCard p-0 mt-4">
+                    <li class="col-12 my-4 py-4"><a asp-controller="TargetInfo" asp-action="Index">Target Info</a></li>
+                    <li class="col-12 my-4 py-4"><a asp-controller="ConfirmKill" asp-action="Index">Confirm Kill</a></li>
+                    <li class="col-12 my-4 py-4"><a asp-controller="Settings" asp-action="Index">Player Settings</a></li>
+                    <li class="col-12 my-4 py-4"><a asp-controller="Admin" asp-action="Index">Admin</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="fullsvh">
+    </div>
+
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-1">
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Gotcha.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

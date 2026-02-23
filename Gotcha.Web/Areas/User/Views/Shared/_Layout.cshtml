@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GOTCHA - @ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/Layout.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Gotcha.Web.styles.css" asp-append-version="true" />
 
@@ -34,8 +35,8 @@
     <header>
         <nav class="noSelect bigScreenNav">
                 <div class="row maxWidth100">
-                <div class="col-12 col-md-10 col-lg-10">
-                    <ul class="row align-items-center">
+                <div class="col-12 col-xl-10">
+                    <ul class="row align-items-center justify-content-between">
                         <li class="col-2">
                             <span class="navLogoBackground navLogoBackgroundBigScreen"></span>
                             <figure class="navLogoContainer clickAble">
@@ -43,10 +44,14 @@
                                 <figcaption class="navLogoText font-nosifer">GOTCHA</figcaption>
                             </figure>
                         </li>
-                        <li class="col-2 mt-5 text-center fw-bold fs-4 font-robotoSlab"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li class="col-2 mt-5 text-center fw-bold fs-4 font-robotoSlab"><a asp-controller="Games" asp-action="Index">Games</a></li>
-                        <li class="col-2 mt-5 text-center fw-bold fs-4 font-robotoSlab text-nowrap"><a asp-controller="Settings" asp-action="Index">User Settings</a></li>
-                        <li class="col-2 mt-5 text-center fw-bold fs-4 font-robotoSlab text-nowrap"><a asp-controller="Store" asp-action="Index">Unlock Features</a></li>
+                        <li class="col-8 col-lg-9 pt-5 mt-3">
+                            <ul class="row justify-content-between">
+                                <li class="col-2 text-center fw-bold fs-4 font-robotoSlab text-nowrap"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                <li class="col-2 text-center fw-bold fs-4 font-robotoSlab text-nowrap"><a asp-controller="Games" asp-action="Index">Games</a></li>
+                                <li class="col-2 text-center fw-bold fs-4 font-robotoSlab text-nowrap"><a asp-controller="Settings" asp-action="Index">User Settings</a></li>
+                                <li class="col-2 text-center fw-bold fs-4 font-robotoSlab text-nowrap"><a asp-controller="Store" asp-action="Index">Unlock Features</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -1,9 +1,3 @@
-﻿/* #region Root Variables */
-
-@import "Variables.css";
-
-/* #endregion */
-
 #infoBlock {
     background-color: var(--background-color-blue);
     border: 3px solid var(--secondary-color-blue);

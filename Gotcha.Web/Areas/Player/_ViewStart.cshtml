@@ -1,0 +1,10 @@
+﻿@{
+    if (ViewData["IsAlive"] is true)
+    {
+        Layout = "_LayoutAlive";
+    }
+    else
+    {
+        Layout = "_LayoutDead";
+    }
+}

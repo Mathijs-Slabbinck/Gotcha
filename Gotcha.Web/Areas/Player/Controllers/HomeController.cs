@@ -7,6 +7,7 @@ namespace Gotcha.Web.Areas.Player.Controllers
     {
         public IActionResult Index()
         {
+            ViewData["IsAlive"] = true;
             return View();
         }
     }

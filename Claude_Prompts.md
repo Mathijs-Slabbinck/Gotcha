@@ -206,3 +206,29 @@ when you ask for sub-prompts (like Where should the two links go — below the S
 
 ## prompt 54
 I worked a bit on the links, I gave a good idea of what I want it to look but the 2nd link has different margin/padding than the first. Can you find the cause and fix it
+
+## prompt 55
+_layout for example has it's css file directly attached to the html file. I have them seperate (in the css folder). I am guessing having them attached is the cleaner option. How to do this?
+### prompt 55.2
+I mean like this (Image attached: _Layout.cshtml with _Layout.cshtml.css next to it)
+
+## prompt 56
+do this for all other views
+
+## prompt 57
+I am guessing the same goes for js files? If yes, can you also do that for me
+
+## prompt 58
+currently the idea with the areas is the following: standard (no area) for unauthenticated users, then an area for authenticated users (User) and an area another area for authenticated users that are in-game (Player) (all 3 need a different nav bar). Is this a good idea/setup or do you have better ideas/suggestions/setups to achieve a clean architecture
+
+## prompt 59
+I am thinking, players that are dead (but also in game) should also see a different navBar. How would I best tackle this in my architecture
+
+## prompt 60
+can you do this for me
+
+## prompt 61
+can you fix the homecontroller in player area so it will show the correct layout
+
+## prompt 62
+InvalidOperationException: Unable to resolve service for type 'Gotcha.Core.Services.Repository.UserRepoService' while attempting to activate 'Gotcha.Web.Controllers.SignUpController'.
