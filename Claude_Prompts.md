@@ -286,3 +286,9 @@ yes, apply the fix
 
 ## prompt 80
 I think I finished the home view for players (including viewmodel (and added test data in the controller). Can you check out this page; see if everything is done correctly. Let me know what can use improvement. Look for the next 3 things: errors / bugs | possible improvements (possible extra data I didn't think of etc) | possibe UI improvements if there are any (as in, things that could be in a better order or easier on the eye). It's ok to say everything is ok if it is. List me the suggestions per category when done
+
+## prompt 81
+fix the errors, fix possible improvements 3 and 4 (ignore 1 and 2, those are fine), I like the current UI above the '-' since these settings may be turned off so it will never need to show data, so '-' is overkill
+
+## prompt 82
+add, commit and push changes
