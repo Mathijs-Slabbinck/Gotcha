@@ -256,3 +256,33 @@ ArgumentOutOfRangeException: Token 2000000 in player home, why? It works if I ju
 
 ## prompt 70
 yes fix it
+
+## prompt 71
+add, commit and push the changes
+
+## prompt 72
+my css in Index.cshtml.css in player home for the targetImage doesn't work. When I do h1 color white it works so the file is linked correctly but I can't seem to target the image (also not by doing .glowingCard img or so)
+
+## prompt 73
+I just added a timer to the player home index view. Add a js script that will make it count down visually for the user in a correct tempo
+
+## prompt 74
+in the player home view, the blocks with class statBlock in the in the first card (Current Target) can't seem to target their css (no border-bottom in shown). I also tried ::deep but still nothing. Can you suggest a fix
+
+## prompt 75
+apply the fix without breaking or changing how it looks for the user
+
+## prompt 76
+the 2 cards on the player home don't have the same with but they should have. Find out why and suggest a fix
+
+## prompt 77
+apply the fix
+
+## prompt 78
+when scrolling, the navbar image is sticky (stays on the page, the nav itself scrolls away). I am pretty sure this is because of the position absolute but it has to be absolute. Present a fix that won't break the navbar and the logo (and it's click event where it 'claps out')
+
+## prompt 79
+yes, apply the fix
+
+## prompt 80
+I think I finished the home view for players (including viewmodel (and added test data in the controller). Can you check out this page; see if everything is done correctly. Let me know what can use improvement. Look for the next 3 things: errors / bugs | possible improvements (possible extra data I didn't think of etc) | possibe UI improvements if there are any (as in, things that could be in a better order or easier on the eye). It's ok to say everything is ok if it is. List me the suggestions per category when done

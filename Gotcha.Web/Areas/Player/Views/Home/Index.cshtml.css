@@ -6,3 +6,180 @@
     font-style: normal;
     font-weight: bold;
 }
+
+.killInfoTable{
+    border: 4px solid var(--third-color-blue);
+}
+
+
+.killInfoBlock {
+    border-top: 2px solid var(--secondary-color-blue);
+    border-bottom: 2px solid var(--secondary-color-blue);
+    background-color: var(--background-color-transparant-blue);
+}
+
+.killInfoBlock:not(:last-of-type) {
+    border-top: 2px solid var(--secondary-color-blue);
+    background-color: var(--background-color-transparant-blue);
+}
+
+.killInfoTableHeader {
+    border: 2px solid var(--secondary-color-blue);
+    background-color: var(--secondary-color-blue);
+}
+
+.killInfoTableHeader p {
+    color: lightblue;
+    font-size: 2.4vw !important;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.killInfo:not(.killTimeInfo) {
+    font-size: 1.7vw !important;
+}
+
+.killTimeInfo {
+    font-size: 1.4vw !important;
+}
+
+.statBlock:not(:last-of-type) {
+    border-bottom: 2px solid var(--primary-color-blue) !important;
+    padding-bottom: 1.5vh !important;
+}
+
+.statsBlocksContainer {
+    border-top: 2px solid var(--primary-color-blue);
+    border-bottom: 2px solid var(--primary-color-blue);
+}
+
+.nameBlock p:nth-last-of-type(even):first-of-type {
+    font-size: 3vw;
+}
+
+.nameBlock p:nth-of-type(3) {
+    font-size: 2.3vw;
+}
+
+.nameBlock p:nth-last-of-type(odd) {
+    font-size: 2.5vw;
+}
+
+#killOverviewTitle {
+    margin: 8vh 0 3vh 0;
+}
+
+@media only screen and (max-width: 991px) {
+    .smallBorderRight {
+        border-right: 2px solid var(--primary-color-blue);
+    }
+}
+
+@media only screen and (min-width: 575px) {
+    .killInfoTableHeader p {
+        font-size: 1.8vw !important;
+    }
+
+    .killInfo:not(.killTimeInfo) {
+        font-size: 1.6vw !important;
+    }
+
+    .killTimeInfo {
+        font-size: 1.45vw !important;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    /* Why is .playerImage not enough (and why do we use :deep):
+
+    CSS isolation works by adding a unique attribute (like b-abc123) to your HTML elements at build time. The generated
+    CSS then becomes .playerImage[b-abc123], so it only matches elements with that attribute.
+
+    The problem:
+    Elements inside Razor control flow blocks (@if, @switch/case) sometimes don't get the scope attribute added by the build tooling.
+    Your h1 on line 12 works because it's at a simpler nesting level,
+    but the img tags inside the nested @if/@switch on lines 21-34 likely aren't getting the b-* attribute.
+
+    The fix:
+    Use the ::deep combinator in your CSS isolation file.
+    This tells the framework "match this selector on child elements even if they don't have the scope attribute": */
+    ::deep .playerImage {
+        max-width: 30vh !important;
+    }
+
+    .killInfoTableHeader p {
+        font-size: 1.9vw !important;
+    }
+
+    .killInfo:not(.killTimeInfo) {
+        font-size: 1.7vw !important;
+    }
+
+    .killTimeInfo {
+        font-size: 1.55vw !important;
+    }
+
+    .nameBlock p:nth-of-type(3) {
+        font-size: 1.6vw !important;
+    }
+
+    .nameBlock p:nth-last-of-type(odd) {
+        font-size: 2.2vw !important;
+    }
+
+    .nameBlock p:nth-last-of-type(even):first-of-type {
+        font-size: 2.3vw;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .killInfoTableHeader p {
+        font-size: 1.55vw !important;
+    }
+
+    .killInfo:not(.killTimeInfo) {
+        font-size: 1.4vw !important;
+    }
+
+    .killTimeInfo {
+        font-size: 1.3vw !important;
+    }
+
+    .nameBlock p:nth-of-type(3) {
+        font-size: 1.45vw !important;
+    }
+
+    .nameBlock p:nth-last-of-type(odd) {
+        font-size: 1.7vw !important;
+    }
+
+    .nameBlock p:nth-last-of-type(even):first-of-type {
+        font-size: 2vw;
+    }
+}
+
+@media only screen and (min-width: 1400px) {
+    .killInfoTableHeader p {
+        font-size: 1.35vw !important;
+    }
+
+    .killInfo:not(.killTimeInfo) {
+        font-size: 1.1vw !important;
+    }
+
+    .killTimeInfo {
+        font-size: 1vw !important;
+    }
+
+    .nameBlock p:first-of-type {
+        font-size: 1.5vw !important;
+    }
+
+    .nameBlock p:nth-of-type(3) {
+        font-size: 1.25vw !important;
+    }
+
+    .nameBlock p:nth-last-of-type(odd) {
+        font-size: 1.3vw !important;
+    }
+}

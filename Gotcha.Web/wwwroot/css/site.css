@@ -215,6 +215,10 @@ html, body {
     overflow-y: auto;
 }
 
+header {
+    position: relative;
+}
+
 nav {
     margin-bottom: 5vh;
 }
@@ -237,6 +241,12 @@ nav ul li a,
 nav ul li a:hover {
     color: var(--primary-color-blue) !important;
     text-shadow: 2px 2px 2px var(--secondary-color-blue) !important;
+}
+
+@media only screen and (min-wdith: 1600px){
+    .bigScreenNav .maxWidth100 div:first-of-type {
+        max-width: 88vh;
+    }
 }
 
 footer span {

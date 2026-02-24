@@ -4,11 +4,15 @@
     margin: 0 auto;
 }
 
-.playerStats li {
+.playerStats ul li {
     color: var(--primary-color-blue);
     list-style-type: none;
     font-size: 1.2rem;
     font-family: "Roboto", sans-serif;
     font-style: normal;
     font-weight: bold;
+}
+
+.playerStats {
+    border-left: 2px solid var(--primary-color-blue) !important;
 }

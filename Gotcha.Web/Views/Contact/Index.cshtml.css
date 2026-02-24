@@ -41,7 +41,7 @@ select option[disabled]{
 }
 
 #messageField {
-    background-color: #5AD6DE40;
+    background-color: var(--background-color-transparant-blue);
     resize: none;
     /* Firefox */
     scrollbar-width: none;
