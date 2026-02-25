@@ -1,5 +1,128 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+::deep .glowingCard p {
+    color: var(--primary-color-blue);
+    list-style-type: none;
+    font-size: 1.2rem;
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: bold;
+}
+
+::deep .gameInfoTable {
+    border: 4px solid var(--third-color-blue);
+}
+
+::deep .gameInfoBlock {
+    border-top: 2px solid var(--secondary-color-blue);
+    border-bottom: 2px solid var(--secondary-color-blue);
+    background-color: var(--background-color-transparant-blue);
+}
+
+::deep .gameInfoBlock:not(:last-of-type) {
+    border-top: 2px solid var(--secondary-color-blue);
+    background-color: var(--background-color-transparant-blue);
+}
+
+::deep .gameInfoTableHeader {
+    border: 2px solid var(--secondary-color-blue);
+    background-color: var(--secondary-color-blue);
+}
+
+::deep .gameInfoTableHeader p {
+    color: lightblue;
+    font-size: 2.4vw !important;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+::deep .gameInfo {
+    color: var(--primary-color-blue);
+}
+
+::deep .gameInfo:not(.gameTimeInfo) {
+    font-size: 1.7vw !important;
+}
+
+::deep .gameTimeInfo {
+    font-size: 1.4vw !important;
+}
+
+::deep .gameRowLink {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+::deep .gameInfoBlock:hover {
+    background-color: var(--background-color-transparant-blue-2);
+    cursor: pointer;
+}
+
+::deep .noGamesMessage {
+    color: var(--primary-color-blue);
+    font-family: "Roboto", sans-serif;
+    font-style: italic;
+}
+
+::deep .aliveStatus {
+    color: #4cff4c !important;
+}
+
+::deep .deadStatus {
+    color: #ff5555 !important;
+}
+
+@media only screen and (min-width: 575px) {
+    ::deep .gameInfoTableHeader p {
+        font-size: 1.8vw !important;
+    }
+
+    ::deep .gameInfo:not(.gameTimeInfo) {
+        font-size: 1.6vw !important;
+    }
+
+    ::deep .gameTimeInfo {
+        font-size: 1.45vw !important;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    ::deep .gameInfoTableHeader p {
+        font-size: 1.9vw !important;
+    }
+
+    ::deep .gameInfo:not(.gameTimeInfo) {
+        font-size: 1.7vw !important;
+    }
+
+    ::deep .gameTimeInfo {
+        font-size: 1.55vw !important;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    ::deep .gameInfoTableHeader p {
+        font-size: 1.55vw !important;
+    }
+
+    ::deep .gameInfo:not(.gameTimeInfo) {
+        font-size: 1.4vw !important;
+    }
+
+    ::deep .gameTimeInfo {
+        font-size: 1.3vw !important;
+    }
+}
+
+@media only screen and (min-width: 1400px) {
+    ::deep .gameInfoTableHeader p {
+        font-size: 1.35vw !important;
+    }
+
+    ::deep .gameInfo:not(.gameTimeInfo) {
+        font-size: 1.1vw !important;
+    }
+
+    ::deep .gameTimeInfo {
+        font-size: 1vw !important;
+    }
 }

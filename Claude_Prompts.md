@@ -325,3 +325,39 @@ implement (and if needed, correct) all unit tests
 
 ## prompt 92
 add, commit and push changes
+
+## prompt 93
+create the games view and viewmodel (and edit the controller as needed). It should list all games in 2 categories, active games and ended games. It should show the games as a list with info in it (like I did in player home). Info should depend on the game. When the user clicks on it they should be taken to the player home page of that game
+
+### prompt 93.1
+startdate, endate (if finished), winner (if finished), player count, alive (yes or no) (if not finished)
+
+## prompt 94
+edit the new view, I want it all on 1 line like a table. More like the Kills Overview part of player index
+
+## prompt 95
+make the text inside the tables (not alive) primary blue var color (or a similar one with high contrast) in stead of black
+
+## prompt 96
+check the log and update if needed
+
+## prompt 97
+don't make em sub prompts, they are all seperate prompts. Also don't forget to keep logging during the project
+
+## prompt 98
+create the view for player settings. It should be similar to user settings. Here the player should be able to change their username and image for that game.
+
+## prompt 99
+also create the viewmodel and edit the controller like last tasks
+
+## prompt 100
+fix the title in Target Info and Confirm kill to be uniform with the others
+
+### prompt 100.1
+Player Home title
+
+## prompt 101
+add an info icon to the player settings title like I did in signup. When clicked it should show a modal (like in signup) with the text "These settings are only for the currently selected game and won't affect your profile outside of this game." (or something similar if it's better). Do the same for user settings (but with a correct modal text of course). so the user has a clear understanding of the point of the different setting pages
+
+## prompt 102
+add, commit and push changes

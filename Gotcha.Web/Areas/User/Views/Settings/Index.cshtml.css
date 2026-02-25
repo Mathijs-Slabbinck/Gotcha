@@ -32,7 +32,13 @@ input[type=date]:valid {
 }
 
 h1 {
-    margin-bottom: 4vh !important;
+    margin-bottom: 0 !important;
+}
+
+::deep .settingsInfoIcon {
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+    margin-bottom: 4vh;
 }
 
 .bottomLinks p,

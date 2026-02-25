@@ -1,3 +1,100 @@
-﻿@{
+@using Gotcha.Web.Areas.User.ViewModels;
+
+@{
 	ViewData["Title"] = "Games";
 }
+
+@model GamesViewModel
+
+<div class="row mb-3">
+	<h1 class="col-12 text-center fw-bold font-bungee">My Games</h1>
+</div>
+
+@* ===== ACTIVE GAMES ===== *@
+<div class="card glowingCard formBg mt-4 col-10 col-xl-11 mx-auto p-0 mb-5">
+	<div class="card-header row">
+		<h2 class="col-12 text-center font-robotoSlab fw-bold color-2 mt-3">Active Games</h2>
+	</div>
+
+	@if (Model.ActiveGames.Count == 0)
+	{
+		<div class="row justify-content-center my-4">
+			<p class="col-10 text-center fs-4 noGamesMessage">No active games.</p>
+		</div>
+	}
+	else
+	{
+		<div class="row justify-content-center">
+			<div class="col-10 col-lg-11 mb-5 mt-4 gameInfoTable">
+				<div class="row justify-content-around align-items-center gameInfoTableHeader">
+					<p class="col-3 mt-2 mb-1 text-nowrap text-center">Name:</p>
+					<p class="col-3 mt-2 mb-1 text-nowrap text-center">Started:</p>
+					<p class="col-3 mt-2 mb-1 text-nowrap text-center">Players:</p>
+					<p class="col-3 mt-2 mb-1 text-nowrap text-center">Alive:</p>
+				</div>
+
+				@foreach (GameItemViewModel game in Model.ActiveGames)
+				{
+					<a class="gameRowLink" asp-area="Player" asp-controller="Home" asp-action="Index">
+						<div class="gameInfoBlock row justify-content-around align-items-center">
+							<p class="col-3 my-2 text-nowrap text-center gameInfo">@game.Name</p>
+							<p class="col-3 my-2 text-nowrap text-center gameInfo gameTimeInfo">@game.StartDate.ToLocalTime().ToString("dd-MM-yyyy - HH:mm")</p>
+							<p class="col-3 my-2 text-nowrap text-center gameInfo">@game.PlayerCount</p>
+							@if (game.IsAlive)
+							{
+								<p class="col-3 my-2 text-nowrap text-center gameInfo aliveStatus">Yes</p>
+							}
+							else
+							{
+								<p class="col-3 my-2 text-nowrap text-center gameInfo deadStatus">No</p>
+							}
+						</div>
+					</a>
+				}
+			</div>
+		</div>
+	}
+</div>
+
+@* ===== ENDED GAMES ===== *@
+<div class="card glowingCard formBg mt-4 col-10 col-xl-11 mx-auto p-0 mb-5">
+	<div class="card-header row">
+		<h2 class="col-12 text-center font-robotoSlab fw-bold color-2 mt-3">Ended Games</h2>
+	</div>
+
+	@if (Model.EndedGames.Count == 0)
+	{
+		<div class="row justify-content-center my-4">
+			<p class="col-10 text-center fs-4 noGamesMessage">No ended games.</p>
+		</div>
+	}
+	else
+	{
+		<div class="row justify-content-center">
+			<div class="col-10 col-lg-11 mb-5 mt-4 gameInfoTable">
+				<div class="row justify-content-around align-items-center gameInfoTableHeader">
+					<p class="col mt-2 mb-1 text-nowrap text-center">Name:</p>
+					<p class="col mt-2 mb-1 text-nowrap text-center">Started:</p>
+					<p class="col mt-2 mb-1 text-nowrap text-center">Ended:</p>
+					<p class="col mt-2 mb-1 text-nowrap text-center">Winner:</p>
+					<p class="col mt-2 mb-1 text-nowrap text-center">Players:</p>
+				</div>
+
+				@foreach (GameItemViewModel game in Model.EndedGames)
+				{
+					DateTime endDate = game.EndDate.GetValueOrDefault();
+
+					<a class="gameRowLink" asp-area="Player" asp-controller="Home" asp-action="Index">
+						<div class="gameInfoBlock row justify-content-around align-items-center">
+							<p class="col my-2 text-nowrap text-center gameInfo">@game.Name</p>
+							<p class="col my-2 text-nowrap text-center gameInfo gameTimeInfo">@game.StartDate.ToLocalTime().ToString("dd-MM-yyyy - HH:mm")</p>
+							<p class="col my-2 text-nowrap text-center gameInfo gameTimeInfo">@endDate.ToLocalTime().ToString("dd-MM-yyyy - HH:mm")</p>
+							<p class="col my-2 text-nowrap text-center gameInfo">@game.WinnerName</p>
+							<p class="col my-2 text-nowrap text-center gameInfo">@game.PlayerCount</p>
+						</div>
+					</a>
+				}
+			</div>
+		</div>
+	}
+</div>

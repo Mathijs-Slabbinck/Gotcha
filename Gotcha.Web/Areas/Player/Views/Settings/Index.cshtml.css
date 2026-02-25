@@ -1,0 +1,27 @@
+label {
+    padding-left: 0.2vw !important;
+}
+
+input {
+    background-color: #FFFFFF40;
+    color: white;
+}
+
+input::placeholder {
+    color: #9ae6eb !important;
+}
+
+h1 {
+    margin-bottom: 0 !important;
+}
+
+::deep .settingsInfoIcon {
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+    margin-bottom: 4vh;
+}
+
+::deep .currentImage {
+    max-width: 100%;
+    border: 3px solid var(--primary-color-blue);
+}

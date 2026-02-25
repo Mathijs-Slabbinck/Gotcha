@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Gotcha.Web.Areas.Player.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Gotcha.Web.Areas.Player.Controllers
 {
@@ -7,7 +8,16 @@ namespace Gotcha.Web.Areas.Player.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            ViewData["IsAlive"] = true;
+            ViewData["IsAdmin"] = true;
+
+            PlayerSettingsViewModel playerSettingsViewModel = new PlayerSettingsViewModel
+            {
+                Username = "TheLegend27",
+                ProfileImgSource = null
+            };
+
+            return View(playerSettingsViewModel);
         }
     }
 }
