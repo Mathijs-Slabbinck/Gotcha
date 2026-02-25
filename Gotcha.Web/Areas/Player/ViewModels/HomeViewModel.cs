@@ -28,6 +28,13 @@ namespace Gotcha.Web.Areas.Player.ViewModels
         public string? WinnerOtherName { get; set; }
         public List<KillBaseViewModel> Kills { get; set; } = new List<KillBaseViewModel>();
         public string? Weapon { get; set; } // both for current players weapon and the weapon they got killed by (since can't be both at same time)
+        public List<string>? CustomRules { get; set; }
+        public bool IsAssassin { get; set; }
+        public bool IsChaos { get; set; }
+        public int ChaosTimerMinHours { get; set; }
+        public int ChaosTimerMaxHours { get; set; }
+        public bool IsTimed { get; set; }
+        public int TargetTimeOutHours { get; set; }
         public List<PlayerBaseViewModel> Players { get; set; } = new List<PlayerBaseViewModel>();
     }
 }

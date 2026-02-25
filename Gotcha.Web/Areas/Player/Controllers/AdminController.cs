@@ -29,7 +29,7 @@ namespace Gotcha.Web.Areas.Player.Controllers
                 ShowLivingPlayerNames = false,
                 ShowLivingPlayerNamesToDeath = false,
                 CustomKillMethods = true,
-                CustomRules = "No kills on school grounds.\nNo kills during class hours.",
+                CustomRules = new List<string> { "No kills on school grounds", "No kills during class hours" },
                 KillMethods = new List<string> { "Nerf Gun", "Water Balloon", "Tag" },
 
                 // VIP-gated settings
@@ -37,10 +37,11 @@ namespace Gotcha.Web.Areas.Player.Controllers
                 IsAssassin = false,
                 ChaosModeUnlocked = true,
                 IsChaos = false,
-                ChaosTimerMinutes = 30,
+                ChaosTimerMinHours = 6,
+                ChaosTimerMaxHours = 12,
                 TimedKillsUnlocked = true,
                 IsTimed = false,
-                TargetTimeOutMinutes = 60,
+                TargetTimeOutHours = 24,
 
                 // Mock players
                 Players = new List<AdminPlayerViewModel>

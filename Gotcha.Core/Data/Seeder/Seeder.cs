@@ -79,8 +79,9 @@ namespace Gotcha.Core.Data.Seeder
                 ShowRealNames = true,
                 ShowUsernames = true,
                 IsChaos = true,
-                ChaosTimer = new TimeSpan(0, 12, 0, 0),
-                CustomRules = "Lorem ipsum est",
+                ChaosTimerMin = new TimeSpan(6, 0, 0),
+                ChaosTimerMax = new TimeSpan(12, 0, 0),
+                CustomRules = new List<string> { "Lorem ipsum est" },
                 KillConfirmationTimer = new TimeSpan(1, 0, 0, 0)
             };
 

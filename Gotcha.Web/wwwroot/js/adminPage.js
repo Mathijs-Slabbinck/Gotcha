@@ -1,7 +1,12 @@
-var pendingNotifyPlayerName = "";
+var pendingAction = "";
+var pendingPlayerName = "";
 var pendingNotifyType = "";
 
 document.addEventListener("DOMContentLoaded", function () {
+
+    var confirmTitle = document.querySelector('.confirmActionTitle');
+    var confirmText = document.querySelector('.confirmActionText');
+    var confirmBtn = document.querySelector('.confirmActionBtn');
 
     // Copy invite link button
     var copyBtn = document.querySelector('.copyLinkBtn');
@@ -24,28 +29,63 @@ document.addEventListener("DOMContentLoaded", function () {
     var notifyButtons = document.querySelectorAll('.notifyBtn');
     notifyButtons.forEach(function (button) {
         button.addEventListener("click", function () {
-            var playerName = button.dataset.player;
-            var notifyType = button.dataset.type;
+            pendingAction = "notify";
+            pendingPlayerName = button.dataset.player;
+            pendingNotifyType = button.dataset.type;
 
-            pendingNotifyPlayerName = playerName;
-            pendingNotifyType = notifyType;
-
-            var titleElement = document.querySelector('.confirmNotifyTitle');
-            var textElement = document.querySelector('.confirmNotifyText');
-
-            if (notifyType === 'image') {
-                titleElement.textContent = 'Send Image Request';
-                textElement.textContent = 'Are you sure you want to send ' + playerName + ' a request to update their profile image?';
+            if (pendingNotifyType === 'image') {
+                confirmTitle.textContent = 'Send Image Request';
+                confirmText.textContent = 'Are you sure you want to send ' + pendingPlayerName + ' a request to update their profile image?';
             }
             else {
-                titleElement.textContent = 'Send Username Request';
-                textElement.textContent = 'Are you sure you want to send ' + playerName + ' a request to change their username?';
+                confirmTitle.textContent = 'Send Username Request';
+                confirmText.textContent = 'Are you sure you want to send ' + pendingPlayerName + ' a request to change their username?';
             }
 
-            var modal = new bootstrap.Modal(document.getElementById('confirmNotifyModal'));
+            confirmBtn.textContent = 'Yes, Send';
+            confirmBtn.className = 'btn btn-1 confirmActionBtn';
+
+            var modal = new bootstrap.Modal(document.getElementById('confirmActionModal'));
             modal.show();
         });
     });
+
+    // Remove player buttons
+    var removeButtons = document.querySelectorAll('.removePlayerBtn');
+    removeButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            pendingAction = "remove";
+            pendingPlayerName = button.dataset.player;
+            pendingNotifyType = "";
+
+            confirmTitle.textContent = 'Remove Player';
+            confirmText.textContent = 'Are you sure you want to remove ' + pendingPlayerName + ' from the game?';
+            confirmBtn.textContent = 'Yes, Remove';
+            confirmBtn.className = 'btn confirmActionBtn confirmRemoveBtn';
+
+            var modal = new bootstrap.Modal(document.getElementById('confirmActionModal'));
+            modal.show();
+        });
+    });
+
+    // Confirm action button in modal
+    if (confirmBtn) {
+        confirmBtn.addEventListener("click", function () {
+            if (pendingAction === "notify") {
+                // TODO: send actual notify request to backend
+            }
+            else if (pendingAction === "remove") {
+                // TODO: send actual remove request to backend
+            }
+
+            var modal = bootstrap.Modal.getInstance(document.getElementById('confirmActionModal'));
+            modal.hide();
+
+            pendingAction = "";
+            pendingPlayerName = "";
+            pendingNotifyType = "";
+        });
+    }
 
     // Toggle kill methods input when custom kill methods checkbox changes
     var customKillMethodsCheckbox = document.getElementById('customKillMethods');
@@ -61,16 +101,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Toggle chaos timer when chaos mode checkbox changes
+    // Toggle chaos timer inputs when chaos mode checkbox changes
     var chaosModeCheckbox = document.getElementById('chaosMode');
-    var chaosTimerInput = document.getElementById('chaosTimer');
-    if (chaosModeCheckbox && chaosTimerInput) {
+    var chaosTimerMinInput = document.getElementById('chaosTimerMin');
+    var chaosTimerMaxInput = document.getElementById('chaosTimerMax');
+    if (chaosModeCheckbox && chaosTimerMinInput && chaosTimerMaxInput) {
         chaosModeCheckbox.addEventListener("change", function () {
             if (chaosModeCheckbox.checked) {
-                chaosTimerInput.disabled = false;
+                chaosTimerMinInput.disabled = false;
+                chaosTimerMaxInput.disabled = false;
             }
             else {
-                chaosTimerInput.disabled = true;
+                chaosTimerMinInput.disabled = true;
+                chaosTimerMaxInput.disabled = true;
             }
         });
     }
@@ -86,19 +129,6 @@ document.addEventListener("DOMContentLoaded", function () {
             else {
                 targetTimeoutInput.disabled = true;
             }
-        });
-    }
-
-    // Confirm notify button in modal
-    var confirmBtn = document.querySelector('.confirmNotifyBtn');
-    if (confirmBtn) {
-        confirmBtn.addEventListener("click", function () {
-            // TODO: send actual request to backend
-            var modal = bootstrap.Modal.getInstance(document.getElementById('confirmNotifyModal'));
-            modal.hide();
-
-            pendingNotifyPlayerName = "";
-            pendingNotifyType = "";
         });
     }
 

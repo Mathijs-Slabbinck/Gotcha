@@ -7,6 +7,8 @@
 
 @model StoreViewModel
 
+<script src="~/js/storePage.js"></script>
+
 <div class="row mb-3">
 	<h1 class="col-12 text-center fw-bold font-bungee">Unlock Features</h1>
 </div>
@@ -16,7 +18,7 @@
 	<div class="card-header row">
 		<div class="col-12 d-flex justify-content-center align-items-center mt-3">
 			<h2 class="text-center font-robotoSlab fw-bold color-2 m-0">Game Features</h2>
-			<p class="infoIcon storeInfoIcon m-0" data-bs-toggle="modal" data-bs-target="#gameFeaturesInfoModal">&#9432;</p>
+			<p class="infoIcon storeInfoIcon m-0" data-title="Game Features" data-info="Game features are permanent one-time purchases linked to your account. Once unlocked, you can enable them in any game you create. All players in your lobby will be able to play with these settings for free, only the game creator needs to own the feature.">&#9432;</p>
 		</div>
 	</div>
 
@@ -96,7 +98,7 @@
 	<div class="card-header row">
 		<div class="col-12 d-flex justify-content-center align-items-center mt-3">
 			<h2 class="text-center font-robotoSlab fw-bold color-2 m-0">Lobby Size</h2>
-			<p class="infoIcon storeInfoIcon m-0" data-bs-toggle="modal" data-bs-target="#lobbySizeInfoModal">&#9432;</p>
+			<p class="infoIcon storeInfoIcon m-0" data-title="Lobby Size" data-info="Lobby size upgrades are permanent one-time purchases linked to your account. Once unlocked, any game you create can hold up to the upgraded player count. All players can join for free, only the game creator needs to own the upgrade.">&#9432;</p>
 		</div>
 	</div>
 
@@ -176,7 +178,7 @@
 	<div class="card-header row">
 		<div class="col-12 d-flex justify-content-center align-items-center mt-3">
 			<h2 class="text-center font-robotoSlab fw-bold color-2 m-0">Subscription Plans</h2>
-			<p class="infoIcon storeInfoIcon m-0" data-bs-toggle="modal" data-bs-target="#subscriptionInfoModal">&#9432;</p>
+			<p class="infoIcon storeInfoIcon m-0" data-title="Subscription Plans" data-info="Subscription plans give you access to all game features and settings for as long as your subscription is active. Premium includes all settings with the default lobby size (50 players). Deluxe includes everything plus a max lobby size of 10,000 players. If your subscription ends, any features not purchased separately will be locked again.">&#9432;</p>
 		</div>
 	</div>
 
@@ -251,46 +253,16 @@
 	</div>
 </div>
 
-<!-- ===== GAME FEATURES INFO MODAL ===== -->
-<div class="modal fade" id="gameFeaturesInfoModal" role="dialog" tabindex="-1">
+<!-- ===== SHARED INFO MODAL ===== -->
+<div class="modal fade" id="infoModal" role="dialog" tabindex="-1">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header justify-content-center">
-				<h5 class="modal-title infoModalTitle">Game Features</h5>
+				<h5 class="modal-title infoModalTitle">Info</h5>
 				<button type="button" class="btn-close modalClose" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body text-center">
-				<p class="infoModalText">Game features are permanent one-time purchases linked to your account. Once unlocked, you can enable them in any game you create. All players in your lobby will be able to play with these settings for free — only the game creator needs to own the feature.</p>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- ===== LOBBY SIZE INFO MODAL ===== -->
-<div class="modal fade" id="lobbySizeInfoModal" role="dialog" tabindex="-1">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header justify-content-center">
-				<h5 class="modal-title infoModalTitle">Lobby Size</h5>
-				<button type="button" class="btn-close modalClose" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body text-center">
-				<p class="infoModalText">Lobby size upgrades are permanent one-time purchases linked to your account. Once unlocked, any game you create can hold up to the upgraded player count. All players can join for free — only the game creator needs to own the upgrade.</p>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- ===== SUBSCRIPTION PLANS INFO MODAL ===== -->
-<div class="modal fade" id="subscriptionInfoModal" role="dialog" tabindex="-1">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header justify-content-center">
-				<h5 class="modal-title infoModalTitle">Subscription Plans</h5>
-				<button type="button" class="btn-close modalClose" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body text-center">
-				<p class="infoModalText">Subscription plans give you access to all game features and settings for as long as your subscription is active. Premium includes all settings with the default lobby size (50 players). Deluxe includes everything plus a max lobby size of 10,000 players. If your subscription ends, any features not purchased separately will be locked again.</p>
+				<p class="infoModalText">Info text goes here.</p>
 			</div>
 		</div>
 	</div>

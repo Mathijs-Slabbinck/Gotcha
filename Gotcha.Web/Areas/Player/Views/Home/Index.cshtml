@@ -100,6 +100,41 @@
 						}
 					}
 
+					@{
+						bool hasCustomRules = Model.CustomRules != null && Model.CustomRules.Count > 0;
+						bool hasGameModeRules = Model.IsAssassin || Model.IsChaos || Model.IsTimed;
+					}
+
+					@if (hasCustomRules || hasGameModeRules)
+					{
+						<div class="row my-3 customRulesBlock">
+							<p class="col-12 text-center fs-3 m-0 fw-bold">Game Rules:</p>
+							<div class="col-12 mt-2">
+								<ul class="customRulesText">
+									@if (Model.IsAssassin)
+									{
+										<li>Assassin Mode is active. You are allowed to attempt to kill your hunter. Be careful though, if you guess wrong and attempt to kill the wrong person, you will be eliminated instead.</li>
+									}
+									@if (Model.IsChaos)
+									{
+										<li>Chaos Mode is active. Targets are reshuffled randomly every @Model.ChaosTimerMinHours to @Model.ChaosTimerMaxHours hours. Stay alert, your target can change at any moment.</li>
+									}
+									@if (Model.IsTimed)
+									{
+										<li>Timed Kills are active. You have @Model.TargetTimeOutHours hours to eliminate your target. If you run out of time, your target will be reassigned.</li>
+									}
+									@if (hasCustomRules)
+									{
+										@foreach (string rule in Model.CustomRules)
+										{
+											<li>@rule</li>
+										}
+									}
+								</ul>
+							</div>
+						</div>
+					}
+
 				</div>
 			</div>
 		</div>

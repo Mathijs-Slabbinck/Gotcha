@@ -73,8 +73,6 @@ namespace Gotcha.Core.Data
             {
                 entity.HasKey(r => r.Id);
 
-                entity.Property(r => r.CustomRules).HasMaxLength(2000);
-
                 // TimeSpan can exceed 24 hours or be negative (InfiniteTimeSpan)
                 // SQL Server time(7) only supports 0-24 hours
                 // Store as ticks (long/bigint) instead
@@ -83,7 +81,12 @@ namespace Gotcha.Core.Data
                           timeSpan => timeSpan.Ticks,
                           ticks => TimeSpan.FromTicks(ticks));
 
-                entity.Property(r => r.ChaosTimer)
+                entity.Property(r => r.ChaosTimerMin)
+                      .HasConversion(
+                          timeSpan => timeSpan.Ticks,
+                          ticks => TimeSpan.FromTicks(ticks));
+
+                entity.Property(r => r.ChaosTimerMax)
                       .HasConversion(
                           timeSpan => timeSpan.Ticks,
                           ticks => TimeSpan.FromTicks(ticks));

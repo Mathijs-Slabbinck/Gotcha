@@ -21,7 +21,7 @@ namespace Gotcha.Web.Areas.Player.ViewModels
         public bool ShowLivingPlayerNames { get; set; }
         public bool ShowLivingPlayerNamesToDeath { get; set; }
         public bool CustomKillMethods { get; set; }
-        public string? CustomRules { get; set; }
+        public List<string>? CustomRules { get; set; }
         public List<string>? KillMethods { get; set; }
 
         // VIP-gated settings (during game)
@@ -29,9 +29,10 @@ namespace Gotcha.Web.Areas.Player.ViewModels
         public bool IsAssassin { get; set; }
         public bool ChaosModeUnlocked { get; set; }
         public bool IsChaos { get; set; }
-        public int ChaosTimerMinutes { get; set; }
+        public int ChaosTimerMinHours { get; set; }
+        public int ChaosTimerMaxHours { get; set; }
         public bool TimedKillsUnlocked { get; set; }
         public bool IsTimed { get; set; }
-        public int TargetTimeOutMinutes { get; set; }
+        public int TargetTimeOutHours { get; set; }
     }
 }

@@ -439,3 +439,48 @@ save to general memory; when making text that the user can see, for example moda
 
 ## prompt 126
 on some pages, when opening the phone nav menu by clicking the harburger icon, it will open the nav menu but won't hide the page. Fix this pls
+
+## prompt 127
+check all views and remove redundant pageToHide wrappers
+
+## prompt 128
+I notice some views have 2 modals both for showing dialog. I prefer having 1 modal (if it's just for the purpose of showing info) and modifying the info in the modal itself via js. (log everything in this prompt till now (not next info) in general Claude.md. => for this project, you can reference the signup page on how I did it there
+
+## prompt 129
+yes, do it where it's needed
+
+## prompt 130
+add styling in site.css for all modals so that they look better, more in line wit the general vibe of the site.
+
+## prompt 131
+in the admin page, before the game starts admins should also be able to remove players (also with confirmation modal ofc)
+
+## prompt 132
+the buttons for image, username and remove on the admin page should all become lowercase; 0 margin; col 3 in stead of 4 (for lg)
+
+## prompt 133
+image and username should be col-4 and remove col-3 (on lg) in admin page
+
+## prompt 134
+give the buttons image, username and remove in the admin page 0.5vh 0 0.5vh 0 margin in stead of 0 and make padding 0.6vh 0;
+
+## prompt 135
+in target info, under time left, add a field where the player can see custom game rules if there are any. Also edit the viewmodel and controller for this
+
+## prompt 136
+add a line above the new game rules section; also redo the section. I want Game Rules: to be above the game rules text and the game rules text should have a border and background.
+
+## prompt 137
+game rules are seperated by commas, so in stead of string? CustomRules should be List<string>? throughout the project so we can list them nicely in the player view. pls do this
+
+## prompt 138
+in player home, game rules. The the game rules are currently black. Can you make em primary color to go along with the project (or a similar colors with higher contrast)
+
+## prompt 139
+if assassin mode is on for that game, it should also list "attempting to kill your hunter is allowed. If you guess wrong and attempt to kill the wrong killer you will die in stead." (or something similar if better). If other game modes (like chaos mode) are turned on, it should also list that with added info (like if timed out, what timespan players have for each kill)
+
+## prompt 140
+change minutes to hours in admin; also chaos mode timer now has 1 value, make this 2 (between x and y) so its random. We will also need to update the rules entity for this and the viewmodel.
+
+## prompt 141
+at the games pages for the user, add a "new game" button in the same style of the start game button on the admin page. Place the button between the active games card and the ended games card. Give it a bit of margin top and more margin bottom.

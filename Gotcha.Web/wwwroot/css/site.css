@@ -138,11 +138,43 @@ a,
     cursor: pointer;
 }
 
+/* #region Modal Styling */
+
+.modal-content {
+    background-color: var(--background-color-black);
+    border: 2px solid var(--secondary-color-blue);
+    border-radius: 12px;
+    box-shadow: 0 0 20px var(--primary-color-blue);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--secondary-color-blue);
+}
+
+.modal-footer {
+    border-top: 1px solid var(--secondary-color-blue);
+}
+
 .modalClose {
     position: absolute;
     right: 1vw;
     top: 1vh;
+    filter: invert(1);
 }
+
+.infoModalTitle {
+    color: var(--primary-color-blue);
+    font-family: "Roboto Slab", serif;
+    font-weight: bold;
+}
+
+.infoModalText {
+    color: white;
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+}
+
+/* #endregion */
 
 .glowingCard {
     box-shadow: 1px 1px 10px 5px var(--primary-color-blue);

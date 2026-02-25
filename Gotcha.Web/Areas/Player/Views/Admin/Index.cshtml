@@ -57,8 +57,9 @@
 							</p>
 							<div class="col-4 my-2 text-nowrap text-center">
 								<div class="row justify-content-center justify-content-lg-around">
-									<button class="btn notifyBtn notifyImageBtn col-12 col-lg-5" title="Notify to upload image" data-player="@player.Name" data-type="image">Image</button>
-									<button class="btn notifyBtn notifyUsernameBtn col-12 col-lg-5" title="Notify to set username" data-player="@player.Name" data-type="username">Username</button>
+									<button class="btn notifyBtn notifyImageBtn col-12 col-lg-4" title="Notify to upload image" data-player="@player.Name" data-type="image">image</button>
+									<button class="btn notifyBtn notifyUsernameBtn col-12 col-lg-4" title="Notify to set username" data-player="@player.Name" data-type="username">username</button>
+									<button class="btn removePlayerBtn col-12 col-lg-3" title="Remove player from game" data-player="@player.Name">remove</button>
 								</div>
 							</div>
 						</div>
@@ -222,7 +223,7 @@
 			<div class="row mb-3 settingRow">
 				<div class="col-12">
 					<label for="customRules" class="settingLabel mb-2">Custom Rules:</label>
-					<textarea id="customRules" class="form-control customRulesTextarea" rows="4" placeholder="Enter any custom rules for this game...">@Model.CustomRules</textarea>
+					<textarea id="customRules" class="form-control customRulesTextarea" rows="4" placeholder="Enter any custom rules for this game...">@(Model.CustomRules != null ? String.Join(", ", Model.CustomRules) : "")</textarea>
 				</div>
 			</div>
 
@@ -290,15 +291,24 @@
 			</div>
 
 			<div class="row align-items-center mb-3 settingRow timerRow">
-				<label for="chaosTimer" class="col-8 settingLabel timerLabel">Chaos Timer (minutes)</label>
-				<div class="col-4 text-end">
+				<label class="col-4 settingLabel timerLabel">Chaos Timer (hours)</label>
+				<div class="col-8 text-end d-flex justify-content-end align-items-center gap-2">
 					@if (Model.IsChaos)
 					{
-						<input type="number" id="chaosTimer" class="form-control timerInput" value="@Model.ChaosTimerMinutes" min="1" />
+						<input type="number" id="chaosTimerMin" class="form-control timerInput" value="@Model.ChaosTimerMinHours" min="1" />
 					}
 					else
 					{
-						<input type="number" id="chaosTimer" class="form-control timerInput" value="@Model.ChaosTimerMinutes" min="1" disabled />
+						<input type="number" id="chaosTimerMin" class="form-control timerInput" value="@Model.ChaosTimerMinHours" min="1" disabled />
+					}
+					<span class="timerLabel settingLabel">to</span>
+					@if (Model.IsChaos)
+					{
+						<input type="number" id="chaosTimerMax" class="form-control timerInput" value="@Model.ChaosTimerMaxHours" min="1" />
+					}
+					else
+					{
+						<input type="number" id="chaosTimerMax" class="form-control timerInput" value="@Model.ChaosTimerMaxHours" min="1" disabled />
 					}
 				</div>
 			</div>
@@ -322,15 +332,15 @@
 			</div>
 
 			<div class="row align-items-center mb-3 timerRow">
-				<label for="targetTimeout" class="col-8 settingLabel timerLabel">Target Timeout (minutes)</label>
+				<label for="targetTimeout" class="col-8 settingLabel timerLabel">Target Timeout (hours)</label>
 				<div class="col-4 text-end">
 					@if (Model.IsTimed)
 					{
-						<input type="number" id="targetTimeout" class="form-control timerInput" value="@Model.TargetTimeOutMinutes" min="1" />
+						<input type="number" id="targetTimeout" class="form-control timerInput" value="@Model.TargetTimeOutHours" min="1" />
 					}
 					else
 					{
-						<input type="number" id="targetTimeout" class="form-control timerInput" value="@Model.TargetTimeOutMinutes" min="1" disabled />
+						<input type="number" id="targetTimeout" class="form-control timerInput" value="@Model.TargetTimeOutHours" min="1" disabled />
 					}
 				</div>
 			</div>
@@ -366,20 +376,20 @@
 	</div>
 </div>
 
-<!-- ===== CONFIRM NOTIFY MODAL ===== -->
-<div class="modal fade" id="confirmNotifyModal" role="dialog" tabindex="-1">
+<!-- ===== CONFIRM ACTION MODAL ===== -->
+<div class="modal fade" id="confirmActionModal" role="dialog" tabindex="-1">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header justify-content-center">
-				<h5 class="modal-title confirmNotifyTitle">Confirm</h5>
+				<h5 class="modal-title confirmActionTitle">Confirm</h5>
 				<button type="button" class="btn-close modalClose" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body text-center">
-				<p class="confirmNotifyText">Are you sure?</p>
+				<p class="confirmActionText">Are you sure?</p>
 			</div>
 			<div class="modal-footer justify-content-center">
 				<button type="button" class="btn btn-2" data-bs-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-1 confirmNotifyBtn">Yes, Send</button>
+				<button type="button" class="btn btn-1 confirmActionBtn">Confirm</button>
 			</div>
 		</div>
 	</div>

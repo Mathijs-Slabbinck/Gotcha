@@ -48,6 +48,13 @@ namespace Gotcha.Web.Areas.Player.Controllers
                 KillerOtherName = "Chocolate_Man",
                 KilledOnDate = DateTime.UtcNow.AddDays(-6),
                 Kills = kills,
+                CustomRules = new List<string> { "No hiding in classrooms", "Safe zones: cafeteria during lunch", "Kills must have a witness" },
+                IsAssassin = true,
+                IsChaos = true,
+                ChaosTimerMinHours = 6,
+                ChaosTimerMaxHours = 12,
+                IsTimed = true,
+                TargetTimeOutHours = 24,
 
             };
 

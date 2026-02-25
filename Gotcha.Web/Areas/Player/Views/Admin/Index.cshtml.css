@@ -43,8 +43,8 @@
     border: 2px solid var(--secondary-color-blue);
     border-radius: 8px;
     font-size: 0.75rem;
-    padding: 2px 8px;
-    margin: 0 2px;
+    padding: 0.6vh 0;
+    margin: 0.5vh 0;
     font-weight: bold;
     transition: 0.2s;
 }
@@ -221,16 +221,50 @@
 /* #endregion */
 
 
+/* #region Remove Player Button */
+
+::deep .removePlayerBtn {
+    color: #f44336;
+    border: 2px solid #f44336;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    padding: 0.6vh 0;
+    margin: 0.5vh 0;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+::deep .removePlayerBtn:hover {
+    background-color: #f44336;
+    color: white;
+}
+
+/* #endregion */
+
+
 /* #region Confirm Modal */
 
-::deep .confirmNotifyTitle,
-::deep .confirmNotifyText {
+::deep .confirmActionTitle,
+::deep .confirmActionText {
     color: var(--primary-color-blue);
     font-family: "Roboto", sans-serif;
 }
 
-::deep .confirmNotifyText {
+::deep .confirmActionText {
     font-size: 1.1rem;
+}
+
+::deep .confirmRemoveBtn {
+    background-color: #d32f2f;
+    border: 3px solid #f44336;
+    color: white;
+    font-weight: bold;
+}
+
+::deep .confirmRemoveBtn:hover {
+    background-color: #f44336;
+    border-color: #d32f2f;
+    color: white;
 }
 
 /* #endregion */

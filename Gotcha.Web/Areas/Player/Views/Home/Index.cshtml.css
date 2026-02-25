@@ -65,6 +65,26 @@
     font-size: 2.5vw;
 }
 
+::deep .customRulesBlock {
+    border-top: 2px solid var(--primary-color-blue);
+    padding-top: 1.5vh;
+}
+
+::deep .customRulesText {
+    border: 2px solid var(--secondary-color-blue);
+    border-radius: 10px;
+    background-color: var(--background-color-transparant-blue);
+    padding: 1.5vh 2vw 1.5vh 5vw;
+    font-size: 1rem;
+    font-weight: normal;
+    list-style-type: disc;
+}
+
+::deep .customRulesText li {
+    color: var(--primary-color-blue);
+    font-weight: normal;
+}
+
 #killOverviewTitle {
     margin: 8vh 0 3vh 0;
 }
