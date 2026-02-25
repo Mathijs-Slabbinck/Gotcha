@@ -292,3 +292,36 @@ fix the errors, fix possible improvements 3 and 4 (ignore 1 and 2, those are fin
 
 ## prompt 82
 add, commit and push changes
+
+## prompt 83
+save to memory
+
+## prompt 84
+save this to memory: If you ever need extra info (cuz I wasn't clear enough), need me to do something (like download something you need) or you have doubts abt how to tacke or a problem or anything like that; inform me before continuing. You don't start tasks unless everything is fully clear and you are fully set unless I say otherwise
+
+## prompt 85
+go over the project and save to memory what you still need to save
+
+## prompt 86
+Create the new Project for UnitTests with the necessary Unit Tests in it. Write the Unit Tests files, as in, write in comments what needs to be checked and what we expect (like normal) and make the methods, but give em all a return NotImplementedException() since I want to write them myself to learn; but I want you to prepare this for me
+
+## prompt 87
+if I add new entities, services or methods elsewhere that needs tests, create the Unit Tests files (if needed) and prep the methods without writing like you did now. Tell me in this console you created a new Unit Test when this happens. Log this so you will remember this within this project only
+
+## prompt 88
+save this to your general memory (across all future projects) if there is a Claude_Prompts.md file present I want you to log the prompts like you are doing in this project. If there is no Claude_Prompts.md file you don't have to log
+
+### prompt 88.1
+yes
+
+## prompt 89
+also save to general memory CLAUDE.md to follow the rules about code readability
+
+## prompt 90
+create the view (and viewModel and edit the controller) of the confirmKill page. It should have the option to confirm either that you killed the target or that you got killed. If assassin mode is enabled they should also be able to confirm that they killed their killer. Keep the style similar to other views.
+
+## prompt 91
+implement (and if needed, correct) all unit tests
+
+## prompt 92
+add, commit and push changes

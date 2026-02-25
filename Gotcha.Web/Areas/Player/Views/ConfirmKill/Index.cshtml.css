@@ -1,0 +1,61 @@
+.glowingCard p {
+    color: var(--primary-color-blue);
+    list-style-type: none;
+    font-size: 1.2rem;
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.statBlock:not(:last-of-type) {
+    border-bottom: 2px solid var(--primary-color-blue) !important;
+    padding-bottom: 1.5vh !important;
+}
+
+.statsBlocksContainer {
+    border-top: 2px solid var(--primary-color-blue);
+    border-bottom: 2px solid var(--primary-color-blue);
+}
+
+.confirmDescription {
+    color: var(--primary-color-blue);
+    font-family: "Roboto", sans-serif;
+    font-weight: normal !important;
+    font-size: 1.1rem !important;
+}
+
+.confirmButton {
+    font-family: "Roboto Slab", serif;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+::deep .deathButton {
+    background-color: #c0392b;
+    border-color: #962d22;
+}
+
+::deep .deathButton:hover {
+    color: #c0392b;
+    background-color: white;
+    border-color: #c0392b;
+}
+
+::deep .assassinButton {
+    background-color: #8e44ad;
+    border-color: #6c3483;
+}
+
+::deep .assassinButton:hover {
+    color: #8e44ad;
+    background-color: white;
+    border-color: #8e44ad;
+}
+
+@media only screen and (min-width: 992px) {
+    /* Elements in Razor @if/@switch blocks may not get the CSS isolation scope attribute.
+       Use ::deep to target those elements anyway. */
+    ::deep .playerImage {
+        max-width: 30vh !important;
+    }
+}

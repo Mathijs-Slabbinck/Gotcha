@@ -352,7 +352,7 @@ namespace Gotcha.Core.Services
         {
             DateTime killMoment = DateTime.UtcNow;
             DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(killMoment, TimeZoneInfo.Local);
-            string timeFormatted = localTime.ToString("yyyy'-'MM'-'dd' - 'HH':'mm'");
+            string timeFormatted = localTime.ToString("yyyy'-'MM'-'dd' - 'HH':'mm");
 
             string killMessage;
 

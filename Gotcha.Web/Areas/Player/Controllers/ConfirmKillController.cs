@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Gotcha.Core.Enums;
+using Gotcha.Web.Areas.Player.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Gotcha.Web.Areas.Player.Controllers
 {
@@ -9,7 +11,20 @@ namespace Gotcha.Web.Areas.Player.Controllers
         {
             ViewData["IsAlive"] = true;
             ViewData["IsAdmin"] = true;
-            return View();
+
+            ConfirmKillViewModel confirmKillViewModel = new ConfirmKillViewModel
+            {
+                TargetName = "Jane Doe",
+                TargetUsername = "TheLegend27",
+                TargetGender = Genders.Female,
+                Weapon = "Sock",
+                IsAssassinMode = true,
+                HunterName = "Willy Wonka",
+                HunterUsername = "Chocolate_Man",
+                HunterGender = Genders.Male
+            };
+
+            return View(confirmKillViewModel);
         }
     }
 }
