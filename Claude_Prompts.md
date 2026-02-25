@@ -427,3 +427,15 @@ in the admin page, depening on if the mode is unlocked the checkbox should get t
 
 ## prompt 122
 the input fields for target timeout and chaos timer should also be disabled and enabled if the switch gets turned on
+
+## prompt 123
+on the store page, the plans have buttons. Can you make sure they are all aligned horizontally? They standard plan button is currently higher since the text isn't the same
+
+## prompt 124
+can you add in info icon to Game Features, Lobby Size and subscription plans like we did before. When clicking Game Features and Lobby size info icons it should show a modal that tells the user that these unlocks are permanent and will unlock these permanently to their account. If they create a new lobby they will be able to turn these on and all players in that game will be able to play with those settings for free (only the creator needs it). Same goes for lobby size. Subscription plans modal should inform the user about the subscription plans
+
+## prompt 125
+save to general memory; when making text that the user can see, for example modal texts etc, make the text look human. For example, avoid - etc
+
+## prompt 126
+on some pages, when opening the phone nav menu by clicking the harburger icon, it will open the nav menu but won't hide the page. Fix this pls
