@@ -1,3 +1,243 @@
-﻿@{
+@using Gotcha.Core.Enums;
+@using Gotcha.Web.Areas.User.ViewModels;
+
+@{
 	ViewData["Title"] = "Store";
 }
+
+@model StoreViewModel
+
+<div class="row mb-3">
+	<h1 class="col-12 text-center fw-bold font-bungee">Unlock Features</h1>
+</div>
+
+<!-- ===== CARD 1: GAME FEATURES ===== -->
+<div class="card glowingCard formBg mt-4 col-10 col-xl-11 mx-auto p-0 mb-5">
+	<div class="card-header row">
+		<h2 class="col-12 text-center font-robotoSlab fw-bold color-2 mt-3">Game Features</h2>
+	</div>
+
+	<div class="row justify-content-center my-4">
+		<div class="col-10 col-md-8">
+
+			<!-- Assassin Mode -->
+			<div class="row align-items-center mb-3 featureRow">
+				<p class="col-5 mb-0 featureLabel">Assassin Mode</p>
+				<p class="col-3 mb-0 text-center featurePrice">$3.00</p>
+				<div class="col-4 text-end">
+					@if (Model.AssassinUnlocked)
+					{
+						<span class="ownedBadge">Owned</span>
+					}
+					else
+					{
+						<button class="btn btn-1 buyBtn">Buy</button>
+					}
+				</div>
+			</div>
+
+			<!-- Chaos Mode -->
+			<div class="row align-items-center mb-3 featureRow">
+				<p class="col-5 mb-0 featureLabel">Chaos Mode</p>
+				<p class="col-3 mb-0 text-center featurePrice">$2.00</p>
+				<div class="col-4 text-end">
+					@if (Model.ChaosUnlocked)
+					{
+						<span class="ownedBadge">Owned</span>
+					}
+					else
+					{
+						<button class="btn btn-1 buyBtn">Buy</button>
+					}
+				</div>
+			</div>
+
+			<!-- Timed Kills -->
+			<div class="row align-items-center mb-3 featureRow">
+				<p class="col-5 mb-0 featureLabel">Timed Kills</p>
+				<p class="col-3 mb-0 text-center featurePrice">$2.00</p>
+				<div class="col-4 text-end">
+					@if (Model.TimedKillsUnlocked)
+					{
+						<span class="ownedBadge">Owned</span>
+					}
+					else
+					{
+						<button class="btn btn-1 buyBtn">Buy</button>
+					}
+				</div>
+			</div>
+
+			<!-- Different Kill Methods -->
+			<div class="row align-items-center mb-3 featureRow">
+				<p class="col-5 mb-0 featureLabel">Different Kill Methods</p>
+				<p class="col-3 mb-0 text-center featurePrice">$2.00</p>
+				<div class="col-4 text-end">
+					@if (Model.CustomKillMethodsUnlocked)
+					{
+						<span class="ownedBadge">Owned</span>
+					}
+					else
+					{
+						<button class="btn btn-1 buyBtn">Buy</button>
+					}
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!-- ===== CARD 2: LOBBY SIZE ===== -->
+<div class="card glowingCard formBg mt-4 col-10 col-xl-11 mx-auto p-0 mb-5">
+	<div class="card-header row">
+		<h2 class="col-12 text-center font-robotoSlab fw-bold color-2 mt-3">Lobby Size</h2>
+	</div>
+
+	<div class="row justify-content-center my-4">
+		<div class="col-10 col-md-8">
+
+			<!-- 100 Players -->
+			<div class="row align-items-center mb-3 featureRow">
+				<p class="col-5 mb-0 featureLabel">100 Players</p>
+				<p class="col-3 mb-0 text-center featurePrice">$1.50</p>
+				<div class="col-4 text-end">
+					@if (Model.CurrentLobbySize >= MaxLobbySize.Medium)
+					{
+						<span class="ownedBadge">Owned</span>
+					}
+					else
+					{
+						<button class="btn btn-1 buyBtn">Buy</button>
+					}
+				</div>
+			</div>
+
+			<!-- 150 Players -->
+			<div class="row align-items-center mb-3 featureRow">
+				<p class="col-5 mb-0 featureLabel">150 Players</p>
+				<p class="col-3 mb-0 text-center featurePrice">$3.00</p>
+				<div class="col-4 text-end">
+					@if (Model.CurrentLobbySize >= MaxLobbySize.MediumLarge)
+					{
+						<span class="ownedBadge">Owned</span>
+					}
+					else
+					{
+						<button class="btn btn-1 buyBtn">Buy</button>
+					}
+				</div>
+			</div>
+
+			<!-- 500 Players -->
+			<div class="row align-items-center mb-3 featureRow">
+				<p class="col-5 mb-0 featureLabel">500 Players</p>
+				<p class="col-3 mb-0 text-center featurePrice">$6.00</p>
+				<div class="col-4 text-end">
+					@if (Model.CurrentLobbySize >= MaxLobbySize.Large)
+					{
+						<span class="ownedBadge">Owned</span>
+					}
+					else
+					{
+						<button class="btn btn-1 buyBtn">Buy</button>
+					}
+				</div>
+			</div>
+
+			<!-- 10,000 Players -->
+			<div class="row align-items-center mb-3 featureRow">
+				<p class="col-5 mb-0 featureLabel">10,000 Players</p>
+				<p class="col-3 mb-0 text-center featurePrice">$10.00</p>
+				<div class="col-4 text-end">
+					@if (Model.CurrentLobbySize >= MaxLobbySize.Max)
+					{
+						<span class="ownedBadge">Owned</span>
+					}
+					else
+					{
+						<button class="btn btn-1 buyBtn">Buy</button>
+					}
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!-- ===== CARD 3: SUBSCRIPTION PLANS ===== -->
+<div class="card glowingCard formBg mt-4 col-10 col-xl-11 mx-auto p-0 mb-5">
+	<div class="card-header row">
+		<h2 class="col-12 text-center font-robotoSlab fw-bold color-2 mt-3">Subscription Plans</h2>
+	</div>
+
+	<div class="row justify-content-center my-4">
+		<div class="col-11 col-md-10">
+			<div class="row justify-content-center">
+
+				<!-- Standard Plan -->
+				<div class="col-12 col-md-4 mb-4 mb-md-0">
+					<div class="planCard text-center p-4">
+						<h3 class="planName font-robotoSlab fw-bold">Standard</h3>
+						<p class="planPriceMain">Free</p>
+						<ul class="planFeatures text-start">
+							<li>Default lobby (50 players)</li>
+							<li>Basic game settings</li>
+						</ul>
+						@if (Model.CurrentPlan == Plan.Standard)
+						{
+							<span class="currentPlanBadge">Current Plan</span>
+						}
+						else
+						{
+							<button class="btn btn-1 subscribeBtn">Select</button>
+						}
+					</div>
+				</div>
+
+				<!-- Premium Plan -->
+				<div class="col-12 col-md-4 mb-4 mb-md-0">
+					<div class="planCard text-center p-4">
+						<h3 class="planName font-robotoSlab fw-bold">Premium</h3>
+						<p class="planPriceMain">$1.50 <span class="planPricePer">/ week</span></p>
+						<p class="planPriceAlt">or $4.00 / month</p>
+						<ul class="planFeatures text-start">
+							<li>All settings unlocked</li>
+							<li>Max lobby: 50 players</li>
+						</ul>
+						@if (Model.CurrentPlan == Plan.Premium)
+						{
+							<span class="currentPlanBadge">Current Plan</span>
+						}
+						else
+						{
+							<button class="btn btn-1 subscribeBtn">Subscribe</button>
+						}
+					</div>
+				</div>
+
+				<!-- Deluxe Plan -->
+				<div class="col-12 col-md-4">
+					<div class="planCard text-center p-4">
+						<h3 class="planName font-robotoSlab fw-bold">Deluxe</h3>
+						<p class="planPriceMain">$3.00 <span class="planPricePer">/ week</span></p>
+						<p class="planPriceAlt">or $9.00 / month</p>
+						<ul class="planFeatures text-start">
+							<li>All settings unlocked</li>
+							<li>Max lobby: 10,000 players</li>
+						</ul>
+						@if (Model.CurrentPlan == Plan.Deluxe)
+						{
+							<span class="currentPlanBadge">Current Plan</span>
+						}
+						else
+						{
+							<button class="btn btn-1 subscribeBtn">Subscribe</button>
+						}
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>

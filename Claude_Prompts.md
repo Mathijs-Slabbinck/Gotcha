@@ -361,3 +361,69 @@ add an info icon to the player settings title like I did in signup. When clicked
 
 ## prompt 102
 add, commit and push changes
+
+## prompt 103
+Implement the following plan: Player Admin Page (full plan with pre-game/during-game sections, viewmodels, controller mock data, toggle switches, tables, VIP-gated settings)
+
+## prompt 104
+I don't like that the script is in the view, give it its own js file and link it as we did in the other views
+
+## prompt 105
+in the new admin view, add an info icon to actions that will make the modal show with info that if you click image or username, you will send a request to the player to change their image or username. Also create another modal click event on the buttons for image and username to ask for confirmation 'are you sure...' to make sure players don't get requests to change their image or username by accident
+
+## prompt 106
+make the text input fields backgrounds transparant like we did with other fields (take signup page for example). also change the color of the placeholder text to be uniform.
+
+## prompt 107
+the info icon for actions isn't properly placed. Check signup page as example on how to place it. also, add options to all settings (also the paid ones). We will block the toggle later on if they don't have the correct plan and tell them to buy the plan first. So the settings should contain all settings.
+
+## prompt 108
+I don't like @* use HTML comments instead
+
+## prompt 109
+the admin view is missing a seperation line between custom rules and custom kill methods. The line between custom kill methods and kill methods needs to be removed. A line between kill methods and assassin mode needs to be added. the line between chaos mode and chaos timer needs to be removed. A line between chaos timer and timed kills needs to be added. The line between timed kills and Target Timeout needs to be removed.
+
+## prompt 110
+the labels are missing for and are invalid in HTML (won't cause errors, but we like to work correctly)
+
+## prompt 111
+won't the id's cause problems with the framework later or is it fine?
+
+## prompt 112
+in the player admin view, why do we check if the game has started and show a whole section based on that in stead of making 1 section and just hiding / showing the settings based on if the game has started. If this is a possible solution, do it that way
+
+## prompt 113
+Implement the following plan: Shop (Unlock Features) View & ViewModel
+
+## prompt 114
+the actions info icon on the admin page is still wrong. Its too big and right next to the actions, it should be on the right above. check the signup page for examples
+
+## prompt 115
+its worse now, now it just moved way more rigth. Put it back in place correctly
+
+## prompt 116
+still wrong. Try to tackly it the same way you did with the titles in the settings pages
+
+## prompt 117
+now its underneath actions
+
+## prompt 118
+nearly there, add margins margin: 0 0 1.5vh 0.5vw !important; to the info icon
+
+## prompt 119
+in index.cshtml I see you used onclick in the buttons. I don't like this. Use click events in the js file (and save this in your general memory)
+
+## prompt 120
+<button class="btn notifyBtn notifyImageBtn col-12 col-lg-5" title="Notify to upload image" data-player="@player.Name" data-type="image">
+<i class="bi bi-image"></i> Image
+</button>
+<button class="btn notifyBtn notifyUsernameBtn col-12 col-lg-5" title="Notify to set username" data-player="@player.Name" data-type="username">
+<i class="bi bi-person"></i> Username
+</button>
+what are those i's doing in there?
+
+## prompt 121
+in the admin page, depening on if the mode is unlocked the checkbox should get the disabled tag. The input field for kill methods should be disabled by default; but enabled when custom kill methods gets enabled
+
+## prompt 122
+the input fields for target timeout and chaos timer should also be disabled and enabled if the switch gets turned on

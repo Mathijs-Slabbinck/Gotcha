@@ -1,0 +1,127 @@
+/* #region Feature Rows */
+
+::deep .featureRow {
+    border-bottom: 1px solid var(--background-color-blue);
+    padding-bottom: 0.8rem;
+}
+
+::deep .featureLabel {
+    color: var(--primary-color-blue);
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+::deep .featurePrice {
+    color: white;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+/* #endregion */
+
+
+/* #region Owned Badge */
+
+::deep .ownedBadge {
+    display: inline-block;
+    background-color: var(--secondary-color-blue);
+    color: white;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    font-size: 0.85rem;
+    padding: 4px 14px;
+    border-radius: 12px;
+}
+
+/* #endregion */
+
+
+/* #region Buy Button */
+
+::deep .buyBtn {
+    font-size: 0.85rem;
+    padding: 4px 18px;
+    font-weight: bold;
+}
+
+/* #endregion */
+
+
+/* #region Plan Cards */
+
+::deep .planCard {
+    background-color: var(--background-color-transparant-blue);
+    border: 2px solid var(--secondary-color-blue);
+    border-radius: 12px;
+    height: 100%;
+}
+
+::deep .planName {
+    color: var(--primary-color-blue);
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+}
+
+::deep .planPriceMain {
+    color: white;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-bottom: 0.2rem;
+}
+
+::deep .planPricePer {
+    font-size: 0.9rem;
+    font-weight: normal;
+    color: lightblue;
+}
+
+::deep .planPriceAlt {
+    color: lightblue;
+    font-family: "Roboto", sans-serif;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+::deep .planFeatures {
+    color: var(--primary-color-blue);
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9rem;
+    padding-left: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+::deep .planFeatures li {
+    margin-bottom: 0.3rem;
+}
+
+/* #endregion */
+
+
+/* #region Current Plan Badge */
+
+::deep .currentPlanBadge {
+    display: inline-block;
+    background-color: var(--third-color-blue);
+    color: white;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    font-size: 0.85rem;
+    padding: 6px 16px;
+    border-radius: 12px;
+}
+
+/* #endregion */
+
+
+/* #region Subscribe Button */
+
+::deep .subscribeBtn {
+    font-size: 0.85rem;
+    padding: 6px 20px;
+    font-weight: bold;
+}
+
+/* #endregion */

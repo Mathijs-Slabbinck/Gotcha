@@ -1,3 +1,386 @@
-﻿@{
+@using Gotcha.Web.Areas.Player.ViewModels.BaseViewModels;
+
+@{
 	ViewData["Title"] = "Game Admin";
 }
+
+<script src="~/js/adminPage.js"></script>
+
+@model Gotcha.Web.Areas.Player.ViewModels.AdminViewModel
+
+<div class="row mb-3">
+	<h1 class="col-12 text-center fw-bold font-bungee">Game Admin</h1>
+</div>
+
+<!-- ===== PRE-GAME: PLAYERS CARD ===== -->
+@if (!Model.HasStarted)
+{
+	<div class="card glowingCard formBg mt-4 col-10 col-xl-11 mx-auto p-0 mb-5">
+		<div class="card-header row">
+			<h2 class="col-12 text-center font-robotoSlab fw-bold color-2 mt-3">Players (@Model.PlayerCount / @Model.MaxPlayers)</h2>
+		</div>
+
+		@if (Model.Players.Count == 0)
+		{
+			<div class="row justify-content-center my-4">
+				<p class="col-10 text-center fs-4 noPlayersMessage">No players have joined yet.</p>
+			</div>
+		}
+		else
+		{
+			<div class="row justify-content-center">
+				<div class="col-10 col-lg-11 mb-5 mt-4 adminTable">
+					<div class="row justify-content-around align-items-center adminTableHeader">
+						<p class="col-3 mt-2 mb-1 text-nowrap text-center">Name:</p>
+						<p class="col-3 mt-2 mb-1 text-nowrap text-center">Username:</p>
+						<p class="col-2 mt-2 mb-1 text-nowrap text-center">Image:</p>
+						<div class="col-4 mt-2 mb-1 text-nowrap text-center d-flex justify-content-center align-items-center">
+							<p class="m-0">Actions:</p>
+							<p class="infoIcon actionsInfoIcon m-0" data-bs-toggle="modal" data-bs-target="#actionsInfoModal">&#9432;</p>
+						</div>
+					</div>
+
+					@foreach (AdminPlayerViewModel player in Model.Players)
+					{
+						<div class="adminTableBlock row justify-content-around align-items-center">
+							<p class="col-3 my-2 text-nowrap text-center adminInfo">@player.Name</p>
+							<p class="col-3 my-2 text-nowrap text-center adminInfo">@player.Username</p>
+							<p class="col-2 my-2 text-nowrap text-center adminInfo">
+								@if (player.HasImage)
+								{
+									<span class="imageStatusYes">Yes</span>
+								}
+								else
+								{
+									<span class="imageStatusNo">No</span>
+								}
+							</p>
+							<div class="col-4 my-2 text-nowrap text-center">
+								<div class="row justify-content-center justify-content-lg-around">
+									<button class="btn notifyBtn notifyImageBtn col-12 col-lg-5" title="Notify to upload image" data-player="@player.Name" data-type="image">Image</button>
+									<button class="btn notifyBtn notifyUsernameBtn col-12 col-lg-5" title="Notify to set username" data-player="@player.Name" data-type="username">Username</button>
+								</div>
+							</div>
+						</div>
+					}
+				</div>
+			</div>
+		}
+	</div>
+
+	<!-- ===== PRE-GAME: INVITE PLAYERS CARD ===== -->
+	<div class="card glowingCard formBg mt-4 col-10 col-xl-11 mx-auto p-0 mb-5">
+		<div class="card-header row">
+			<h2 class="col-12 text-center font-robotoSlab fw-bold color-2 mt-3">Invite Players</h2>
+		</div>
+
+		<div class="row justify-content-center my-4">
+			<div class="col-10 col-md-8 col-lg-6">
+				<div class="input-group">
+					<input type="text" id="inviteLink" class="form-control inviteLinkInput" value="@Model.InviteLink" readonly />
+					<button class="btn btn-1 copyLinkBtn">Copy Link</button>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+<!-- ===== DURING GAME: PENDING KILLS CARD ===== -->
+@if (Model.HasStarted)
+{
+	<div class="card glowingCard formBg mt-4 col-10 col-xl-11 mx-auto p-0 mb-5">
+		<div class="card-header row">
+			<h2 class="col-12 text-center font-robotoSlab fw-bold color-2 mt-3">Pending Kills</h2>
+		</div>
+
+		@if (Model.PendingKills.Count == 0)
+		{
+			<div class="row justify-content-center my-4">
+				<p class="col-10 text-center fs-4 noPendingMessage">No pending kills.</p>
+			</div>
+		}
+		else
+		{
+			<div class="row justify-content-center">
+				<div class="col-10 col-lg-11 mb-5 mt-4 adminTable">
+					<div class="row justify-content-around align-items-center adminTableHeader">
+						<p class="col-3 mt-2 mb-1 text-nowrap text-center">Killer:</p>
+						<p class="col-2 mt-2 mb-1 text-nowrap text-center">Victim:</p>
+						<p class="col-2 mt-2 mb-1 text-nowrap text-center">Weapon:</p>
+						<p class="col-3 mt-2 mb-1 text-nowrap text-center">Time:</p>
+						<p class="col-2 mt-2 mb-1 text-nowrap text-center">Action:</p>
+					</div>
+
+					@foreach (AdminKillViewModel kill in Model.PendingKills)
+					{
+						DateTime killMoment = kill.Moment.ToLocalTime();
+						string formatted = killMoment.ToString("dd-MM-yyyy - HH:mm");
+
+						<div class="adminTableBlock row justify-content-around align-items-center">
+							<p class="col-3 my-2 text-nowrap text-center adminInfo">@kill.KillerName</p>
+							<p class="col-2 my-2 text-nowrap text-center adminInfo">@kill.VictimName</p>
+							<p class="col-2 my-2 text-nowrap text-center adminInfo">@kill.Weapon</p>
+							<p class="col-3 my-2 text-nowrap text-center adminInfo adminTimeInfo">@formatted</p>
+							<div class="col-2 my-2 text-nowrap text-center">
+								<button class="btn cancelKillBtn" title="Cancel this kill">Cancel</button>
+							</div>
+						</div>
+					}
+				</div>
+			</div>
+		}
+	</div>
+}
+
+<!-- ===== GAME SETTINGS CARD ===== -->
+<div class="card glowingCard formBg mt-4 col-10 col-xl-11 mx-auto p-0 mb-5">
+	<div class="card-header row">
+		<h2 class="col-12 text-center font-robotoSlab fw-bold color-2 mt-3">Game Settings</h2>
+	</div>
+
+	<div class="row justify-content-center my-4">
+		<div class="col-10 col-md-8">
+
+			<!-- Show Player Images -->
+			<div class="row align-items-center mb-3 settingRow">
+				<label for="showPlayerImages" class="col-8 settingLabel">Show Player Images</label>
+				<div class="col-4 text-end">
+					<label class="toggle-switch">
+						<input type="checkbox" id="showPlayerImages" checked="@Model.ShowPlayerImages" />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+
+			<!-- Enforce Player Images -->
+			<div class="row align-items-center mb-3 settingRow">
+				<label for="enforcePlayerImages" class="col-8 settingLabel">Enforce Player Images</label>
+				<div class="col-4 text-end">
+					<label class="toggle-switch">
+						<input type="checkbox" id="enforcePlayerImages" checked="@Model.EnforcePlayerImages" />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+
+			<!-- Show Real Names -->
+			<div class="row align-items-center mb-3 settingRow">
+				<label for="showRealNames" class="col-8 settingLabel">Show Real Names</label>
+				<div class="col-4 text-end">
+					<label class="toggle-switch">
+						<input type="checkbox" id="showRealNames" checked="@Model.ShowRealNames" />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+
+			<!-- Show Usernames -->
+			<div class="row align-items-center mb-3 settingRow">
+				<label for="showUsernames" class="col-8 settingLabel">Show Usernames</label>
+				<div class="col-4 text-end">
+					<label class="toggle-switch">
+						<input type="checkbox" id="showUsernames" checked="@Model.ShowUsernames" />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+
+			<!-- Show Living Player Count -->
+			<div class="row align-items-center mb-3 settingRow">
+				<label for="showLivingPlayerCount" class="col-8 settingLabel">Show Living Player Count</label>
+				<div class="col-4 text-end">
+					<label class="toggle-switch">
+						<input type="checkbox" id="showLivingPlayerCount" checked="@Model.ShowLivingPlayerCount" />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+
+			<!-- Show Living Player Names -->
+			<div class="row align-items-center mb-3 settingRow">
+				<label for="showLivingPlayerNames" class="col-8 settingLabel">Show Living Player Names</label>
+				<div class="col-4 text-end">
+					<label class="toggle-switch">
+						<input type="checkbox" id="showLivingPlayerNames" checked="@Model.ShowLivingPlayerNames" />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+
+			<!-- Show Living Player Names to Death -->
+			<div class="row align-items-center mb-3 settingRow">
+				<label for="showLivingPlayerNamesToDead" class="col-8 settingLabel">Show Living Player Names to Dead</label>
+				<div class="col-4 text-end">
+					<label class="toggle-switch">
+						<input type="checkbox" id="showLivingPlayerNamesToDead" checked="@Model.ShowLivingPlayerNamesToDeath" />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+
+			<!-- Custom Rules -->
+			<div class="row mb-3 settingRow">
+				<div class="col-12">
+					<label for="customRules" class="settingLabel mb-2">Custom Rules:</label>
+					<textarea id="customRules" class="form-control customRulesTextarea" rows="4" placeholder="Enter any custom rules for this game...">@Model.CustomRules</textarea>
+				</div>
+			</div>
+
+			<!-- Custom Kill Methods -->
+			<div class="row align-items-center mb-3">
+				<label for="customKillMethods" class="col-8 settingLabel">Custom Kill Methods</label>
+				<div class="col-4 text-end">
+					<label class="toggle-switch">
+						<input type="checkbox" id="customKillMethods" checked="@Model.CustomKillMethods" />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+
+			<!-- Kill Methods Input -->
+			<div class="row mb-3 settingRow" id="killMethodsSection">
+				<div class="col-12">
+					<label for="killMethods" class="settingLabel mb-2">Kill Methods:</label>
+					@if (Model.CustomKillMethods && Model.KillMethods != null)
+					{
+						<input type="text" id="killMethods" class="form-control" value="@String.Join(", ", Model.KillMethods)" placeholder="e.g. Nerf Gun, Water Balloon, Tag" />
+					}
+					else
+					{
+						<input type="text" id="killMethods" class="form-control" placeholder="e.g. Nerf Gun, Water Balloon, Tag" disabled />
+					}
+					<small class="text-light">Separate methods with commas</small>
+				</div>
+			</div>
+
+			<!-- Assassin Mode -->
+			<div class="row align-items-center mb-3 settingRow">
+				<label for="assassinMode" class="col-8 settingLabel">Assassin Mode</label>
+				<div class="col-4 text-end">
+					<label class="toggle-switch">
+						@if (Model.AssassinModeUnlocked)
+						{
+							<input type="checkbox" id="assassinMode" checked="@Model.IsAssassin" />
+						}
+						else
+						{
+							<input type="checkbox" id="assassinMode" checked="@Model.IsAssassin" disabled />
+						}
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+
+			<!-- Chaos Mode -->
+			<div class="row align-items-center mb-3">
+				<label for="chaosMode" class="col-8 settingLabel">Chaos Mode</label>
+				<div class="col-4 text-end">
+					<label class="toggle-switch">
+						@if (Model.ChaosModeUnlocked)
+						{
+							<input type="checkbox" id="chaosMode" checked="@Model.IsChaos" />
+						}
+						else
+						{
+							<input type="checkbox" id="chaosMode" checked="@Model.IsChaos" disabled />
+						}
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+
+			<div class="row align-items-center mb-3 settingRow timerRow">
+				<label for="chaosTimer" class="col-8 settingLabel timerLabel">Chaos Timer (minutes)</label>
+				<div class="col-4 text-end">
+					@if (Model.IsChaos)
+					{
+						<input type="number" id="chaosTimer" class="form-control timerInput" value="@Model.ChaosTimerMinutes" min="1" />
+					}
+					else
+					{
+						<input type="number" id="chaosTimer" class="form-control timerInput" value="@Model.ChaosTimerMinutes" min="1" disabled />
+					}
+				</div>
+			</div>
+
+			<!-- Timed Kills -->
+			<div class="row align-items-center mb-3">
+				<label for="timedKills" class="col-8 settingLabel">Timed Kills</label>
+				<div class="col-4 text-end">
+					<label class="toggle-switch">
+						@if (Model.TimedKillsUnlocked)
+						{
+							<input type="checkbox" id="timedKills" checked="@Model.IsTimed" />
+						}
+						else
+						{
+							<input type="checkbox" id="timedKills" checked="@Model.IsTimed" disabled />
+						}
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+
+			<div class="row align-items-center mb-3 timerRow">
+				<label for="targetTimeout" class="col-8 settingLabel timerLabel">Target Timeout (minutes)</label>
+				<div class="col-4 text-end">
+					@if (Model.IsTimed)
+					{
+						<input type="number" id="targetTimeout" class="form-control timerInput" value="@Model.TargetTimeOutMinutes" min="1" />
+					}
+					else
+					{
+						<input type="number" id="targetTimeout" class="form-control timerInput" value="@Model.TargetTimeOutMinutes" min="1" disabled />
+					}
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!-- ===== START / END GAME BUTTON ===== -->
+<div class="row justify-content-center mb-5">
+	@if (!Model.HasStarted)
+	{
+		<button class="col-8 col-md-6 col-lg-4 btn-1 fs-4 py-2 startGameBtn">Start Game</button>
+	}
+	else
+	{
+		<button class="col-8 col-md-6 col-lg-4 btn-1 fs-4 py-2 endGameBtn">End Game</button>
+	}
+</div>
+
+<!-- ===== ACTIONS INFO MODAL ===== -->
+<div class="modal fade" id="actionsInfoModal" role="dialog" tabindex="-1">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header justify-content-center">
+				<h5 class="modal-title infoModalTitle">Actions</h5>
+				<button type="button" class="btn-close modalClose" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body text-center">
+				<p class="infoModalText">Clicking "Image" or "Username" will send a request to that player asking them to update their profile image or username. Use this if a player hasn't uploaded a picture yet or needs to change their username.</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- ===== CONFIRM NOTIFY MODAL ===== -->
+<div class="modal fade" id="confirmNotifyModal" role="dialog" tabindex="-1">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header justify-content-center">
+				<h5 class="modal-title confirmNotifyTitle">Confirm</h5>
+				<button type="button" class="btn-close modalClose" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body text-center">
+				<p class="confirmNotifyText">Are you sure?</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-2" data-bs-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-1 confirmNotifyBtn">Yes, Send</button>
+			</div>
+		</div>
+	</div>
+</div>

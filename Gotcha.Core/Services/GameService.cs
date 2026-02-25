@@ -418,6 +418,9 @@ namespace Gotcha.Core.Services
                 case MaxLobbySize.Medium:
                     return 100;
 
+                case MaxLobbySize.MediumLarge:
+                    return 150;
+
                 case MaxLobbySize.Large:
                     return 500;
                 case MaxLobbySize.Max:

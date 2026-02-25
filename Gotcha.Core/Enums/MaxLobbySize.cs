@@ -4,6 +4,7 @@
     {
         Small,
         Medium,
+        MediumLarge,
         Large,
         Max
     }

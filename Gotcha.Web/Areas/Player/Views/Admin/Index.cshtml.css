@@ -1,0 +1,300 @@
+/* #region Table Styling */
+
+.adminTable {
+    border: 4px solid var(--third-color-blue);
+}
+
+.adminTableBlock {
+    border-top: 2px solid var(--secondary-color-blue);
+    border-bottom: 2px solid var(--secondary-color-blue);
+    background-color: var(--background-color-transparant-blue);
+}
+
+.adminTableHeader {
+    border: 2px solid var(--secondary-color-blue);
+    background-color: var(--secondary-color-blue);
+}
+
+.adminTableHeader p {
+    color: lightblue;
+    font-size: 2.4vw !important;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+::deep .adminInfo {
+    color: var(--primary-color-blue);
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    font-size: 1.7vw !important;
+}
+
+::deep .adminTimeInfo {
+    font-size: 1.4vw !important;
+}
+
+/* #endregion */
+
+
+/* #region Notify Buttons */
+
+::deep .notifyBtn {
+    color: var(--primary-color-blue);
+    border: 2px solid var(--secondary-color-blue);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    margin: 0 2px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+::deep .notifyBtn:hover {
+    background-color: var(--primary-color-blue);
+    color: white;
+}
+
+/* #endregion */
+
+
+/* #region Image Status */
+
+::deep .imageStatusYes {
+    color: #4caf50;
+}
+
+::deep .imageStatusNo {
+    color: #f44336;
+}
+
+/* #endregion */
+
+
+/* #region Settings */
+
+::deep .settingRow {
+    border-bottom: 1px solid var(--background-color-blue);
+    padding-bottom: 0.8rem;
+}
+
+::deep .settingLabel {
+    color: var(--primary-color-blue);
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+::deep .customRulesTextarea {
+    border: 2px solid var(--secondary-color-blue);
+    background-color: #FFFFFF40;
+    color: white;
+    font-family: "Roboto", sans-serif;
+}
+
+::deep .customRulesTextarea:focus {
+    border: 2px solid var(--secondary-color-blue);
+    background-color: #FFFFFF40;
+    color: white;
+    outline: none;
+    box-shadow: 0 0 10px var(--primary-color-blue);
+}
+
+/* #endregion */
+
+
+/* #region Input Styling */
+
+::deep input,
+::deep textarea {
+    background-color: #FFFFFF40;
+    color: white;
+}
+
+::deep input::placeholder,
+::deep textarea::placeholder {
+    color: #9ae6eb !important;
+}
+
+/* #endregion */
+
+
+/* #region Copy Link */
+
+::deep .inviteLinkInput {
+    background-color: #FFFFFF40;
+    color: white;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+}
+
+::deep .inviteLinkInput:focus {
+    background-color: #FFFFFF40;
+    color: white;
+}
+
+::deep .copyLinkBtn {
+    font-size: 0.9rem;
+}
+
+/* #endregion */
+
+
+
+/* #region Cancel Kill Button */
+
+::deep .cancelKillBtn {
+    color: #f44336;
+    border: 2px solid #f44336;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    padding: 2px 10px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+::deep .cancelKillBtn:hover {
+    background-color: #f44336;
+    color: white;
+}
+
+/* #endregion */
+
+
+/* #region End Game Button */
+
+::deep .endGameBtn {
+    background-color: #d32f2f;
+    border: 3px solid #f44336;
+    border-radius: 15px;
+    font-weight: bold;
+    color: white;
+}
+
+::deep .endGameBtn:hover {
+    background-color: #f44336;
+    border-color: #d32f2f;
+    color: white;
+}
+
+/* #endregion */
+
+
+/* #region Timer Input */
+
+::deep .timerInput {
+    max-width: 90px;
+    display: inline-block;
+    border: 2px solid var(--secondary-color-blue);
+    background-color: #FFFFFF40;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+::deep .timerInput:focus {
+    border: 2px solid var(--secondary-color-blue);
+    background-color: #FFFFFF40;
+    color: white;
+    outline: none;
+    box-shadow: 0 0 10px var(--primary-color-blue);
+}
+
+::deep .timerRow {
+    padding-top: 0;
+}
+
+::deep .timerLabel {
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* #endregion */
+
+
+/* #region Actions Info Icon */
+
+::deep .actionsInfoIcon {
+    font-size: 1.1rem !important;
+    margin: 0 0 1.5vh 0.5vw !important;
+}
+
+/* #endregion */
+
+
+/* #region Confirm Modal */
+
+::deep .confirmNotifyTitle,
+::deep .confirmNotifyText {
+    color: var(--primary-color-blue);
+    font-family: "Roboto", sans-serif;
+}
+
+::deep .confirmNotifyText {
+    font-size: 1.1rem;
+}
+
+/* #endregion */
+
+
+/* #region No Data Messages */
+
+::deep .noPlayersMessage,
+::deep .noPendingMessage {
+    color: var(--primary-color-blue);
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+}
+
+/* #endregion */
+
+
+/* #region Responsive */
+
+@media only screen and (min-width: 575px) {
+    .adminTableHeader p {
+        font-size: 1.8vw !important;
+    }
+
+    ::deep .adminInfo {
+        font-size: 1.6vw !important;
+    }
+
+    ::deep .adminTimeInfo {
+        font-size: 1.45vw !important;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .adminTableHeader p {
+        font-size: 1.5vw !important;
+    }
+
+    ::deep .adminInfo {
+        font-size: 1.3vw !important;
+    }
+
+    ::deep .adminTimeInfo {
+        font-size: 1.2vw !important;
+    }
+
+    ::deep .notifyBtn {
+        font-size: 0.8rem;
+        padding: 3px 10px;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .adminTableHeader p {
+        font-size: 1.3vw !important;
+    }
+
+    ::deep .adminInfo {
+        font-size: 1.1vw !important;
+    }
+
+    ::deep .adminTimeInfo {
+        font-size: 1vw !important;
+    }
+}
+
+/* #endregion */
