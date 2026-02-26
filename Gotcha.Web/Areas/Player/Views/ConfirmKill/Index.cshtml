@@ -19,11 +19,11 @@
 		</div>
 
 		<div class="row justify-content-center">
-			@if (!String.IsNullOrEmpty(Model.TargetProfileImgSource))
+			@if (Model.ShowPlayerImages && !String.IsNullOrEmpty(Model.TargetProfileImgSource))
 			{
 				<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Target profile image" src="@Model.TargetProfileImgSource" />
 			}
-			else
+			else if (Model.ShowPlayerImages && Model.ShowGender)
 			{
 				switch (Model.TargetGender)
 				{
@@ -37,6 +37,10 @@
 						<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Other gender placeholder image" src="~/images/other-placeholder.png" />
 						break;
 				}
+			}
+			else
+			{
+				<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Placeholder image" src="~/images/other-placeholder.png" />
 			}
 		</div>
 
@@ -103,48 +107,55 @@
 			<h2 class="col-12 text-center font-robotoSlab fw-bold color-2 mt-3">I Killed My Hunter</h2>
 		</div>
 
-		<div class="row justify-content-center">
-			@if (!String.IsNullOrEmpty(Model.HunterProfileImgSource))
-			{
-				<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Hunter profile image" src="@Model.HunterProfileImgSource" />
-			}
-			else
-			{
-				switch (Model.HunterGender)
+		@if (Model.ShowHunter)
+		{
+			<div class="row justify-content-center">
+				@if (Model.ShowPlayerImages && !String.IsNullOrEmpty(Model.HunterProfileImgSource))
 				{
-					case Genders.Male:
-						<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Male placeholder image" src="~/images/male-placeholder.png" />
-						break;
-					case Genders.Female:
-						<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Female placeholder image" src="~/images/female-placeholder.png" />
-						break;
-					default:
-						<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Other gender placeholder image" src="~/images/other-placeholder.png" />
-						break;
+					<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Hunter profile image" src="@Model.HunterProfileImgSource" />
 				}
-			}
-		</div>
-
-		<div class="row justify-content-center">
-			<div class="col-10 col-md-9 col-xl-7 statsBlocksContainer mb-4">
-
-				@if (!String.IsNullOrEmpty(Model.HunterName))
+				else if (Model.ShowPlayerImages && Model.ShowGender)
 				{
-					<div class="row justify-content-around align-items-center my-3 statBlock">
-						<p class="col-12 col-lg-5 text-center text-lg-start fs-3 text-nowrap m-0 fw-bold">Hunter:</p>
-						<p class="col-12 col-lg-5 text-center text-lg-end fs-4 my-0 text-nowrap">@Model.HunterName</p>
-					</div>
+					switch (Model.HunterGender)
+					{
+						case Genders.Male:
+							<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Male placeholder image" src="~/images/male-placeholder.png" />
+							break;
+						case Genders.Female:
+							<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Female placeholder image" src="~/images/female-placeholder.png" />
+							break;
+						default:
+							<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Other gender placeholder image" src="~/images/other-placeholder.png" />
+							break;
+					}
 				}
-
-				@if (!String.IsNullOrEmpty(Model.HunterUsername))
+				else
 				{
-					<div class="row justify-content-around align-items-center my-3 statBlock">
-						<p class="col-12 col-lg-5 text-center text-lg-start fs-3 text-nowrap m-0 fw-bold">Username:</p>
-						<p class="col-12 col-lg-5 text-center text-lg-end fs-4 my-0 text-nowrap">@Model.HunterUsername</p>
-					</div>
+					<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Placeholder image" src="~/images/other-placeholder.png" />
 				}
 			</div>
-		</div>
+
+			<div class="row justify-content-center">
+				<div class="col-10 col-md-9 col-xl-7 statsBlocksContainer mb-4">
+
+					@if (!String.IsNullOrEmpty(Model.HunterName))
+					{
+						<div class="row justify-content-around align-items-center my-3 statBlock">
+							<p class="col-12 col-lg-5 text-center text-lg-start fs-3 text-nowrap m-0 fw-bold">Hunter:</p>
+							<p class="col-12 col-lg-5 text-center text-lg-end fs-4 my-0 text-nowrap">@Model.HunterName</p>
+						</div>
+					}
+
+					@if (!String.IsNullOrEmpty(Model.HunterUsername))
+					{
+						<div class="row justify-content-around align-items-center my-3 statBlock">
+							<p class="col-12 col-lg-5 text-center text-lg-start fs-3 text-nowrap m-0 fw-bold">Username:</p>
+							<p class="col-12 col-lg-5 text-center text-lg-end fs-4 my-0 text-nowrap">@Model.HunterUsername</p>
+						</div>
+					}
+				</div>
+			</div>
+		}
 
 		<div class="row justify-content-center mb-4">
 			<p class="col-10 text-center fs-6 confirmDescription">

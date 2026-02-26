@@ -1,153 +1,16 @@
-@using Gotcha.Web.Areas.Player.ViewModels.BaseViewModels;
+@using Gotcha.Web.Areas.User.ViewModels;
 
 @{
-	ViewData["Title"] = "Game Admin";
+	ViewData["Title"] = "New Game";
 }
 
-<script src="~/js/adminPage.js"></script>
+<script src="~/js/newGamePage.js"></script>
 
-@model Gotcha.Web.Areas.Player.ViewModels.AdminViewModel
+@model NewGameViewModel
 
 <div class="row mb-3">
-	<h1 class="col-12 text-center fw-bold font-bungee">Game Admin</h1>
+	<h1 class="col-12 text-center fw-bold font-bungee">New Game</h1>
 </div>
-
-<!-- ===== PRE-GAME: PLAYERS CARD ===== -->
-@if (!Model.HasStarted)
-{
-	<div class="card glowingCard formBg mt-4 col-10 col-xl-11 mx-auto p-0 mb-5">
-		<div class="card-header row">
-			<h2 class="col-12 text-center font-robotoSlab fw-bold color-2 mt-3">Players (@Model.PlayerCount / @Model.MaxPlayers)</h2>
-		</div>
-
-		@if (Model.Players.Count == 0)
-		{
-			<div class="row justify-content-center my-4">
-				<p class="col-10 text-center fs-4 noPlayersMessage">No players have joined yet.</p>
-			</div>
-		}
-		else
-		{
-			<div class="row justify-content-center">
-				<div class="col-10 col-lg-11 mb-5 mt-4 adminTable">
-					<div class="row justify-content-around align-items-center adminTableHeader">
-						<p class="col-2 mt-2 mb-1 text-nowrap text-center">Name:</p>
-						<p class="col-2 mt-2 mb-1 text-nowrap text-center">Username:</p>
-						<p class="col-1 mt-2 mb-1 text-nowrap text-center">Image:</p>
-						<div class="col-7 mt-2 mb-1 text-nowrap text-center d-flex justify-content-center align-items-center">
-							<p class="m-0">Actions:</p>
-							<p class="infoIcon actionsInfoIcon m-0" data-bs-toggle="modal" data-bs-target="#actionsInfoModal">&#9432;</p>
-						</div>
-					</div>
-
-					@foreach (AdminPlayerViewModel player in Model.Players)
-					{
-						<div class="adminTableBlock row justify-content-around align-items-center">
-							<p class="col-2 my-2 text-nowrap text-center adminInfo">@player.Name</p>
-							<p class="col-2 my-2 text-nowrap text-center adminInfo">@player.Username</p>
-							<p class="col-1 my-2 text-nowrap text-center adminInfo">
-								@if (player.HasImage)
-								{
-									<span class="imageStatusYes">Yes</span>
-								}
-								else
-								{
-									<span class="imageStatusNo">No</span>
-								}
-							</p>
-							<div class="col-7 my-2 text-nowrap text-center">
-								<div class="row justify-content-center justify-content-lg-around">
-									<button class="btn notifyBtn notifyImageBtn col-12 col-lg-2" title="Notify to upload image" data-player="@player.Name" data-type="image">image</button>
-									<button class="btn notifyBtn notifyUsernameBtn col-12 col-lg-2" title="Notify to set username" data-player="@player.Name" data-type="username">username</button>
-									@if (player.IsAdmin)
-									{
-										<button class="btn adminToggleBtn removeAdminBtn col-12 col-lg-2" title="Remove admin access" data-player="@player.Name">remove admin</button>
-									}
-									else
-									{
-										<button class="btn adminToggleBtn addAdminBtn col-12 col-lg-2" title="Grant admin access" data-player="@player.Name">add admin</button>
-									}
-									@if (player.IsSpectator)
-									{
-										<button class="btn spectatorToggleBtn col-12 col-lg-2" title="Remove spectator mode" data-player="@player.Name" data-spectator="true">spectator: <span class="spectatorOnText">on</span></button>
-									}
-									else
-									{
-										<button class="btn spectatorToggleBtn col-12 col-lg-2" title="Enable spectator mode" data-player="@player.Name" data-spectator="false">spectator: off</button>
-									}
-									<button class="btn removePlayerBtn col-12 col-lg-2" title="Remove player from game" data-player="@player.Name">remove</button>
-								</div>
-							</div>
-						</div>
-					}
-				</div>
-			</div>
-		}
-	</div>
-
-	<!-- ===== PRE-GAME: INVITE PLAYERS CARD ===== -->
-	<div class="card glowingCard formBg mt-4 col-10 col-xl-11 mx-auto p-0 mb-5">
-		<div class="card-header row">
-			<h2 class="col-12 text-center font-robotoSlab fw-bold color-2 mt-3">Invite Players</h2>
-		</div>
-
-		<div class="row justify-content-center my-4">
-			<div class="col-10 col-md-8 col-lg-6">
-				<div class="input-group">
-					<input type="text" id="inviteLink" class="form-control inviteLinkInput" value="@Model.InviteLink" readonly />
-					<button class="btn btn-1 copyLinkBtn">Copy Link</button>
-				</div>
-			</div>
-		</div>
-	</div>
-}
-
-<!-- ===== DURING GAME: PENDING KILLS CARD ===== -->
-@if (Model.HasStarted)
-{
-	<div class="card glowingCard formBg mt-4 col-10 col-xl-11 mx-auto p-0 mb-5">
-		<div class="card-header row">
-			<h2 class="col-12 text-center font-robotoSlab fw-bold color-2 mt-3">Pending Kills</h2>
-		</div>
-
-		@if (Model.PendingKills.Count == 0)
-		{
-			<div class="row justify-content-center my-4">
-				<p class="col-10 text-center fs-4 noPendingMessage">No pending kills.</p>
-			</div>
-		}
-		else
-		{
-			<div class="row justify-content-center">
-				<div class="col-10 col-lg-11 mb-5 mt-4 adminTable">
-					<div class="row justify-content-around align-items-center adminTableHeader">
-						<p class="col-3 mt-2 mb-1 text-nowrap text-center">Killer:</p>
-						<p class="col-2 mt-2 mb-1 text-nowrap text-center">Victim:</p>
-						<p class="col-2 mt-2 mb-1 text-nowrap text-center">Weapon:</p>
-						<p class="col-3 mt-2 mb-1 text-nowrap text-center">Time:</p>
-						<p class="col-2 mt-2 mb-1 text-nowrap text-center">Action:</p>
-					</div>
-
-					@foreach (AdminKillViewModel kill in Model.PendingKills)
-					{
-						DateTime killMoment = kill.Moment.ToLocalTime();
-						string formatted = killMoment.ToString("dd-MM-yyyy - HH:mm");
-
-						<div class="adminTableBlock row justify-content-around align-items-center">
-							<p class="col-3 my-2 text-nowrap text-center adminInfo">@kill.KillerName</p>
-							<p class="col-2 my-2 text-nowrap text-center adminInfo">@kill.VictimName</p>
-							<p class="col-2 my-2 text-nowrap text-center adminInfo">@kill.Weapon</p>
-							<p class="col-3 my-2 text-nowrap text-center adminInfo adminTimeInfo">@formatted</p>
-							<div class="col-2 my-2 text-nowrap text-center">
-								<button class="btn cancelKillBtn" title="Cancel this kill">Cancel</button>
-							</div>
-						</div>
-					}
-				</div>
-			</div>
-		}
-	</div>
-}
 
 <!-- ===== GAME SETTINGS CARD ===== -->
 <div class="card glowingCard formBg mt-4 col-10 col-xl-11 mx-auto p-0 mb-5">
@@ -157,6 +20,28 @@
 
 	<div class="row justify-content-center my-4">
 		<div class="col-10 col-md-8">
+
+			<!-- Game Name -->
+			<div class="row align-items-center mb-3 settingRow">
+				<div class="col-8 d-flex align-items-center">
+					<label for="gameName" class="settingLabel">Game Name</label>
+					<p class="infoIcon settingInfoIcon m-0" data-title="Game Name" data-info="The name of your game. This is what players will see when they join or look at their games list.">&#9432;</p>
+				</div>
+				<div class="col-4">
+					<input type="text" id="gameName" class="form-control" value="@Model.Name" placeholder="Enter game name" />
+				</div>
+			</div>
+
+			<!-- Custom Rules -->
+			<div class="row mb-3 settingRow">
+				<div class="col-12">
+					<div class="d-flex align-items-center mb-2">
+						<label for="customRules" class="settingLabel">Custom Rules:</label>
+						<p class="infoIcon settingInfoIcon m-0" data-title="Custom Rules" data-info="Add any house rules for your game. These will be shown to all players so everyone knows what's allowed and what's not.">&#9432;</p>
+					</div>
+					<textarea id="customRules" class="form-control customRulesTextarea" rows="4" placeholder="e.g. No kills during class, Safe zones in dorms, No kills at work">@(Model.CustomRules != null ? String.Join(", ", Model.CustomRules) : "")</textarea>
+				</div>
+			</div>
 
 			<!-- Show Player Images -->
 			<div class="row align-items-center mb-3 settingRow">
@@ -256,7 +141,7 @@
 				</div>
 			</div>
 
-			<!-- Show Living Player Names to Death -->
+			<!-- Show Living Player Names to Dead -->
 			<div class="row align-items-center mb-3 settingRow">
 				<div class="col-8 d-flex align-items-center">
 					<label for="showLivingPlayerNamesToDead" class="settingLabel">Show Living Player Names to Dead</label>
@@ -267,50 +152,6 @@
 						<input type="checkbox" id="showLivingPlayerNamesToDead" checked="@Model.ShowLivingPlayerNamesToDeath" />
 						<span class="toggle-slider"></span>
 					</label>
-				</div>
-			</div>
-
-			<!-- Custom Rules -->
-			<div class="row mb-3 settingRow">
-				<div class="col-12">
-					<div class="d-flex align-items-center mb-2">
-						<label for="customRules" class="settingLabel">Custom Rules:</label>
-						<p class="infoIcon settingInfoIcon m-0" data-title="Custom Rules" data-info="Add any house rules for your game. These will be shown to all players so everyone knows what's allowed and what's not.">&#9432;</p>
-					</div>
-					<textarea id="customRules" class="form-control customRulesTextarea" rows="4" placeholder="e.g. No kills during class, Safe zones in dorms, No kills at work">@(Model.CustomRules != null ? String.Join(", ", Model.CustomRules) : "")</textarea>
-				</div>
-			</div>
-
-			<!-- Custom Kill Methods -->
-			<div class="row align-items-center mb-3">
-				<div class="col-8 d-flex align-items-center">
-					<label for="customKillMethods" class="settingLabel">Custom Kill Methods</label>
-					<p class="infoIcon settingInfoIcon m-0" data-title="Custom Kill Methods" data-info="When enabled, you can define specific ways players are allowed to eliminate each other.">&#9432;</p>
-				</div>
-				<div class="col-4 text-end">
-					<label class="toggle-switch">
-						<input type="checkbox" id="customKillMethods" checked="@Model.CustomKillMethods" />
-						<span class="toggle-slider"></span>
-					</label>
-				</div>
-			</div>
-
-			<!-- Kill Methods Input -->
-			<div class="row mb-3 settingRow" id="killMethodsSection">
-				<div class="col-12">
-					<div class="d-flex align-items-center mb-2">
-						<label for="killMethods" class="settingLabel">Kill Methods:</label>
-						<p class="infoIcon settingInfoIcon m-0" data-title="Kill Methods" data-info="List the allowed elimination methods, separated by commas. Players will choose from these when confirming a kill.">&#9432;</p>
-					</div>
-					@if (Model.CustomKillMethods && Model.KillMethods != null)
-					{
-						<input type="text" id="killMethods" class="form-control" value="@String.Join(", ", Model.KillMethods)" placeholder="e.g. Nerf Gun, Water Balloon, Tag" />
-					}
-					else
-					{
-						<input type="text" id="killMethods" class="form-control" placeholder="e.g. Nerf Gun, Water Balloon, Tag" disabled />
-					}
-					<small class="text-light">Separate methods with commas</small>
 				</div>
 			</div>
 
@@ -426,7 +267,7 @@
 			</div>
 
 			<!-- Target Timeout -->
-			<div class="row align-items-center mb-3 timerRow">
+			<div class="row align-items-center mb-3 settingRow timerRow">
 				<div class="col-8 d-flex align-items-center">
 					<label for="targetTimeout" class="settingLabel timerLabel">Target Timeout (hours)</label>
 					<p class="infoIcon settingInfoIcon m-0" data-title="Target Timeout" data-info="The number of hours a player has to eliminate their target before they time out.">&#9432;</p>
@@ -443,35 +284,60 @@
 				</div>
 			</div>
 
+			<!-- Custom Kill Methods -->
+			<div class="row align-items-center mb-3">
+				<div class="col-8 d-flex align-items-center">
+					<label for="customKillMethods" class="settingLabel">Custom Kill Methods</label>
+					<p class="infoIcon settingInfoIcon m-0" data-title="Custom Kill Methods" data-info="When enabled, you can define specific ways players are allowed to eliminate each other.">&#9432;</p>
+				</div>
+				<div class="col-4 text-end">
+					<label class="toggle-switch">
+						<input type="checkbox" id="customKillMethods" checked="@Model.CustomKillMethods" />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+
+			<!-- Kill Methods Input -->
+			<div class="row mb-3 settingRow" id="killMethodsSection">
+				<div class="col-12">
+					<div class="d-flex align-items-center mb-2">
+						<label for="killMethods" class="settingLabel">Kill Methods:</label>
+						<p class="infoIcon settingInfoIcon m-0" data-title="Kill Methods" data-info="List the allowed elimination methods, separated by commas. Players will choose from these when confirming a kill.">&#9432;</p>
+					</div>
+					@if (Model.CustomKillMethods && Model.KillMethods != null)
+					{
+						<input type="text" id="killMethods" class="form-control" value="@String.Join(", ", Model.KillMethods)" placeholder="e.g. Nerf Gun, Water Balloon, Tag" />
+					}
+					else
+					{
+						<input type="text" id="killMethods" class="form-control" placeholder="e.g. Nerf Gun, Water Balloon, Tag" disabled />
+					}
+					<small class="text-light">Separate methods with commas</small>
+				</div>
+			</div>
+
+			<!-- Invite Link -->
+			<div class="row mb-3">
+				<div class="col-12">
+					<div class="d-flex align-items-center mb-2">
+						<label class="settingLabel">Join Link:</label>
+						<p class="infoIcon settingInfoIcon m-0" data-title="Join Link" data-info="Share this link with players so they can join your game. Anyone with the link can join until the game starts.">&#9432;</p>
+					</div>
+					<div class="input-group">
+						<input type="text" id="inviteLink" class="form-control inviteLinkInput" value="@Model.InviteLink" readonly />
+						<button class="btn btn-1 copyLinkBtn">Copy Link</button>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div>
 </div>
 
-<!-- ===== START / END GAME BUTTON ===== -->
+<!-- ===== CREATE GAME BUTTON ===== -->
 <div class="row justify-content-center mb-5">
-	@if (!Model.HasStarted)
-	{
-		<button class="col-8 col-md-6 col-lg-4 btn-1 fs-4 py-2 startGameBtn">Start Game</button>
-	}
-	else
-	{
-		<button class="col-8 col-md-6 col-lg-4 btn-1 fs-4 py-2 endGameBtn">End Game</button>
-	}
-</div>
-
-<!-- ===== ACTIONS INFO MODAL ===== -->
-<div class="modal fade" id="actionsInfoModal" role="dialog" tabindex="-1">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header justify-content-center">
-				<h5 class="modal-title infoModalTitle">Actions</h5>
-				<button type="button" class="btn-close modalClose" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body text-center">
-				<p class="infoModalText">Use "Image" or "Username" to send a player a request to update their profile image or username. "Add Admin" or "Remove Admin" lets you grant or revoke admin access for that player. "Spectator" toggles spectator mode, which means the player can follow the game without being assigned targets or participating. "Remove" kicks the player from the game entirely.</p>
-			</div>
-		</div>
-	</div>
+	<button class="col-8 col-md-6 col-lg-4 btn-1 fs-4 py-2 createGameBtn">Create Game</button>
 </div>
 
 <!-- ===== SETTINGS INFO MODAL ===== -->
@@ -484,25 +350,6 @@
 			</div>
 			<div class="modal-body text-center">
 				<p class="infoModalText">Info about this setting.</p>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- ===== CONFIRM ACTION MODAL ===== -->
-<div class="modal fade" id="confirmActionModal" role="dialog" tabindex="-1">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header justify-content-center">
-				<h5 class="modal-title confirmActionTitle">Confirm</h5>
-				<button type="button" class="btn-close modalClose" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body text-center">
-				<p class="confirmActionText">Are you sure?</p>
-			</div>
-			<div class="modal-footer justify-content-center">
-				<button type="button" class="btn btn-2" data-bs-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-1 confirmActionBtn">Confirm</button>
 			</div>
 		</div>
 	</div>

@@ -2,9 +2,11 @@
 	ViewData["Title"] = "User Settings";
 }
 
+<script src="~/js/userSettingsPage.js"></script>
+
 <div class="d-flex justify-content-center align-items-center mb-5">
 		<h1 class="fw-bold font-bungee text-center">User Settings</h1>
-		<p class="infoIcon settingsInfoIcon" data-bs-toggle="modal" data-bs-target="#settingsInfoModal">&#9432;</p>
+		<p class="infoIcon settingsInfoIcon" data-title="User Settings" data-info="These are your account-wide settings. Changes here will apply to your profile across all games.">&#9432;</p>
 	</div>
 
 	<form class="card glowingCard col-11 mx-auto formBg mb-5">
@@ -83,11 +85,11 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header justify-content-center">
-				<h5 class="modal-title infoModalTitle">User Settings</h5>
+				<h5 class="modal-title infoModalTitle">Info</h5>
 				<button type="button" class="btn-close modalClose" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body text-center">
-				<p class="infoModalText">These are your account-wide settings. Changes here will apply to your profile across all games.</p>
+				<p class="infoModalText">Info text goes here.</p>
 			</div>
 		</div>
 	</div>

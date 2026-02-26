@@ -70,6 +70,15 @@
 /* #endregion */
 
 
+/* #region Setting Info Icon */
+
+::deep .settingInfoIcon {
+    margin: 0 0 1.5vh 0.5vw !important;
+}
+
+/* #endregion */
+
+
 /* #region Settings */
 
 ::deep .settingRow {
@@ -108,6 +117,14 @@
 ::deep textarea {
     background-color: #FFFFFF40;
     color: white;
+}
+
+::deep input:focus,
+::deep textarea:focus {
+    background-color: #FFFFFF40;
+    color: white;
+    outline: none;
+    box-shadow: 0 0 10px var(--primary-color-blue);
 }
 
 ::deep input::placeholder,
@@ -242,6 +259,66 @@
 /* #endregion */
 
 
+/* #region Admin Toggle Button */
+
+::deep .adminToggleBtn {
+    color: #ff9800;
+    border: 2px solid #ff9800;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    padding: 0.6vh 0;
+    margin: 0.5vh 0;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+::deep .adminToggleBtn:hover {
+    background-color: #ff9800;
+    color: white;
+}
+
+::deep .removeAdminBtn {
+    color: #f44336;
+    border-color: #f44336;
+}
+
+::deep .removeAdminBtn:hover {
+    background-color: #f44336;
+    color: white;
+}
+
+/* #endregion */
+
+
+/* #region Spectator Toggle Button */
+
+::deep .spectatorToggleBtn {
+    color: #ba68c8;
+    border: 2px solid #ba68c8;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    padding: 0.6vh 0;
+    margin: 0.5vh 0;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+::deep .spectatorToggleBtn:hover {
+    background-color: #ba68c8;
+    color: white;
+}
+
+::deep .spectatorOnText {
+    color: #f44336;
+}
+
+::deep .spectatorToggleBtn:hover .spectatorOnText {
+    color: white;
+}
+
+/* #endregion */
+
+
 /* #region Confirm Modal */
 
 ::deep .confirmActionTitle,
@@ -254,17 +331,22 @@
     font-size: 1.1rem;
 }
 
-::deep .confirmRemoveBtn {
-    background-color: #d32f2f;
-    border: 3px solid #f44336;
-    color: white;
+::deep .modal-footer .btn {
+    padding: 0.4vh 0.8vw !important;
+    border-radius: 8px;
     font-weight: bold;
 }
 
+::deep .confirmRemoveBtn {
+    background-color: #d32f2f !important;
+    border-color: #f44336 !important;
+    color: white !important;
+}
+
 ::deep .confirmRemoveBtn:hover {
-    background-color: #f44336;
-    border-color: #d32f2f;
-    color: white;
+    background-color: #f44336 !important;
+    border-color: #d32f2f !important;
+    color: white !important;
 }
 
 /* #endregion */

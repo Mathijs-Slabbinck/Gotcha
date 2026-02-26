@@ -1,9 +1,9 @@
-﻿@{
+@{
 
 	ViewData["Title"] = "Sign Up";
 }
 
-<script src="~/js/signUp.js" ></script>
+<script src="~/js/signUpPage.js"></script>
 
 <h1 class="fw-bold font-bungee text-center">Welcome to GOTCHA!</h1>
 
@@ -11,7 +11,7 @@
 		<div class="card-header row">
 			<div class="col-12 d-flex justify-content-center">
 				<h2 class="text-center font-robotoSlab fw-bold mt-2 color-2 pt-2 pd-1">SIGN UP</h2>
-				<p class="text-end infoIcon" id="info-general" data-bs-toggle="modal" data-bs-target="#infoModal">&#9432;</p>
+				<p class="text-end infoIcon" data-title="General" data-info="We will only use this data in game. None of your info will be sold or used outside the app. All data is stored safely and your privacy is respected!">&#9432;</p>
 			</div>
 		</div>
 		<div class="card-body row mt-2 py-2">
@@ -20,7 +20,7 @@
 					<div class="col-9">
 						<div class="row align-items-end">
 							<label class="fw-bold color-2 mb-2 fs-6 font-roboto col-10 p-0" for="signUpFirstNameInput">First Name: *</label>
-							<p class="text-end col-2 infoIcon" id="info-firstName" data-bs-toggle="modal" data-bs-target="#infoModal">&#9432;</p>
+							<p class="text-end col-2 infoIcon" data-title="First Name" data-info="We ask for your first name because, unless disabled, your name will be shown in game.">&#9432;</p>
 						</div>
 					</div>
 					<input class="col-9" id="signUpFirstNameInput" type="text" placeholder="John" required />
@@ -31,7 +31,7 @@
 					<div class="col-9">
 						<div class="row align-items-end">
 							<label class="fw-bold color-2 mb-2 fs-6 font-roboto col-10 p-0" for="signUpLastNameInput">Last Name: *</label>
-							<p class="text-end col-2 infoIcon" id="info-lastName">&#9432;</p>
+							<p class="text-end col-2 infoIcon" data-title="Last Name" data-info="We ask for your last name because, unless disabled, your name will be shown in game.">&#9432;</p>
 						</div>
 					</div>
 					<input class="col-9" id="signUpLastNameInput" type="text" placeholder="Doe" required />
@@ -44,7 +44,7 @@
 					<div class="col-9">
 						<div class="row align-items-end">
 							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpUsernameInput">Username: *</label>
-							<p class="text-end col-2 infoIcon" id="info-username">&#9432;</p>
+							<p class="text-end col-2 infoIcon" data-title="Username" data-info="We ask for your username because if real names are disabled, this username will be shown by default (can be changed per game).">&#9432;</p>
 						</div>
 					</div>
 					<input class="col-9" id="signUpUsernameInput" type="text" placeholder="TheLegend27" required />
@@ -55,7 +55,7 @@
 					<div class="col-9">
 						<div class="row align-items-end">
 							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpEmailInput">Email Address: *</label>
-							<p class="text-end col-2 infoIcon" id="info-emailAddress">&#9432;</p>
+							<p class="text-end col-2 infoIcon" data-title="Email Address" data-info="We ask for your email address for account verification. We will not be sending you any emails.">&#9432;</p>
 						</div>
 					</div>
 					<input class="col-9" id="signUpEmailInput" type="text" placeholder="john.doe@example.com" required />
@@ -68,7 +68,7 @@
 					<div class="col-9">
 						<div class="row align-items-end">
 							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpPasswordInput">Password: *</label>
-							<p class="text-end col-2 infoIcon" id="info-password">&#9432;</p>
+							<p class="text-end col-2 infoIcon" data-title="Password" data-info="Your password is encrypted and kept safe. We take cyber security seriously (but we suggest using a unique password to be extra safe)!">&#9432;</p>
 						</div>
 					</div>
 					<div class="col-9">
@@ -84,7 +84,7 @@
 					<div class="col-9">
 						<div class="row align-items-end">
 							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpRepeatPasswordInput">Repeat Password: *</label>
-							<p class="text-end col-2 infoIcon" id="info-repeatPassword">&#9432;</p>
+							<p class="text-end col-2 infoIcon" data-title="Repeat Password" data-info="We ask to repeat your password to be certain that there were no typos.">&#9432;</p>
 						</div>
 					</div>
 					<div class="col-9">
@@ -102,7 +102,7 @@
 					<div class="col-9">
 						<div class="row align-items-end">
 							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpBirthDayInput">BirthDay: *</label>
-							<p class="text-end col-2 infoIcon" id="info-birthday">&#9432;</p>
+							<p class="text-end col-2 infoIcon" data-title="Birthday" data-info="If this in game setting is enabled, players will be able to see your age to get a better idea of their target.">&#9432;</p>
 						</div>
 					</div>
 					<input class="col-9" id="signUpBirthDayInput" type="date" required />
@@ -113,7 +113,7 @@
 					<div class="col-9">
 						<div class="row align-items-end">
 							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpGenderInput">Gender: *</label>
-							<p class="text-end col-2 infoIcon" id="info-gender">&#9432;</p>
+							<p class="text-end col-2 infoIcon" data-title="Gender" data-info="If images are disabled we will show a template (different for each gender). If enabled, we will also show your gender in game to give players a better idea of their target.">&#9432;</p>
 						</div>
 					</div>
 					<select class="col-9" id="signUpGenderInput" required>
@@ -131,7 +131,7 @@
 					<div class="col-9">
 						<div class="row align-items-end">
 							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpImageInput">Picture:</label>
-							<p class="text-end col-2 infoIcon" id="info-picture">&#9432;</p>
+							<p class="text-end col-2 infoIcon" data-title="Picture" data-info="If enabled (enabled by default) we will show player images in game to give players an idea of what their target looks like.">&#9432;</p>
 						</div>
 					</div>
 					<div class="row justify-content-center">

@@ -14,11 +14,14 @@ namespace Gotcha.Web.Areas.Player.Controllers
 
             ConfirmKillViewModel confirmKillViewModel = new ConfirmKillViewModel
             {
+                ShowPlayerImages = true,
+                ShowGender = true,
                 TargetName = "Jane Doe",
                 TargetUsername = "TheLegend27",
                 TargetGender = Genders.Female,
                 Weapon = "Sock",
                 IsAssassinMode = true,
+                ShowHunter = true,
                 HunterName = "Willy Wonka",
                 HunterUsername = "Chocolate_Man",
                 HunterGender = Genders.Male

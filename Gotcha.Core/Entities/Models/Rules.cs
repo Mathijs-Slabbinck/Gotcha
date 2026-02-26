@@ -4,7 +4,9 @@ namespace Gotcha.Core.Entities.Models
     {
         public Guid Id { get; init; } = Guid.NewGuid();
         public bool IsAssassin { get; set; } = false;
+        public bool ShowHunter { get; set; } = false;
         public bool ShowPlayerImages { get; set; } = false;
+        public bool ShowGender { get; set; } = false;
         public bool EnforcePlayerImages { get; set; } = false;
         public bool ShowRealNames { get; set; } = true;
         public bool ShowUsernames { get; set; } = false;

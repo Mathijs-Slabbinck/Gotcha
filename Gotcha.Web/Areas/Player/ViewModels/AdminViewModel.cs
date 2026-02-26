@@ -14,6 +14,7 @@ namespace Gotcha.Web.Areas.Player.ViewModels
 
         // Game settings (from Rules) — pre-game
         public bool ShowPlayerImages { get; set; }
+        public bool ShowGender { get; set; }
         public bool EnforcePlayerImages { get; set; }
         public bool ShowRealNames { get; set; }
         public bool ShowUsernames { get; set; }
@@ -27,6 +28,7 @@ namespace Gotcha.Web.Areas.Player.ViewModels
         // VIP-gated settings (during game)
         public bool AssassinModeUnlocked { get; set; }
         public bool IsAssassin { get; set; }
+        public bool ShowHunter { get; set; }
         public bool ChaosModeUnlocked { get; set; }
         public bool IsChaos { get; set; }
         public int ChaosTimerMinHours { get; set; }

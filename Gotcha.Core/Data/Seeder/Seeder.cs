@@ -50,13 +50,14 @@ namespace Gotcha.Core.Data.Seeder
             Rules rules1 = new Rules();
 
             // assassin gamemode
-            Rules rules2 = new Rules { IsAssassin = true };
+            Rules rules2 = new Rules { IsAssassin = true, ShowHunter = true };
 
             // enforce player images
             Rules rules3 = new Rules
             {
                 ShowPlayerImages = true,
-                EnforcePlayerImages = true
+                EnforcePlayerImages = true,
+                ShowGender = true
             };
 
             // timed game

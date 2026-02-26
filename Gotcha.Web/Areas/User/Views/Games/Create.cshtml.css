@@ -1,0 +1,135 @@
+/* #region Settings */
+
+::deep .settingRow {
+    border-bottom: 1px solid var(--background-color-blue);
+    padding-bottom: 0.8rem;
+}
+
+::deep .settingLabel {
+    color: var(--primary-color-blue);
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+::deep .customRulesTextarea {
+    border: 2px solid var(--secondary-color-blue);
+    background-color: #FFFFFF40;
+    color: white;
+    font-family: "Roboto", sans-serif;
+}
+
+::deep .customRulesTextarea:focus {
+    border: 2px solid var(--secondary-color-blue);
+    background-color: #FFFFFF40;
+    color: white;
+    outline: none;
+    box-shadow: 0 0 10px var(--primary-color-blue);
+}
+
+/* #endregion */
+
+
+/* #region Setting Info Icon */
+
+::deep .settingInfoIcon {
+    margin: 0 0 1.5vh 0.5vw !important;
+}
+
+/* #endregion */
+
+
+/* #region Input Styling */
+
+::deep input,
+::deep textarea {
+    background-color: #FFFFFF40;
+    color: white;
+}
+
+::deep input:focus,
+::deep textarea:focus {
+    background-color: #FFFFFF40;
+    color: white;
+    outline: none;
+    box-shadow: 0 0 10px var(--primary-color-blue);
+}
+
+::deep input::placeholder,
+::deep textarea::placeholder {
+    color: #9ae6eb !important;
+}
+
+::deep input[type="date"] {
+    color: #6c757d;
+    padding-top: 0.1vh;
+    padding-bottom: 0.1vh;
+}
+
+::deep input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(62%) sepia(85%) saturate(395%) hue-rotate(133deg) brightness(88%) contrast(92%);
+    cursor: pointer;
+}
+
+::deep input[type=date]:invalid {
+    color: #9ae6eb !important;
+}
+
+::deep input[type=date]:valid {
+    color: white !important;
+}
+
+/* #endregion */
+
+
+/* #region Copy Link */
+
+::deep .inviteLinkInput {
+    background-color: #FFFFFF40;
+    color: white;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+}
+
+::deep .inviteLinkInput:focus {
+    background-color: #FFFFFF40;
+    color: white;
+}
+
+::deep .copyLinkBtn {
+    font-size: 0.9rem;
+}
+
+/* #endregion */
+
+
+/* #region Timer Input */
+
+::deep .timerInput {
+    max-width: 90px;
+    display: inline-block;
+    border: 2px solid var(--secondary-color-blue);
+    background-color: #FFFFFF40;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+::deep .timerInput:focus {
+    border: 2px solid var(--secondary-color-blue);
+    background-color: #FFFFFF40;
+    color: white;
+    outline: none;
+    box-shadow: 0 0 10px var(--primary-color-blue);
+}
+
+::deep .timerRow {
+    padding-top: 0;
+}
+
+::deep .timerLabel {
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* #endregion */

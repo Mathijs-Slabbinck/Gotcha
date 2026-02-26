@@ -50,11 +50,10 @@
 
 .statsBlocksContainer {
     border-top: 2px solid var(--primary-color-blue);
-    border-bottom: 2px solid var(--primary-color-blue);
 }
 
 .nameBlock p:nth-last-of-type(even):first-of-type {
-    font-size: 3vw;
+    font-size: 2.5vw;
 }
 
 .nameBlock p:nth-of-type(3) {
@@ -83,6 +82,59 @@
 ::deep .customRulesText li {
     color: var(--primary-color-blue);
     font-weight: normal;
+    margin: 1vh 0;
+}
+
+::deep .livingPlayersBlock {
+    padding-top: 1.5vh;
+    border-bottom: 2px solid var(--primary-color-blue);
+    padding-bottom: 1.5vh;
+}
+
+::deep .livingPlayersList {
+    border: 2px solid var(--secondary-color-blue);
+    border-radius: 10px;
+    background-color: var(--background-color-transparant-blue);
+    padding: 1.5vh 2vw 1.5vh 5vw;
+    font-size: 1rem;
+    font-weight: normal;
+    list-style-type: disc;
+}
+
+::deep .livingPlayersList li {
+    color: var(--primary-color-blue);
+    font-weight: normal;
+    margin: 0.6vh 0;
+}
+
+::deep .deadPlayersBlock {
+    padding-top: 1.5vh;
+    border-bottom: 2px solid var(--primary-color-blue);
+    padding-bottom: 1.5vh;
+}
+
+::deep .deadPlayersBlock.noBorderBottom {
+    border-bottom: none;
+}
+
+::deep .deadPlayersList {
+    border: 2px solid var(--secondary-color-blue);
+    border-radius: 10px;
+    background-color: var(--background-color-transparant-blue);
+    padding: 1.5vh 2vw 1.5vh 5vw;
+    font-size: 1rem;
+    font-weight: normal;
+    list-style-type: disc;
+}
+
+::deep .deadPlayersList li {
+    color: var(--primary-color-blue);
+    font-weight: normal;
+    margin: 0.6vh 0;
+}
+
+::deep .livingPlayerName {
+    min-width: 8em;
 }
 
 #killOverviewTitle {
@@ -93,6 +145,8 @@
     .smallBorderRight {
         border-right: 2px solid var(--primary-color-blue);
     }
+
+
 }
 
 @media only screen and (min-width: 575px) {

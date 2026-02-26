@@ -13,6 +13,8 @@ namespace Gotcha.Core.Entities.Models
         public string? Username { get; set; }
         public string? ProfileImageSource { get; set; }
         public bool IsAlive { get; set; } = true;
+        public bool IsAdmin { get; set; } = false;
+        public bool IsSpectator { get; set; } = false;
         public string Notes { get; set; } = string.Empty;
         public ICollection<TargetAssignment> TargetAssignments { get; set; } = new List<TargetAssignment>();
         #endregion

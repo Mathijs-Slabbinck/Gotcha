@@ -22,6 +22,7 @@ namespace Gotcha.Web.Areas.Player.Controllers
 
                 // Game settings
                 ShowPlayerImages = true,
+                ShowGender = false,
                 EnforcePlayerImages = false,
                 ShowRealNames = true,
                 ShowUsernames = true,
@@ -35,6 +36,7 @@ namespace Gotcha.Web.Areas.Player.Controllers
                 // VIP-gated settings
                 AssassinModeUnlocked = true,
                 IsAssassin = false,
+                ShowHunter = false,
                 ChaosModeUnlocked = true,
                 IsChaos = false,
                 ChaosTimerMinHours = 6,
@@ -51,35 +53,45 @@ namespace Gotcha.Web.Areas.Player.Controllers
                         PlayerId = Guid.NewGuid(),
                         Name = "John Doe",
                         Username = "TheLegend27",
-                        HasImage = true
+                        HasImage = true,
+                        IsAdmin = true,
+                        IsSpectator = false
                     },
                     new AdminPlayerViewModel
                     {
                         PlayerId = Guid.NewGuid(),
                         Name = "Jane Smith",
                         Username = "ShadowHunter",
-                        HasImage = false
+                        HasImage = false,
+                        IsAdmin = false,
+                        IsSpectator = false
                     },
                     new AdminPlayerViewModel
                     {
                         PlayerId = Guid.NewGuid(),
                         Name = "Bob Wilson",
                         Username = "SilentBob",
-                        HasImage = true
+                        HasImage = true,
+                        IsAdmin = false,
+                        IsSpectator = true
                     },
                     new AdminPlayerViewModel
                     {
                         PlayerId = Guid.NewGuid(),
                         Name = "Alice Brown",
                         Username = "AliceInChains",
-                        HasImage = false
+                        HasImage = false,
+                        IsAdmin = false,
+                        IsSpectator = false
                     },
                     new AdminPlayerViewModel
                     {
                         PlayerId = Guid.NewGuid(),
                         Name = "Charlie Davis",
                         Username = "CharlieD",
-                        HasImage = true
+                        HasImage = true,
+                        IsAdmin = false,
+                        IsSpectator = false
                     }
                 },
 

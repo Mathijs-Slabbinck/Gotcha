@@ -484,3 +484,183 @@ change minutes to hours in admin; also chaos mode timer now has 1 value, make th
 
 ## prompt 141
 at the games pages for the user, add a "new game" button in the same style of the start game button on the admin page. Place the button between the active games card and the ended games card. Give it a bit of margin top and more margin bottom.
+
+## prompt 142
+Implement the following plan: New Game View & ViewModel (Create.cshtml, NewGameViewModel, Create.cshtml.css, newGamePage.js, controller Create action, wire up New Game button)
+
+## prompt 143
+when selecting the date and game name input field, it lights up and becomes white. I don't like this. Look in user settings and make the inputs fields uniform
+
+## prompt 144
+if show living player names gets toggled on, show living player names to death also has to switch on. (only that, it doesn't work in other directions)
+
+## prompt 145
+show real names and show usernames cannot be switched off at the same time. They can both be on at the same time, not off. If only 1 is on and the user tries to switch it off, switch the other on (via js)
+
+## prompt 146
+change the placeholder for custom rules to the same one we used in admin
+
+## prompt 147
+change it to give examples then
+
+## prompt 148
+must have a witness is not a good one
+
+## prompt 149
+change in both create and admin
+
+## prompt 150
+in admin, when selecting the kill methods input field, it has a white background. Make it uniform with the others
+
+## prompt 151
+apply the same toogle rule for show real names and show usernames in admin page
+
+## prompt 152
+in the admin page and the new game page, add an info icon nex to every setting text like we did before in case the user wants more info about what exactly they are toggling on/off or setting
+
+## prompt 153
+change the margin of the newly added icons from margin-left: 0.5vw !important to margin: 0 0 1.5vh 0.5vw !important
+
+## prompt 154
+redo the code for the info modals on the other pages to also make use of data-title and data-info since I like this approach more as well
+
+## prompt 155
+on the player home page, in game status, underneath kills, add a block where it's saying how many players are still alive (if the setting is turned on) and underneath that, add a section where it lists the living players (if the setting is turned on). make this section look similar to how we did the game rules on that page
+
+## prompt 156
+rename the inconsistantly named js files
+
+## prompt 157
+in player home, the game rules section has a line underneath. This one can be removed. between players alive and living players are 2 lines, there should only be 1
+
+## prompt 158
+add a line underneath the living players section on the player home page
+
+## prompt 159
+Implement the following plan: Add "Show Hunter" Setting
+
+## prompt 160
+we will also need to edit the confirm kill view and viewmodel as it's currently showing the hunter
+
+## prompt 161
+in player home, if show images is enabled, remove the your hunter where it is now, in stead (if the setting is enabled) show it as a new section underneat "current target". Here it should show their image (if enabled) (implemented like the other image on that page), their name and / or username (depending on settings) if show images is not enabled, keep it as it is now
+
+## prompt 162
+I actually don't like the inline element when show images is off. Can you do it in the different section anyways? just without image if it's turned off
+
+## prompt 163
+in the players view, in the living players section list where it lists the living players, can you align the (username) fields vertically (they all start at the same place)
+
+## prompt 164
+can you change the target name and target username parts to also be Your Target: AKA. I like that better
+
+## prompt 165
+I am checking your previous change on how you did the gap. The list bullets are gone, they should have remained and the gap also shouldn't be that big. Also; I prefer you using bootstrap over the way you tackled the problem
+
+## prompt 166
+the gap is too big and in stead of using inline block and min-with try using rows and cols to fix the problem. and li is a row, in it a col 6 or 7 or so with in that another row and in that the 2 names, justify between to achieve the same goal
+
+## prompt 167
+revert back to previous method
+
+## prompt 168
+ok now lets try to add some space between the players names and usernames in living players again, just makes sure all living players usernames are alligned correctly so they start at the same place without having the gap to be too big or removing the bullet points.
+
+## prompt 169
+save to global memory; don't use style attribute in html, always do styling in the correct css file
+
+## prompt 170
+on the player page, in the game rules ul. add some extra space between the li's (margin-top and bottom). not much, but a bit. Also increase the top -and bottom space between the li's in the living players page but just by a little bit (even less than the game rules ul since there is already more space here)
+
+## prompt 171
+save this to global memory: use vh and vw as much as possible in css (unless something else is clearly better) since I like those most
+
+## prompt 172
+on small screen on the player home page, (Player): should be underneath 'Killed By' (not on big screen tho) also, the A.K.A. should be bigger (on small screen, not on big)
+
+## prompt 173
+you messed up the killed by (player), revert it back
+
+## prompt 174
+on small screens, the .nameBlock p:nth-last-of-type(even):first-of-type font-size should be 2.5vw instead of 3vw
+
+## prompt 175
+underneath the living players section in the player home page, add a new section for dead players
+
+## prompt 176
+Implement the following plan: Add "Show Gender" Setting
+
+## prompt 177
+update the js files for the admin page and new game page so that show gender can't be on if enfore player images is on. Also update the info modals to mention this.
+
+## prompt 178
+in create new game, remove the start date option; admins will have to do this manually
+
+## prompt 179
+show gender is still toggleable if enforce player images is on
+
+## prompt 180
+in the games page, add a new section for games that haven't started yet above the active games section. It should show the name, creation date and current lobby count (don't name it players as this may be confusing)
+
+## prompt 181
+the pending games currently take you to the admin page; lets wire them to player home by default
+
+## prompt 182
+in game admin in the players section, make the rows for name, username and image smaller so we have room for new actions. I want a new button under actions that is saying "add admin" or "remove admin" so admins can grant or remove admin acces from other players. It should also have a button to toggle spectator mode. People in spectator mode don't get targets and partake in the game, they can see all info they are allowed to in the home page. This is mainly aimed at admins who want to host the game but don't partake. Also update the corresponding entity for this
+
+## prompt 183
+save to global memory: in stead of "text" + variable + "text" use $"text{variable}text where possible"
+
+## prompt 184
+in the player home page, right now it's showing info based on if the player is dead and if it's turned on (for example, show living players). People in spectator mode should be able to see all active players (count), all living players, all dead players regadless of if the rule is turned on or off (since they are spectators).
+
+## prompt 185
+if spectator is true, it should not show the current target and your hunter section. It should also only show the next things in the game stats: game started, game ended (if ended), winner (if ended), players alive, living players and dead players. Other info is not relevant for spectators
+
+## prompt 186
+didn't we have a local CLAUDE.md file? I don't see it in anymore
+
+## prompt 187
+Is it possible this happened because it's in the gitignore?
+
+## prompt 188
+yes and restore the files, also update where needed
+
+## prompt 189
+if a player is in spectator mode (or if a player died and didn't get any kills) the line underneath dead players should be removed. Also: if a player was playing the game but died and didn't get any kills, don't show the kills section
+
+## prompt 190
+in game admin, can you make the purple buttons a lighter variant of purple for better contrast
+
+## prompt 191
+in game admin, "remove admin" text should be red. Spectator button: "off" should be red, "on" should be dark green. Fix: clicking remove admin or spectator off doesn't flip state when modal is confirmed. Give modal buttons more padding and make the remove modal button more uniform with others (keep it red but same size and shape)
+
+## prompt 192
+I see you made the whole button red or green, this isn't what I had in mind. only the text "remove admin" should be red, not the button border. for spectators, keep the purple we had only the "on" or "of" inside the button should be green or red
+
+## prompt 193
+lets do it like this: whole button red for remove admin (including the border) (yellow as is now for add admin) and current purple for spectator but in stead of off being red and on being green, do off being purple and on being red
+
+## prompt 194
+I see you made the whole button red for spectator on, only the "on" was needed (kinda like before) (don't change the admin button now tho, that one is good now)
+
+## prompt 195
+on the modal buttons; add padding 0.4vh 0.8vw;
+
+## prompt 196
+its not done on all buttons, btn btn-1 confirmActionBtn confirmRemoveBtn for example isn't done. Check if you missed more and fix
+
+## prompt 197
+I don't see the new styling in my console
+
+## prompt 198
+I did
+
+## prompt 199
+when doing console log and targetting it, it's not showing
+
+## prompt 200
+process got killed
+
+## prompt 201
+I didn't mean console log, I meant f12 dev menu

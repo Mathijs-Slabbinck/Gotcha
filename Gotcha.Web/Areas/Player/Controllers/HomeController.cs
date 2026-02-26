@@ -49,13 +49,29 @@ namespace Gotcha.Web.Areas.Player.Controllers
                 KilledOnDate = DateTime.UtcNow.AddDays(-6),
                 Kills = kills,
                 CustomRules = new List<string> { "No hiding in classrooms", "Safe zones: cafeteria during lunch", "Kills must have a witness" },
+                ShowPlayerImages = true,
+                ShowGender = true,
                 IsAssassin = true,
+                ShowHunter = true,
+                HunterName = "Alice Brown",
+                HunterOtherName = "ShadowHunter",
+                HunterGender = Genders.Female,
                 IsChaos = true,
                 ChaosTimerMinHours = 6,
                 ChaosTimerMaxHours = 12,
                 IsTimed = true,
                 TargetTimeOutHours = 24,
-
+                ShowLivingPlayerCount = true,
+                ShowLivingPlayerNames = true,
+                IsSpectator = false,
+                Players = new List<PlayerBaseViewModel>
+                {
+                    new PlayerBaseViewModel { Name = "Jane Doe", OtherName = "TheLegend27", IsAlive = true },
+                    new PlayerBaseViewModel { Name = "John Smith", OtherName = "SneakySnake", IsAlive = true },
+                    new PlayerBaseViewModel { Name = "Alice Brown", OtherName = "ShadowHunter", IsAlive = false },
+                    new PlayerBaseViewModel { Name = "Bob Wilson", OtherName = "NerfKing", IsAlive = true },
+                    new PlayerBaseViewModel { Name = "Charlie Green", OtherName = "StealthMode", IsAlive = false },
+                },
             };
 
             return View(homeViewModel);

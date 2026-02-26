@@ -6,5 +6,7 @@ namespace Gotcha.Web.Areas.Player.ViewModels.BaseViewModels
         public string Name { get; set; } = string.Empty;
         public string? Username { get; set; }
         public bool HasImage { get; set; }
+        public bool IsAdmin { get; set; }
+        public bool IsSpectator { get; set; }
     }
 }

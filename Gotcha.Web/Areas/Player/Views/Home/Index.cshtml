@@ -5,7 +5,7 @@
 	ViewData["Title"] = "Player Home";
 }
 
-<script src="~/js/playerHome.js"></script>
+<script src="~/js/playerHomePage.js"></script>
 
 @model Gotcha.Web.Areas.Player.ViewModels.HomeViewModel
 
@@ -15,18 +15,18 @@
 		<h1 class="col-12 text-center fw-bold font-bungee">Status:</h1>
 	</div>
 
-	@if (!String.IsNullOrEmpty(Model.TargetName))
+	@if (!Model.IsSpectator && !String.IsNullOrEmpty(Model.TargetName))
 	{
 		<div class="card glowingCard formBg mt-4 col-10 col-xl-11 mx-auto p-0 mb-5">
 			<div class="card-header row">
 				<h2 class="col-12 text-center font-robotoSlab fw-bold color-2 mt-3">Current Target:</h2>
 			</div>
 			<div class="row justify-content-center">
-				@if (!String.IsNullOrEmpty(Model.TargetProfileImgSource))
+				@if (Model.ShowPlayerImages && !String.IsNullOrEmpty(Model.TargetProfileImgSource))
 				{
-					<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="placeholder image" src="@Model.TargetProfileImgSource" />
+					<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Target profile image" src="@Model.TargetProfileImgSource" />
 				}
-				else
+				else if (Model.ShowPlayerImages && Model.ShowGender)
 				{
 					switch (Model.TargetGender)
 					{
@@ -41,23 +41,24 @@
 							break;
 					}
 				}
+				else
+				{
+					<img class="img-fluid rounded-circle targetImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Placeholder image" src="~/images/other-placeholder.png" />
+				}
 			</div>
 			<div class="row justify-content-center">
 				<div class="col-10 col-md-9 col-xl-7 statsBlocksContainer mb-5">
 
 					@if (!String.IsNullOrEmpty(Model.TargetName))
 					{
-						<div class="row justify-content-around align-items-center my-3 statBlock">
-							<p class="col-12 col-lg-5 text-center text-lg-start fs-3 text-nowrap m-0 fw-bold">Target Name:</p>
-							<p class="col-12 col-lg-5 text-center text-lg-end fs-4 my-0 text-nowrap">@Model.TargetName</p>
-						</div>
-					}
-
-					@if (!String.IsNullOrEmpty(Model.TargetUsername))
-					{
-						<div class="row justify-content-around align-items-center my-3 statBlock">
-							<p class="col-12 col-lg-5 text-center text-lg-start fs-3 text-nowrap m-0 fw-bold">Target Username:</p>
-							<p class="col-12 col-lg-5 text-center text-lg-end fs-4 my-0 text-nowrap">@Model.TargetUsername</p>
+						<div class="row justify-content-around align-items-center my-3 statBlock nameBlock">
+							<p class="col-6 col-lg-5 text-center text-lg-start text-nowrap m-0 fw-bold order-1 order-lg-1 smallBorderRight">Your Target:</p>
+							<p class="col-6 col-lg-5 text-center text-lg-end text-nowrap my-0 order-3 order-lg-2 smallBorderRight">@Model.TargetName</p>
+							@if (!String.IsNullOrEmpty(Model.TargetUsername))
+							{
+								<p class="col-6 col-lg-5 text-center text-lg-start text-nowrap m-0 fw-bold order-2 order-lg-3">A.K.A.:</p>
+								<p class="col-6 col-lg-5 text-center text-lg-end text-nowrap my-0 order-4 order-lg-4">@Model.TargetUsername</p>
+							}
 						</div>
 					}
 
@@ -139,6 +140,53 @@
 			</div>
 		</div>
 	}
+
+	@if (!Model.IsSpectator && Model.ShowHunter && Model.IsAssassin && !String.IsNullOrEmpty(Model.HunterName))
+	{
+		<div class="card glowingCard formBg mt-4 col-10 col-xl-11 mx-auto p-0 mb-5">
+			<div class="card-header row">
+				<h2 class="col-12 text-center font-robotoSlab fw-bold color-2 mt-3">Your Hunter:</h2>
+			</div>
+			<div class="row justify-content-center">
+				@if (Model.ShowPlayerImages && !String.IsNullOrEmpty(Model.HunterProfileImgSource))
+				{
+					<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Hunter profile image" src="@Model.HunterProfileImgSource" />
+				}
+				else if (Model.ShowPlayerImages && Model.ShowGender)
+				{
+					switch (Model.HunterGender)
+					{
+						case Genders.Male:
+							<img class="img-fluid rounded-circle targetImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Male placeholder image" src="~/images/male-placeholder.png" />
+							break;
+						case Genders.Female:
+							<img class="img-fluid rounded-circle targetImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Female placeholder image" src="~/images/female-placeholder.png" />
+							break;
+						default:
+							<img class="img-fluid rounded-circle targetImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Other gender placeholder image" src="~/images/other-placeholder.png" />
+							break;
+					}
+				}
+				else
+				{
+					<img class="img-fluid rounded-circle targetImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Placeholder image" src="~/images/other-placeholder.png" />
+				}
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-10 col-md-9 col-xl-7 statsBlocksContainer mb-5">
+					<div class="row justify-content-around align-items-center my-3 statBlock nameBlock">
+						<p class="col-6 col-lg-5 text-center text-lg-start text-nowrap m-0 fw-bold order-1 order-lg-1 smallBorderRight">Your Hunter:</p>
+						<p class="col-6 col-lg-5 text-center text-lg-end text-nowrap my-0 order-3 order-lg-2 smallBorderRight">@Model.HunterName</p>
+						@if (!String.IsNullOrEmpty(Model.HunterOtherName))
+						{
+							<p class="col-6 col-lg-5 text-center text-lg-start text-nowrap m-0 fw-bold order-2 order-lg-3">A.K.A.:</p>
+							<p class="col-6 col-lg-5 text-center text-lg-end text-nowrap my-0 order-4 order-lg-4">@Model.HunterOtherName</p>
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	}
 }
 
 <div class="card glowingCard formBg mt-4 col-10 col-xl-11 mx-auto p-0 mb-5">
@@ -147,29 +195,40 @@
 	</div>
 
 	<div class="row justify-content-center">
-		@if (!String.IsNullOrEmpty(Model.PlayerProfileImgSource))
+		@if (!Model.IsSpectator)
 		{
-			<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="placeholder image" src="@Model.PlayerProfileImgSource" />
-		}
-		else
-		{
-			switch (Model.PlayerGender)
+			if (Model.ShowPlayerImages && !String.IsNullOrEmpty(Model.PlayerProfileImgSource))
 			{
-				case Genders.Male:
-					<img class="img-fluid rounded-circle targetImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Male placeholder image" src="~/images/male-placeholder.png" />
-					break;
-				case Genders.Female:
-					<img class="img-fluid rounded-circle targetImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Female placeholder image" src="~/images/female-placeholder.png" />
-					break;
-				default:
-					<img class="img-fluid rounded-circle targetImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Other gender placeholder image" src="~/images/other-placeholder.png" />
-					break;
+				<img class="img-fluid rounded-circle playerImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Player profile image" src="@Model.PlayerProfileImgSource" />
+			}
+			else if (Model.ShowPlayerImages && Model.ShowGender)
+			{
+				switch (Model.PlayerGender)
+				{
+					case Genders.Male:
+						<img class="img-fluid rounded-circle targetImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Male placeholder image" src="~/images/male-placeholder.png" />
+						break;
+					case Genders.Female:
+						<img class="img-fluid rounded-circle targetImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Female placeholder image" src="~/images/female-placeholder.png" />
+						break;
+					default:
+						<img class="img-fluid rounded-circle targetImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Other gender placeholder image" src="~/images/other-placeholder.png" />
+						break;
+				}
+			}
+			else
+			{
+				<img class="img-fluid rounded-circle targetImage col-6 col-sm-5 col-md-4 col-lg-3 my-4" alt="Placeholder image" src="~/images/other-placeholder.png" />
 			}
 		}
 
 		<div class="col-12 mt-2">
 			<div class="row justify-content-center">
 				<div class="col-10 col-md-9 col-xl-7 statsBlocksContainer">
+
+					@{
+						bool showKillsOverview = !Model.IsSpectator && Model.Kills != null && Model.Kills.Count() != 0;
+					}
 
 					<div class="row justify-content-around align-items-center my-3 statBlock">
 						<p class="col-12 col-lg-5 text-center text-lg-start fs-3 text-nowrap m-0 fw-bold">Game Started:</p>
@@ -199,7 +258,7 @@
 						</div>
 					}
 
-					@if (Model.KilledOnDate != null)
+					@if (!Model.IsSpectator && Model.KilledOnDate != null)
 					{
 						DateTime killedOn = (DateTime)Model.KilledOnDate;
 
@@ -209,7 +268,7 @@
 						</div>
 					}
 
-					@if (!String.IsNullOrEmpty(Model.KillerName))
+					@if (!Model.IsSpectator && !String.IsNullOrEmpty(Model.KillerName))
 					{
 						<div class="row justify-content-around align-items-center my-3 statBlock nameBlock" id="winnerStatBlock">
 							<p class="col-6 col-lg-5 text-center text-lg-start text-nowrap m-0 fw-bold order-1 order-lg-1 smallBorderRight">Killed By (player):</p>
@@ -222,7 +281,7 @@
 						</div>
 					}
 
-					@if (!String.IsNullOrEmpty(Model.Weapon))
+					@if (!Model.IsSpectator && !String.IsNullOrEmpty(Model.Weapon))
 					{
 						<div class="row justify-content-around align-items-center my-3 statBlock">
 							<p class="col-12 col-lg-5 text-center text-lg-start fs-3 text-nowrap m-0 fw-bold">Killed by (weapon):</p>
@@ -230,17 +289,71 @@
 						</div>
 					}
 
-					@if (Model.Kills != null)
+					@if (showKillsOverview)
 					{
 						<div class="row justify-content-around align-items-center my-3 statBlock">
 							<p class="col-12 col-lg-5 text-center text-lg-start fs-3 text-nowrap m-0 fw-bold">Kills:</p>
 							<p class="col-12 col-lg-5 text-center text-lg-end fs-4 text-nowrap my-0">@Model.Kills.Count()</p>
 						</div>
 					}
+
+					@if (Model.ShowLivingPlayerCount || Model.IsSpectator)
+					{
+						int livingCount = Model.Players.Where(p => p.IsAlive).Count();
+
+						<div class="row justify-content-around align-items-center my-3 statBlock">
+							<p class="col-12 col-lg-5 text-center text-lg-start fs-3 text-nowrap m-0 fw-bold">Players Alive:</p>
+							<p class="col-12 col-lg-5 text-center text-lg-end fs-4 text-nowrap my-0">@livingCount / @Model.Players.Count()</p>
+						</div>
+					}
+
+					@if (Model.ShowLivingPlayerNames || Model.IsSpectator)
+					{
+						List<PlayerBaseViewModel> livingPlayers = Model.Players.Where(p => p.IsAlive).ToList();
+						List<PlayerBaseViewModel> deadPlayers = Model.Players.Where(p => !p.IsAlive).ToList();
+
+						<div class="row my-3 livingPlayersBlock">
+							<p class="col-12 text-center fs-3 m-0 fw-bold">Living Players:</p>
+							<div class="col-12 mt-2">
+								<ul class="livingPlayersList">
+									@foreach (PlayerBaseViewModel player in livingPlayers)
+									{
+										if (!String.IsNullOrEmpty(player.OtherName))
+										{
+											<li><span class="d-inline-block livingPlayerName">@player.Name</span>(@player.OtherName)</li>
+										}
+										else
+										{
+											<li>@player.Name</li>
+										}
+									}
+								</ul>
+							</div>
+						</div>
+
+						<div class="row my-3 deadPlayersBlock @(!showKillsOverview ? "noBorderBottom" : "")">
+							<p class="col-12 text-center fs-3 m-0 fw-bold">Dead Players:</p>
+							<div class="col-12 mt-2">
+								<ul class="deadPlayersList">
+									@foreach (PlayerBaseViewModel player in deadPlayers)
+									{
+										if (!String.IsNullOrEmpty(player.OtherName))
+										{
+											<li><span class="d-inline-block livingPlayerName">@player.Name</span>(@player.OtherName)</li>
+										}
+										else
+										{
+											<li>@player.Name</li>
+										}
+									}
+								</ul>
+							</div>
+						</div>
+					}
 				</div>
 
 
-				@if(Model.Kills != null && Model.Kills.Count() != 0)
+				@if(showKillsOverview)
 				{
 					<h3 class="col-12 text-center font-robotoSlab fw-bold color-1" id="killOverviewTitle">KILLS OVERVIEW:</h3>
 					<div class="col-10 col-lg-11 mb-5 killInfoTable">
