@@ -664,3 +664,27 @@ process got killed
 
 ## prompt 201
 I didn't mean console log, I meant f12 dev menu
+
+## prompt 202
+pls handle the new migration so my db is up to date
+
+## prompt 203
+yes
+
+## prompt 204
+I renamed the db to Gotcha.Db (did so in connectiostring); handle the update and new migration
+
+## prompt 205
+I created a new info folder with info about the project. I want you to check these files and see if any need updates (for example, the lobby size enum is outdated). Update correctly and tell me which files changed
+
+## prompt 206
+Implement the following plan: Clean up README.md — separate technical from non-technical
+
+## prompt 207
+save to gloal memory: use regular get {} in stead of => in Properties
+
+## prompt 208
+in the info wireframes folder, I made a new sub folder "images". Add this folder to the gitignore. Also, for every page that's in here, add a wireframe md file in /reports/wireframes
+
+## prompt 209
+add, commit and push
