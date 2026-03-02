@@ -27,7 +27,7 @@ input:not(input[type=submit]), select {
     color: var(--secondary-color-blue);
 }
 
-select option{
+::deep select option {
     color: black;
 }
 
@@ -36,7 +36,7 @@ select {
     padding-bottom: 0.2vh;
 }
 
-select option[disabled]{
+::deep select option[disabled] {
     color: #6c757d;
 }
 

@@ -1,0 +1,28 @@
+@{
+    Layout = "~/Views/Shared/_GotchaLayout.cshtml";
+    ViewData["Title"] = "Gotcha";
+}
+
+<h1 class="fw-bold font-bungee text-center mb-5">GOTCHA!</h1>
+
+<div class="row justify-content-center">
+    <div class="col-11">
+        <div class="card glowingCard gotchaCard text-center">
+            <h2 class="font-robotoSlab color-2 mb-3">You shouldn't be here...</h2>
+
+            <img src="~/images/TheAudacityOfThisBitch.png" alt="The audacity" class="gotchaImage mx-auto my-4" />
+
+            <p class="font-roboto text-white fs-5 mt-4 mb-1">
+                Well, this is awkward. Whatever you just tried didn't go as planned.
+            </p>
+            <p class="font-roboto text-white fs-5 mb-4">
+                Maybe go back without trying to break the app this time?
+            </p>
+
+            <div class="mb-3">
+                <a asp-controller="Gotcha" asp-action="TakeMeBack"
+                   class="btn-1 gotchaBackButton font-robotoSlab fw-bold">Take me back</a>
+            </div>
+        </div>
+    </div>
+</div>

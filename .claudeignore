@@ -21,3 +21,18 @@ info/archive/
 
 # Personal tips
 info/tips.md
+
+# Large generated/binary files
+ *.dll
+ *.exe
+ *.pdb
+ *.nupkg
+ **/.git/
+
+ # Node modules (if any JS tooling)
+ node_modules/
+
+ # IDE
+ .idea/
+ *.suo
+ *.user

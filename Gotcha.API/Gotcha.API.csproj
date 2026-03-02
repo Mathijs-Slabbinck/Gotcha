@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dtos\GotchaUsers\" />
+    <Folder Include="Dtos\Kills\" />
+    <Folder Include="Dtos\Attackers\" />
+    <Folder Include="Dtos\Logs\" />
+    <Folder Include="Dtos\Games\" />
+    <Folder Include="Dtos\VipSettings\" />
+    <Folder Include="Dtos\TargetAssignments\" />
+    <Folder Include="Dtos\Rules\" />
+    <Folder Include="Dtos\Players\" />
+  </ItemGroup>
+
+</Project>

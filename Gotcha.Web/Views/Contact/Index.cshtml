@@ -1,7 +1,11 @@
 ﻿@{
-
 	ViewData["Title"] = "Contact";
 }
+
+<div id="contactPreFill"
+	 data-reason="@ViewBag.PreFillReason"
+	 data-message="@ViewBag.PreFillMessage"
+	 hidden></div>
 
 <script src="~/js/contactPage.js"></script>
 

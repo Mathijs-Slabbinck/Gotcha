@@ -10,7 +10,7 @@ The web app uses three routing contexts:
 | `/User/` | User | Authenticated user dashboard, games, settings, store |
 | `/Player/` | Player | Player-specific game views: home, confirm kill, settings, admin |
 
-Each area has its own `_Layout.cshtml`. The Player area uses partials for alive/dead navbars.
+Each area has its own `_Layout.cshtml`. The Player area uses partials for alive/dead navbars. The Gotcha honeypot page uses `_GotchaLayout.cshtml` (no hamburger menu, only "Take me back" link).
 
 ## Frontend Stack
 

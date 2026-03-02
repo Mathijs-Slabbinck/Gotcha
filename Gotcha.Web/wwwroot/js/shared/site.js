@@ -10,11 +10,13 @@ function initialize() {
     const divMenuOpenNav = document.getElementsByClassName("menuOpenNav")[0];
     const divPageToHide = document.getElementsByClassName("pageToHide")[0];
 
-    menuContainer.addEventListener("click", function () {
-        this.classList.toggle("change");
-        divMenuOpenNav.slideToggle(350);
-        divPageToHide.toggleDisplay();
-    });
+    if (menuContainer) {
+        menuContainer.addEventListener("click", function () {
+            this.classList.toggle("change");
+            divMenuOpenNav.slideToggle(350);
+            divPageToHide.toggleDisplay();
+        });
+    }
 
     figNavLogoContainer.addEventListener("click", toggleNavImageSlider);
 }

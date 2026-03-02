@@ -149,3 +149,51 @@ in the signup page, the guardianEmailSection shouldn't have an id (due to the fr
 
 ## prompt 246
 it's almost fine but border: 2px solid var(--secondary-color-blue); doesn't get applied on the new guardian input field. (site.css, line 323 and signup index cshtml)
+
+## prompt 247
+the API project is not showing in my VS edit. I think there is a missing link
+
+## prompt 248
+in the API project, create Dtos for the model entities. This API will not be public
+
+## prompt 249
+Can you look into this? (screenshot of Logs folder in VS showing CreateLogDto.cs and LogResponseDto.cs)
+
+## prompt 250
+the files inside not, the logs folder itself is still ignored
+
+## prompt 251
+I don't like = string.Empty on fields that are required since my logic is that I rather have errors that could be caught and debugged easier than passing an empty string accidentally and showing wrong data. Do you agree?
+
+### prompt 251.1
+yes please update the DTOs. On another note, do you also agree with this in Entities (but then leaving out 'required' and just doing { get; set; } in stead and ignoring the Intellisense warning)
+
+## prompt 252
+Implement the following plan: Gotcha Honeypot Page
+
+## prompt 253
+I also noticed, in the contact page, when selecting an item in the select it will do color: white and this is good, but the color primary and color white also apply for all options (when dropped out) but that shouldn't be the case. Is there a way to do this?
+
+## prompt 254
+Can we also use tempdata for the redirect to the contact page (when coming from the gotcha page?)
+
+## prompt 255
+Update your global CLAUDE.md and Js validator agent with the next info: use the next convention: a variable referring to a div starts with div, a variable referring to an a tag starts with a, a variable referring to a p tag starts with p, a variable referring to a select tag starts with slc, a variable referring to an option tag starts with opt etc. | always use let, never var. use const where possible.
+
+## prompt 256
+also, update so it avoids innerHTML (unless there's a valid reason like wanting to add a tag in it)
+
+## prompt 257
+add the same rule about the prefixes in your global CLAUDE.md, but for xaml (button => btn..., label => lbl... etc). Also update maui-reviewer.md
+
+## prompt 258
+We don't have sessions set up yet, let's do it
+
+## prompt 259
+Implement the following plan: Add Session Middleware
+
+## prompt 260
+the animation for the logo in the navbar doesn't work on the gotcha page
+
+## prompt 261
+add, commit and push changes. Also update local Claude.md files and memory files where needed

@@ -1,0 +1,28 @@
+::deep .gotchaCard {
+    background-color: var(--background-color-blue);
+    padding: 5vh 3vw;
+}
+
+::deep .gotchaImage {
+    max-width: 50%;
+    border-radius: 12px;
+    box-shadow: 0 0 15px 5px var(--primary-color-blue);
+}
+
+::deep .gotchaBackButton {
+    display: inline-block;
+    padding: 1.2vh 3vw;
+    text-decoration: none;
+}
+
+@media only screen and (max-width: 768px) {
+    ::deep .gotchaImage {
+        max-width: 80%;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    ::deep .gotchaImage {
+        max-width: 95%;
+    }
+}

@@ -25,6 +25,7 @@
         Warning_Other,
         Warning_GameStateList_Empty,
         HackAttempt_Any,
+        HackAttempt_DirectlyNavigated,
         Unknown
     }
 }

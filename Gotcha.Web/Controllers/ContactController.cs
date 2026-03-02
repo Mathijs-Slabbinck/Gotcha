@@ -6,6 +6,9 @@ namespace Gotcha.Web.Controllers
     {
         public IActionResult Index()
         {
+            ViewBag.PreFillReason = TempData["ContactReason"] as string;
+            ViewBag.PreFillMessage = TempData["ContactMessage"] as string;
+
             return View();
         }
     }

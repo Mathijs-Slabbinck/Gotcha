@@ -11,6 +11,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Session
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true; // prevents client-side JS from accessing the session cookie
+    options.Cookie.IsEssential = true; // ensures the cookie is never sent over plain HTTP
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; //session works regardless of cookie consent (appropriate since the session is for security logging, not tracking)
+});
+
 // Database
 builder.Services.AddDbContext<GotchaDbContext>(
     options => options
@@ -63,6 +73,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

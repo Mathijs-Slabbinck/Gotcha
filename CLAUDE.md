@@ -27,11 +27,12 @@ dotnet ef database update --project Gotcha.Core --startup-project Gotcha.Web
 
 ## Architecture
 
-**Three-project solution** targeting .NET 10.0 with EF Core 10 + SQL Server Express (local):
+**Four-project solution** targeting .NET 10.0 with EF Core 10 + SQL Server Express (local):
 
 - **Gotcha.Core** — Class library containing all domain logic, entities, services, and data access. Nullable reference types enabled.
 - **Gotcha.Core.Tests** — xUnit test project for unit testing Core. References Gotcha.Core with `InternalsVisibleTo`.
 - **Gotcha.Web** — ASP.NET Core MVC app (Razor views, Bootstrap 5, jQuery). Nullable reference types disabled. References Gotcha.Core.
+- **Gotcha.API** — Internal API project with DTOs for model entities. Not public-facing.
 
 ### MVC Areas
 
@@ -56,6 +57,7 @@ Each area has its own `_Layout.cshtml`. The Player area uses partials for alive/
 - Exceptions: `Gotcha.Core/Exceptions/` (GotchaException base + specific types + NotFound/)
 - CSS/JS: `Gotcha.Web/wwwroot/css/` and `Gotcha.Web/wwwroot/js/`
 - Player ViewModels: `Gotcha.Web/Areas/Player/ViewModels/` (+ BaseViewModels/)
+- API DTOs: `Gotcha.API/Dtos/` (Models/ and Logs/)
 - Tests: `Gotcha.Core.Tests/Services/` and `Gotcha.Core.Tests/Entities/`
 
 ### Domain Model
@@ -80,6 +82,7 @@ Games support two target assignment strategies: circular and random. User plans 
 - **Custom exception hierarchy**: Base `GotchaException` with specific subtypes (`GameStateException`, `GameRuleViolationException`, `ValidationException`, etc.) and per-entity `NotFoundException` classes.
 - **Logging**: Custom `Log` entity system with `Attacker` tracking (IP, user agent, path) and subtypes (Error, Warning, HackAttempt).
 - **DI registration**: All 7 RepoServices and GameService registered as Scoped in `Gotcha.Web/Program.cs`. Identity services registered via `AddIdentity<IdentityUser, IdentityRole>` with `AddEntityFrameworkStores<GotchaDbContext>`.
+- **Honeypot page**: `GotchaController` logs unauthorized direct navigation attempts (tracks Attacker info including session ID) and redirects to Contact with TempData pre-fill. Uses `_GotchaLayout.cshtml`.
 
 ### Entity Conventions
 
@@ -97,6 +100,13 @@ Games support two target assignment strategies: circular and random. User plans 
 - Password policy: min 12 chars, requires digit, lowercase, uppercase, special char, 4 unique chars
 - `app.UseAuthentication()` is called before `app.UseAuthorization()` in the middleware pipeline
 - Identity is set up but not yet fully wired (no login/register controllers, no `[Authorize]` attributes, no migration for Identity tables yet)
+
+### Session
+
+- Session middleware configured in `Program.cs` with `AddDistributedMemoryCache()` + `AddSession()`
+- `app.UseSession()` placed after `UseRouting()`, before `UseAuthentication()`
+- Cookie settings: `HttpOnly = true`, `IsEssential = true`, `SecurePolicy = Always`, 30-min idle timeout
+- In-memory cache backing store (suitable for dev/single-server; swap to Redis/SQL for production)
 
 ### Unit Testing Conventions
 
