@@ -320,6 +320,7 @@ input[type=text],
 input[type=password],
 input[type=date],
 input[type=file],
+input[type=email],
 select {
     border: 2px solid var(--secondary-color-blue);
 }
@@ -328,6 +329,7 @@ input[type=text]:focus,
 input[type=password]:focus,
 input[type=date]:focus,
 input[type=file]:focus,
+input[type=email]:focus,
 select:focus{
     border: 2px solid var(--secondary-color-blue);
     outline: none;

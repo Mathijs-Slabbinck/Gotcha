@@ -2,23 +2,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gotcha.Core.Enums;
+using Microsoft.AspNetCore.Identity;
 
 namespace Gotcha.Core.Entities.Models
 {
-    public class User
+    public class GotchaUser : IdentityUser<Guid>
     {
         #region Properties
-        public Guid Id { get; init; } = Guid.NewGuid();
+        public override Guid Id { get; set; } = Guid.NewGuid();
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
+        // UserName is inherited from IdentityUser, but we need to override it to make it required (non-nullable)
+        public required override string UserName { get; set; }
+        // Inherited from IdentityUser (GotchaUser.Email)
+        public required override string Email { get; set; }
         public string? ProfileImageSource { get; set; }
         public Genders Gender { get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime AccountCreationDate { get; init; } = DateTime.UtcNow;
         public List<Player> PlayerAccounts { get; set; } = new List<Player>();
         public VipSettings VipSettings { get; set; } = new VipSettings();
+
+        // Guardian consent fields (COPPA/GDPR — required for users under 16)
+        public string? GuardianEmail { get; set; }
+        public bool HasGuardianConsent { get; set; }
+        public DateTime? GuardianConsentDate { get; set; }
         #endregion
 
         #region Query Methods
@@ -70,7 +78,7 @@ namespace Gotcha.Core.Entities.Models
 
         public override string ToString()
         {
-            return $"({FirstName} {LastName} - ({Username}))";
+            return $"({FirstName} {LastName} - ({UserName}))";
         }
     }
 }

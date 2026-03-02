@@ -1,3 +1,4 @@
+<!-- This file is for PROJECT-SPECIFIC info only — architecture, entities, services, patterns, key paths. Global rules (code style, prompt logging) live in ~/CLAUDE.md. -->
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
@@ -46,10 +47,10 @@ Each area has its own `_Layout.cshtml`. The Player area uses partials for alive/
 
 ### Key Paths
 
-- Entities: `Gotcha.Core/Entities/Models/` (User, Player, Game, Kill, Rules, TargetAssignment, VipSettings)
+- Entities: `Gotcha.Core/Entities/Models/` (GotchaUser, Player, Game, Kill, Rules, TargetAssignment, VipSettings)
 - Logging: `Gotcha.Core/Entities/Logging/` (Log, Attacker, Error, Warning, HackAttempt, OtherLogType)
 - Services: `Gotcha.Core/Services/` (GameService + Repository/ + ValidationServices/ + ResultModel/)
-- DbContext: `Gotcha.Core/Data/GotchaDbContext.cs`
+- DbContext: `Gotcha.Core/Data/GotchaDbContext.cs` (extends `IdentityDbContext`)
 - Seeder: `Gotcha.Core/Data/Seeder/Seeder.cs`
 - Enums: `Gotcha.Core/Enums/` (Genders, PlayerStatus, AssignmentStatus, LogTypes, LogSubTypes, Plan, MaxLobbySize)
 - Exceptions: `Gotcha.Core/Exceptions/` (GotchaException base + specific types + NotFound/)
@@ -61,9 +62,9 @@ Each area has its own `_Layout.cshtml`. The Player area uses partials for alive/
 
 Gotcha is an assassination-style social game platform. Core entity relationships:
 
-- **User** → owns many **Player** instances (one per game joined)
+- **GotchaUser** → owns many **Player** instances (one per game joined)
 - **Game** → has many Players, Kills, Rules, and TargetAssignments
-- **Player** → linked to a User and a Game; tracks alive/dead status, admin and spectator flags
+- **Player** → linked to a GotchaUser and a Game; tracks alive/dead status, admin and spectator flags
 - **TargetAssignment** → links a Hunter (Player) to a Target (Player) with status (Ongoing/Killed/Failed/Cancelled/Revoked)
 - **Kill** → records killer, victim, weapon, validity, and timestamps
 - **Rules** — per-game config: game mode (Gotcha/Assassin), visibility settings (ShowPlayerImages, ShowGender, EnforcePlayerImages), timing, chaos mode, custom kill methods
@@ -75,10 +76,10 @@ Games support two target assignment strategies: circular and random. User plans 
 - **Repository pattern**: `IRepositoryService<T>` interface with concrete implementations per entity in `Gotcha.Core/Services/Repository/`. CRUD only, no business logic.
 - **Service layer**: `GameService` handles orchestration (JoinPlayer, StartGame, HandleValidKill, etc.).
 - **Result model pattern**: `ResultModel<T>` / `BaseResultModel` for returning data with error/warning collections.
-- **Validation**: `LastLineValidationService` for email, username, IP, and image URL validation. Reserved usernames configured in `appsettings.json` under `UserSettings:ReservedUsernames`.
+- **Validation**: Split into 3 focused static services — `UserValidationService` (email, username, name, birthday), `ImageValidationService` (image URL, file extension, MIME type, file size, magic bytes, re-encoding), `SecurityValidationService` (IP validation). Reserved usernames = simple static HashSet, no config/DI.
 - **Custom exception hierarchy**: Base `GotchaException` with specific subtypes (`GameStateException`, `GameRuleViolationException`, `ValidationException`, etc.) and per-entity `NotFoundException` classes.
 - **Logging**: Custom `Log` entity system with `Attacker` tracking (IP, user agent, path) and subtypes (Error, Warning, HackAttempt).
-- **DI registration**: All 7 RepoServices and GameService registered as Scoped in `Gotcha.Web/Program.cs`.
+- **DI registration**: All 7 RepoServices and GameService registered as Scoped in `Gotcha.Web/Program.cs`. Identity services registered via `AddIdentity<IdentityUser, IdentityRole>` with `AddEntityFrameworkStores<GotchaDbContext>`.
 
 ### Entity Conventions
 
@@ -87,7 +88,15 @@ Games support two target assignment strategies: circular and random. User plans 
 - `{ get; init; }` for IDs and timestamps (locked after creation)
 - No constructors on entities — use object initializer syntax
 - TimeSpan stored as ticks in DB (configured in OnModelCreating)
-- Cascade behavior: Game→Players (Cascade), Player→User (Restrict), Kill→Killer/Victim (Restrict)
+- Cascade behavior: Game→Players (Cascade), Player→GotchaUser (Restrict), Kill→Killer/Victim (Restrict)
+
+### Identity
+
+- ASP.NET Identity configured in `Program.cs` with `AddIdentity<IdentityUser, IdentityRole>`
+- `GotchaDbContext` extends `IdentityDbContext` (adds Identity tables: AspNetUsers, AspNetRoles, etc.)
+- Password policy: min 12 chars, requires digit, lowercase, uppercase, special char, 4 unique chars
+- `app.UseAuthentication()` is called before `app.UseAuthorization()` in the middleware pipeline
+- Identity is set up but not yet fully wired (no login/register controllers, no `[Authorize]` attributes, no migration for Identity tables yet)
 
 ### Unit Testing Conventions
 

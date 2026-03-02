@@ -1,11 +1,13 @@
 using Gotcha.Core.Entities.Logging.Models;
 using Gotcha.Core.Entities.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace Gotcha.Core.Data
 {
-    public class GotchaDbContext : DbContext
+    public class GotchaDbContext : IdentityDbContext<GotchaUser, IdentityRole<Guid>, Guid>
     {
         public GotchaDbContext(DbContextOptions options) : base(options)
         {
@@ -18,15 +20,16 @@ namespace Gotcha.Core.Data
 
             // ==================== USER ====================
 
-            modelBuilder.Entity<User>(entity =>
+            modelBuilder.Entity<GotchaUser>(entity =>
             {
                 entity.HasKey(u => u.Id);
 
                 entity.Property(u => u.FirstName).HasMaxLength(100).IsRequired();
                 entity.Property(u => u.LastName).HasMaxLength(100).IsRequired();
-                entity.Property(u => u.Username).HasMaxLength(50).IsRequired();
+                entity.Property(u => u.UserName).HasMaxLength(50).IsRequired();
                 entity.Property(u => u.Email).HasMaxLength(200).IsRequired();
                 entity.Property(u => u.ProfileImageSource).HasMaxLength(500);
+                entity.Property(u => u.GuardianEmail).HasMaxLength(200);
 
                 // User has one VipSettings (one-to-one, shadow FK on VipSettings)
                 entity.HasOne(u => u.VipSettings)
@@ -103,7 +106,7 @@ namespace Gotcha.Core.Data
             {
                 entity.HasKey(p => p.Id);
 
-                entity.Property(p => p.Username).HasMaxLength(50);
+                entity.Property(p => p.UserName).HasMaxLength(50);
                 entity.Property(p => p.ProfileImageSource).HasMaxLength(500);
                 entity.Property(p => p.Notes).HasMaxLength(1000);
 
@@ -225,7 +228,7 @@ namespace Gotcha.Core.Data
         //Define Dbsets => Tables
 
         // Gotcha (game) Entities
-        public DbSet<User> Users { get; set; }
+        public DbSet<GotchaUser> GotchaUsers { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<Rules> Rules { get; set; }

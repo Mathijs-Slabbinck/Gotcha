@@ -1,7 +1,10 @@
 using Gotcha.Core.Data;
+using Gotcha.Core.Entities.Models;
 using Gotcha.Core.Services;
 using Gotcha.Core.Services.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +29,26 @@ builder.Services.AddScoped<UserRepoService>();
 // Business Logic Services
 builder.Services.AddScoped<GameService>();
 
+// Registreer Identity services in de DI-container.
+// AddIdentity<TUser, TRole> configureert:
+// - UserManager: gebruikersbeheer (aanmaken, zoeken, verwijderen)
+// - SignInManager: in-en uitloggen
+// - RoleManager: rollenbeheer
+// - Cookie-authenticatie schemas
+builder.Services.AddIdentity<GotchaUser, IdentityRole<Guid>>(options =>
+{
+    options.Password.RequiredLength = 12;
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequiredUniqueChars = 4;
+})
+// Koppelt Identity aan je database via Entity Framework
+.AddEntityFrameworkStores<GotchaDbContext>()
+// Voegt token providers toe voor wachtwoordreset, e-mailbevestiging, 2FA, ...
+.AddDefaultTokenProviders();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,6 +64,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapAreaControllerRoute(

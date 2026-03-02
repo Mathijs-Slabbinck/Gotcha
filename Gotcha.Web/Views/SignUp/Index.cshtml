@@ -3,6 +3,7 @@
 	ViewData["Title"] = "Sign Up";
 }
 
+<script src="~/js/shared/imageValidation.js"></script>
 <script src="~/js/signUpPage.js"></script>
 
 <h1 class="fw-bold font-bungee text-center">Welcome to GOTCHA!</h1>
@@ -125,13 +126,25 @@
 				</div>
 			</div>
 		</div>
-		<div class="card-body row justify-content-center">
+		<div class="card-body row justify-content-center py-2" id="bottomFieldsRow">
+
+			<div class="col-12 col-lg-6 mt-lg-0 mt-2 d-none" id="guardianEmailSection">
+				<div class="row justify-content-center form-group">
+					<div class="col-9">
+						<div class="row align-items-end">
+							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpGuardianEmailInput">Parent/Guardian Email: *</label>
+							<p class="text-end col-2 infoIcon" data-title="Parent/Guardian Email" data-info="Since you are under 16, we need a parent or guardian email address. This is required by law to protect younger users. We will contact your parent or guardian to confirm your account.">&#9432;</p>
+						</div>
+					</div>
+					<input class="col-9" id="signUpGuardianEmailInput" type="email" placeholder="parent@example.com" />
+				</div>
+			</div>
 			<div class="col-12 col-lg-6">
 				<div class="row justify-content-center">
 					<div class="col-9">
 						<div class="row align-items-end">
 							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpImageInput">Picture:</label>
-							<p class="text-end col-2 infoIcon" data-title="Picture" data-info="If enabled (enabled by default) we will show player images in game to give players an idea of what their target looks like.">&#9432;</p>
+							<p class="text-end col-2 infoIcon" data-title="Picture" data-info="If enabled (enabled by default) we will show player images in game to give players an idea of what their target looks like." >&#9432;</p>
 						</div>
 					</div>
 					<div class="row justify-content-center">

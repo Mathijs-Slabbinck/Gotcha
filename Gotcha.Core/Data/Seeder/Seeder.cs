@@ -8,7 +8,7 @@ namespace Gotcha.Core.Data.Seeder
         public static async Task SeedAsync(GotchaDbContext context)
         {
             // Don't seed if data already exists
-            if (context.Users.Any()) return;
+            if (context.GotchaUsers.Any()) return;
 
             #region Users
 
@@ -26,20 +26,20 @@ namespace Gotcha.Core.Data.Seeder
                 throw new Exception("The data seeding data arrays for User are not the same size!");
             }
 
-            List<User> users = new List<User>();
+            List<GotchaUser> users = new List<GotchaUser>();
             for (int i = 0; i < firstNames.Length; i++)
             {
-                users.Add(new User
+                users.Add(new GotchaUser
                 {
                     FirstName = firstNames[i],
                     LastName = lastNames[i],
-                    Username = userNames[i],
+                    UserName = userNames[i],
                     Email = emails[i],
                     BirthDate = birthDates[i]
                 });
             }
 
-            context.Users.AddRange(users);
+            context.GotchaUsers.AddRange(users);
             await context.SaveChangesAsync();
 
             #endregion
@@ -104,20 +104,20 @@ namespace Gotcha.Core.Data.Seeder
             #region Players
 
             // Game 1 - standard rules (3 players)
-            Player player1 = new Player { UserId = users[0].Id, User = users[0], GameId = game1.Id, Game = game1, Username = users[0].Username };
-            Player player2 = new Player { UserId = users[1].Id, User = users[1], GameId = game1.Id, Game = game1, Username = users[1].Username };
-            Player player3 = new Player { UserId = users[2].Id, User = users[2], GameId = game1.Id, Game = game1, Username = users[2].Username };
+            Player player1 = new Player { UserId = users[0].Id, User = users[0], GameId = game1.Id, Game = game1, UserName = users[0].UserName };
+            Player player2 = new Player { UserId = users[1].Id, User = users[1], GameId = game1.Id, Game = game1, UserName = users[1].UserName };
+            Player player3 = new Player { UserId = users[2].Id, User = users[2], GameId = game1.Id, Game = game1, UserName = users[2].UserName };
 
             // Game 2 - assassin mode (4 players)
-            Player player4 = new Player { UserId = users[3].Id, User = users[3], GameId = game2.Id, Game = game2, Username = users[3].Username };
-            Player player5 = new Player { UserId = users[4].Id, User = users[4], GameId = game2.Id, Game = game2, Username = users[4].Username };
-            Player player6 = new Player { UserId = users[5].Id, User = users[5], GameId = game2.Id, Game = game2, Username = users[5].Username };
-            Player player7 = new Player { UserId = users[6].Id, User = users[6], GameId = game2.Id, Game = game2, Username = users[6].Username };
+            Player player4 = new Player { UserId = users[3].Id, User = users[3], GameId = game2.Id, Game = game2, UserName = users[3].UserName };
+            Player player5 = new Player { UserId = users[4].Id, User = users[4], GameId = game2.Id, Game = game2, UserName = users[4].UserName };
+            Player player6 = new Player { UserId = users[5].Id, User = users[5], GameId = game2.Id, Game = game2, UserName = users[5].UserName };
+            Player player7 = new Player { UserId = users[6].Id, User = users[6], GameId = game2.Id, Game = game2, UserName = users[6].UserName };
 
             // Game 3 - enforce player images (3 players)
-            Player player8 = new Player { UserId = users[7].Id, User = users[7], GameId = game3.Id, Game = game3, Username = users[7].Username };
-            Player player9 = new Player { UserId = users[8].Id, User = users[8], GameId = game3.Id, Game = game3, Username = users[8].Username };
-            Player player10 = new Player { UserId = users[9].Id, User = users[9], GameId = game3.Id, Game = game3, Username = users[9].Username };
+            Player player8 = new Player { UserId = users[7].Id, User = users[7], GameId = game3.Id, Game = game3, UserName = users[7].UserName };
+            Player player9 = new Player { UserId = users[8].Id, User = users[8], GameId = game3.Id, Game = game3, UserName = users[8].UserName };
+            Player player10 = new Player { UserId = users[9].Id, User = users[9], GameId = game3.Id, Game = game3, UserName = users[9].UserName };
 
             context.Players.AddRange(player1, player2, player3, player4, player5, player6, player7, player8, player9, player10);
             await context.SaveChangesAsync();

@@ -10,11 +10,13 @@ namespace Gotcha.Core.Tests.Entities
         public void Winner_WithMatchingPlayer_ReturnsCorrectPlayer()
         {
             // Arrange
-            User user = new User()
+            GotchaUser user = new GotchaUser()
             {
                 Id = Guid.NewGuid(),
                 FirstName = "John",
-                LastName = "Doe"
+                LastName = "Doe",
+                UserName = "johndoe",
+                Email = "john@test.com"
             };
 
             Game game = new Game();
@@ -54,10 +56,12 @@ namespace Gotcha.Core.Tests.Entities
         {
             // Arrange
             Game game = new Game();
-            User user = new User()
+            GotchaUser user = new GotchaUser()
             {
                 FirstName = "John",
-                LastName = "Doe"
+                LastName = "Doe",
+                UserName = "johndoe",
+                Email = "john@test.com"
             };
             Player player = new Player()
             {
@@ -87,9 +91,9 @@ namespace Gotcha.Core.Tests.Entities
             // Arrange
             Game game = new Game();
 
-            User user1 = new User() { FirstName = "Alice", LastName = "Smith" };
-            User user2 = new User() { FirstName = "Bob", LastName = "Jones" };
-            User user3 = new User() { FirstName = "Charlie", LastName = "Brown" };
+            GotchaUser user1 = new GotchaUser() { FirstName = "Alice", LastName = "Smith", UserName = "alice", Email = "alice@test.com" };
+            GotchaUser user2 = new GotchaUser() { FirstName = "Bob", LastName = "Jones", UserName = "bob", Email = "bob@test.com" };
+            GotchaUser user3 = new GotchaUser() { FirstName = "Charlie", LastName = "Brown", UserName = "charlie", Email = "charlie@test.com" };
 
             Player admin1 = new Player() { User = user1, UserId = user1.Id };
             Player admin2 = new Player() { User = user2, UserId = user2.Id };
@@ -119,7 +123,7 @@ namespace Gotcha.Core.Tests.Entities
         {
             // Arrange
             Game game = new Game();
-            User user = new User() { FirstName = "John", LastName = "Doe" };
+            GotchaUser user = new GotchaUser() { FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "john@test.com" };
             Player player = new Player() { User = user, UserId = user.Id };
 
             game.Players.Add(player);
@@ -141,9 +145,9 @@ namespace Gotcha.Core.Tests.Entities
             // Arrange
             Game game = new Game();
 
-            User user1 = new User() { FirstName = "Alice", LastName = "Smith" };
-            User user2 = new User() { FirstName = "Bob", LastName = "Jones" };
-            User user3 = new User() { FirstName = "Charlie", LastName = "Brown" };
+            GotchaUser user1 = new GotchaUser() { FirstName = "Alice", LastName = "Smith", UserName = "alice", Email = "alice@test.com" };
+            GotchaUser user2 = new GotchaUser() { FirstName = "Bob", LastName = "Jones", UserName = "bob", Email = "bob@test.com" };
+            GotchaUser user3 = new GotchaUser() { FirstName = "Charlie", LastName = "Brown", UserName = "charlie", Email = "charlie@test.com" };
 
             Player alive1 = new Player() { User = user1, UserId = user1.Id, IsAlive = true };
             Player alive2 = new Player() { User = user2, UserId = user2.Id, IsAlive = true };
@@ -171,9 +175,9 @@ namespace Gotcha.Core.Tests.Entities
             // Arrange
             Game game = new Game();
 
-            User user1 = new User() { FirstName = "Alice", LastName = "Smith" };
-            User user2 = new User() { FirstName = "Bob", LastName = "Jones" };
-            User user3 = new User() { FirstName = "Charlie", LastName = "Brown" };
+            GotchaUser user1 = new GotchaUser() { FirstName = "Alice", LastName = "Smith", UserName = "alice", Email = "alice@test.com" };
+            GotchaUser user2 = new GotchaUser() { FirstName = "Bob", LastName = "Jones", UserName = "bob", Email = "bob@test.com" };
+            GotchaUser user3 = new GotchaUser() { FirstName = "Charlie", LastName = "Brown", UserName = "charlie", Email = "charlie@test.com" };
 
             Player alive = new Player() { User = user1, UserId = user1.Id, IsAlive = true };
             Player dead1 = new Player() { User = user2, UserId = user2.Id, IsAlive = false };
@@ -201,8 +205,8 @@ namespace Gotcha.Core.Tests.Entities
             // Arrange
             Game game = new Game();
 
-            User killerUser = new User() { FirstName = "Alice", LastName = "Smith" };
-            User victimUser = new User() { FirstName = "Bob", LastName = "Jones" };
+            GotchaUser killerUser = new GotchaUser() { FirstName = "Alice", LastName = "Smith", UserName = "alice", Email = "alice@test.com" };
+            GotchaUser victimUser = new GotchaUser() { FirstName = "Bob", LastName = "Jones", UserName = "bob", Email = "bob@test.com" };
             Player killer = new Player() { User = killerUser, UserId = killerUser.Id };
             Player victim = new Player() { User = victimUser, UserId = victimUser.Id };
 

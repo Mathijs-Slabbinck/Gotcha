@@ -144,7 +144,7 @@ function slideToggle(element, duration = 300, callback = null) {
 }
 
 // Optional: very convenient wrapper
-Element.prototype.slideToggle = function (duration = 300, callback) {
+HTMLElement.prototype.slideToggle = function (duration = 300, callback) {
     slideToggle(this, duration, callback);
     return this;
 };

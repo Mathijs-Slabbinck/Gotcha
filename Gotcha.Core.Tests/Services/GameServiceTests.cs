@@ -893,11 +893,11 @@ namespace Gotcha.Core.Tests.Services
         /// </summary>
         private Player CreatePlayer(Game game, string firstName, string lastName, string username)
         {
-            User user = new User()
+            GotchaUser user = new GotchaUser()
             {
                 FirstName = firstName,
                 LastName = lastName,
-                Username = username,
+                UserName = username,
                 Email = $"{username}@test.com",
                 VipSettings = new VipSettings()
             };
@@ -908,7 +908,7 @@ namespace Gotcha.Core.Tests.Services
                 User = user,
                 GameId = game.Id,
                 Game = game,
-                Username = username
+                UserName = username
             };
 
             return player;

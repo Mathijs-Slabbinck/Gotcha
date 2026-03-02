@@ -10,7 +10,7 @@ namespace Gotcha.Core.Tests.Entities
         public void GetAllGamesPlayed_ReturnsAllGames()
         {
             // Arrange
-            User user = new User() { FirstName = "John", LastName = "Doe", Username = "johndoe", Email = "john@test.com" };
+            GotchaUser user = new GotchaUser() { FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "john@test.com" };
 
             Game game1 = new Game() { Name = "Game 1" };
             Game game2 = new Game() { Name = "Game 2" };
@@ -40,7 +40,7 @@ namespace Gotcha.Core.Tests.Entities
         public void GetAllActiveGames_ReturnsOnlyUnfinishedGames()
         {
             // Arrange
-            User user = new User() { FirstName = "John", LastName = "Doe", Username = "johndoe", Email = "john@test.com" };
+            GotchaUser user = new GotchaUser() { FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "john@test.com" };
 
             Game activeGame = new Game() { Name = "Active", IsFinished = false };
             Game finishedGame = new Game() { Name = "Finished", IsFinished = true };
@@ -65,7 +65,7 @@ namespace Gotcha.Core.Tests.Entities
         public void GetAllFinishedGames_ReturnsOnlyFinishedGames()
         {
             // Arrange
-            User user = new User() { FirstName = "John", LastName = "Doe", Username = "johndoe", Email = "john@test.com" };
+            GotchaUser user = new GotchaUser() { FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "john@test.com" };
 
             Game activeGame = new Game() { Name = "Active", IsFinished = false };
             Game finishedGame = new Game() { Name = "Finished", IsFinished = true };
@@ -90,7 +90,7 @@ namespace Gotcha.Core.Tests.Entities
         public void GetAllWonGames_ReturnsOnlyWonGames()
         {
             // Arrange
-            User user = new User() { FirstName = "John", LastName = "Doe", Username = "johndoe", Email = "john@test.com" };
+            GotchaUser user = new GotchaUser() { FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "john@test.com" };
 
             Game wonGame = new Game() { Name = "Won" };
             Game lostGame = new Game() { Name = "Lost" };
@@ -122,8 +122,8 @@ namespace Gotcha.Core.Tests.Entities
         public void GetAllKills_ReturnsOnlyValidKillsByUser()
         {
             // Arrange
-            User user = new User() { FirstName = "John", LastName = "Doe", Username = "johndoe", Email = "john@test.com" };
-            User victimUser = new User() { FirstName = "Jane", LastName = "Smith", Username = "janes", Email = "jane@test.com" };
+            GotchaUser user = new GotchaUser() { FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "john@test.com" };
+            GotchaUser victimUser = new GotchaUser() { FirstName = "Jane", LastName = "Smith", UserName = "janes", Email = "jane@test.com" };
 
             Game game = new Game();
 
@@ -168,8 +168,8 @@ namespace Gotcha.Core.Tests.Entities
         public void GetAllDeaths_ReturnsKillsWhereUserIsVictim()
         {
             // Arrange
-            User user = new User() { FirstName = "John", LastName = "Doe", Username = "johndoe", Email = "john@test.com" };
-            User killerUser = new User() { FirstName = "Jane", LastName = "Smith", Username = "janes", Email = "jane@test.com" };
+            GotchaUser user = new GotchaUser() { FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "john@test.com" };
+            GotchaUser killerUser = new GotchaUser() { FirstName = "Jane", LastName = "Smith", UserName = "janes", Email = "jane@test.com" };
 
             Game game = new Game();
 
@@ -213,7 +213,7 @@ namespace Gotcha.Core.Tests.Entities
         public void EmptyPlayerAccounts_ReturnsEmptyLists()
         {
             // Arrange
-            User user = new User() { FirstName = "John", LastName = "Doe", Username = "johndoe", Email = "john@test.com" };
+            GotchaUser user = new GotchaUser() { FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "john@test.com" };
 
             // Act & Assert — none should throw
             Assert.Empty(user.GetAllGamesPlayed());
@@ -230,11 +230,12 @@ namespace Gotcha.Core.Tests.Entities
         public void ToString_ReturnsCorrectFormat()
         {
             // Arrange
-            User user = new User()
+            GotchaUser user = new GotchaUser()
             {
                 FirstName = "John",
                 LastName = "Doe",
-                Username = "johnd"
+                UserName = "johnd",
+                Email = "john@test.com"
             };
 
             // Act

@@ -7,10 +7,10 @@ namespace Gotcha.Core.Entities.Models
         #region Properties
         public Guid Id { get; init; } = Guid.NewGuid();
         public Guid UserId { get; init; }
-        public User User { get; init; }
+        public GotchaUser User { get; init; }
         public Guid GameId { get; init; }
         public Game Game { get; init; }
-        public string? Username { get; set; }
+        public string? UserName { get; set; }
         public string? ProfileImageSource { get; set; }
         public bool IsAlive { get; set; } = true;
         public bool IsAdmin { get; set; } = false;
@@ -26,14 +26,14 @@ namespace Gotcha.Core.Entities.Models
             {
                 if (Game.Rules.ShowUsernames && !Game.Rules.ShowRealNames)
                 {
-                    if (Username == null)
-                        return User.Username;
+                    if (UserName == null)
+                        return User.UserName;
                     else
-                        return Username;
+                        return UserName;
                 }
                 else if (Game.Rules.ShowUsernames && Game.Rules.ShowRealNames)
                 {
-                    return $"({Username ?? User.Username})"; // we will get the real name from User seperately in this case
+                    return $"({UserName ?? User.UserName})"; // we will get the real name from User seperately in this case
                 }
                 else
                 {
@@ -81,12 +81,12 @@ namespace Gotcha.Core.Entities.Models
 
         public override string ToString()
         {
-            if(Username == null)
+            if(UserName == null)
             {
                 return $"{User.FirstName} + {User.LastName}";
             }
 
-            return Username;
+            return UserName;
         }
     }
 }

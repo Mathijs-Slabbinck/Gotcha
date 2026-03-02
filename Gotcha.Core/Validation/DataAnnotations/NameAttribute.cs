@@ -3,21 +3,19 @@ using Gotcha.Core.Services.ValidationServices;
 
 namespace Gotcha.Core.Validation.DataAnnotations
 {
-    public class NotReservedUsernameAttribute : ValidationAttribute
+    public class Name : ValidationAttribute
     {
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
-            if (value is not string username)
+            if (value is not string name)
                 return ValidationResult.Success!; // we return null on purpose (hence the !) [validation passed]
 
-            if (LastLineValidationService.IsReservedUsername(username))
+            if (UserValidationService.IsReservedName(name))
             {
-                string? errormMessage = ErrorMessage;
+                if (ErrorMessage == null)
+                    ErrorMessage = "This name is not allowed. Please use your real name.";
 
-                if (errormMessage == null)
-                    errormMessage = "This username is not allowed. Please choose another.";
-
-                return new ValidationResult(errormMessage);
+                return new ValidationResult(ErrorMessage);
             }
 
             return ValidationResult.Success!; // we return null on purpose (hence the !) [validation passed]

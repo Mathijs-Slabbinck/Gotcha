@@ -365,5 +365,8 @@ FodyWeavers.xsd
 # Claude
 .claude/
 
+# Aider
+.aider*
+
 # Wireframe images
 info/reports/wireframes/images/

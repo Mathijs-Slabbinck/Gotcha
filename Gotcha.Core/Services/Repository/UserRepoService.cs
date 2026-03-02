@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Gotcha.Core.Services.Repository
 {
-    public class UserRepoService : IRepositoryService<User>
+    public class UserRepoService : IRepositoryService<GotchaUser>
     {
         private readonly GotchaDbContext _gotchaDbContext;
         private readonly LogRepoService _logRepoService;
@@ -19,13 +19,13 @@ namespace Gotcha.Core.Services.Repository
             _logRepoService = logRepoService;
         }
 
-        public async Task<ResultModel<List<User>>> GetAllAsync()
+        public async Task<ResultModel<List<GotchaUser>>> GetAllAsync()
         {
-            ResultModel<List<User>> resultModel = new ResultModel<List<User>>();
+            ResultModel<List<GotchaUser>> resultModel = new ResultModel<List<GotchaUser>>();
 
             try
             {
-                List<User>? users = await _gotchaDbContext.Users
+                List<GotchaUser>? users = await _gotchaDbContext.GotchaUsers
                                                             .ToListAsync();
 
                 if(users == null)
@@ -38,7 +38,6 @@ namespace Gotcha.Core.Services.Repository
 
                 resultModel.Data = users;
             }
-
             catch (TimeoutException ex)
             {
                 Error error = new Error(ex,
@@ -62,13 +61,13 @@ namespace Gotcha.Core.Services.Repository
             return resultModel;
         }
 
-        public async Task<ResultModel<User>> GetByIdAsync(Guid id)
+        public async Task<ResultModel<GotchaUser>> GetByIdAsync(Guid id)
         {
-            ResultModel<User> resultModel = new ResultModel<User>();
+            ResultModel<GotchaUser> resultModel = new ResultModel<GotchaUser>();
 
             try
             {
-                User? user = await _gotchaDbContext.Users
+                GotchaUser? user = await _gotchaDbContext.GotchaUsers
                                                         .FirstOrDefaultAsync(a => a.Id == id);
                 if(user == null)
                 {
@@ -102,13 +101,13 @@ namespace Gotcha.Core.Services.Repository
         }
 
 
-        public async Task<ResultModel<User>> AddAsync(User user)
+        public async Task<ResultModel<GotchaUser>> AddAsync(GotchaUser user)
         {
-            ResultModel<User> resultModel = new ResultModel<User>();
+            ResultModel<GotchaUser> resultModel = new ResultModel<GotchaUser>();
 
             try
             {
-                await _gotchaDbContext.Users.AddAsync(user);
+                await _gotchaDbContext.GotchaUsers.AddAsync(user);
                 await _gotchaDbContext.SaveChangesAsync();
                 resultModel.Data = user;
             }
@@ -141,13 +140,13 @@ namespace Gotcha.Core.Services.Repository
             return resultModel;
         }
 
-        public async Task<ResultModel<User>> UpdateAsync(User user)
+        public async Task<ResultModel<GotchaUser>> UpdateAsync(GotchaUser user)
         {
-            ResultModel<User> resultModel = new ResultModel<User>();
+            ResultModel<GotchaUser> resultModel = new ResultModel<GotchaUser>();
 
             try
             {
-                _gotchaDbContext.Users.Update(user);
+                _gotchaDbContext.GotchaUsers.Update(user);
                 await _gotchaDbContext.SaveChangesAsync();
                 resultModel.Data = user;
             }
@@ -180,13 +179,13 @@ namespace Gotcha.Core.Services.Repository
             return resultModel;
         }
 
-        public async Task<ResultModel<User>> DeleteAsync(Guid id)
+        public async Task<ResultModel<GotchaUser>> DeleteAsync(Guid id)
         {
-            ResultModel<User> resultModel = new ResultModel<User>();
+            ResultModel<GotchaUser> resultModel = new ResultModel<GotchaUser>();
 
             try
             {
-                User? user = await _gotchaDbContext.Users
+                GotchaUser? user = await _gotchaDbContext.GotchaUsers
                                                     .FirstOrDefaultAsync(l => l.Id == id);
 
                 if (user == null)
@@ -200,7 +199,7 @@ namespace Gotcha.Core.Services.Repository
 
                 resultModel.Data = user;
 
-                _gotchaDbContext.Users.Remove(user);
+                _gotchaDbContext.GotchaUsers.Remove(user);
                 await _gotchaDbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex)

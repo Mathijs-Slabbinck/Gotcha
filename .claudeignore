@@ -1,0 +1,23 @@
+# Build artifacts
+**/bin/
+**/obj/
+
+# EF Core migrations (auto-generated)
+Gotcha.Core/Migrations/
+
+# Third-party libraries
+Gotcha.Web/wwwroot/lib/
+
+# Visual Studio files
+.vs/
+*.csproj.user
+
+# Images
+Gotcha.Web/wwwroot/images/
+info/reports/wireframes/images/
+
+# Archived prompt logs
+info/archive/
+
+# Personal tips
+info/tips.md
