@@ -25,10 +25,10 @@ namespace Gotcha.Core.Tests.Entities
             user.PlayerAccounts.Add(player3);
 
             // Act
-            List<Game> games = user.GetAllGamesPlayed();
+            IEnumerable<Game> games = user.GetAllGamesPlayed();
 
             // Assert
-            Assert.Equal(3, games.Count);
+            Assert.Equal(3, games.Count());
             Assert.Contains(game1, games);
             Assert.Contains(game2, games);
             Assert.Contains(game3, games);
@@ -52,11 +52,13 @@ namespace Gotcha.Core.Tests.Entities
             user.PlayerAccounts.Add(player2);
 
             // Act
-            List<Game> activeGames = user.GetAllActiveGames();
+            IEnumerable<Game> activeGames = user.GetAllActiveGames();
 
             // Assert
             Assert.Single(activeGames);
-            Assert.Equal("Active", activeGames[0].Name);
+            Game? activeGame2 = activeGames.FirstOrDefault();
+            Assert.NotNull(activeGame2);
+            Assert.Equal("Active", activeGame2.Name);
         }
 
         [Fact]
@@ -77,11 +79,13 @@ namespace Gotcha.Core.Tests.Entities
             user.PlayerAccounts.Add(player2);
 
             // Act
-            List<Game> finishedGames = user.GetAllFinishedGames();
+            IEnumerable<Game> finishedGames = user.GetAllFinishedGames();
 
             // Assert
             Assert.Single(finishedGames);
-            Assert.Equal("Finished", finishedGames[0].Name);
+            Game? finishedGame2 = finishedGames.FirstOrDefault();
+            Assert.NotNull(finishedGame2);
+            Assert.Equal("Finished", finishedGame2.Name);
         }
 
         [Fact]
@@ -108,11 +112,13 @@ namespace Gotcha.Core.Tests.Entities
             user.PlayerAccounts.Add(loserPlayer);
 
             // Act
-            List<Game> wonGames = user.GetAllWonGames();
+            IEnumerable<Game> wonGames = user.GetAllWonGames();
 
             // Assert
             Assert.Single(wonGames);
-            Assert.Equal("Won", wonGames[0].Name);
+            Game? wonGame2 = wonGames.FirstOrDefault();
+            Assert.NotNull(wonGame2);
+            Assert.Equal("Won", wonGame2.Name);
         }
 
         [Fact]
@@ -155,11 +161,13 @@ namespace Gotcha.Core.Tests.Entities
             user.PlayerAccounts.Add(killer);
 
             // Act
-            List<Kill> kills = user.GetAllKills();
+            IEnumerable<Kill> kills = user.GetAllKills();
 
             // Assert
             Assert.Single(kills);
-            Assert.True(kills[0].IsValid);
+            Kill? firstKill = kills.FirstOrDefault();
+            Assert.NotNull(firstKill);
+            Assert.True(firstKill.IsValid);
         }
 
         [Fact]
@@ -201,10 +209,10 @@ namespace Gotcha.Core.Tests.Entities
             user.PlayerAccounts.Add(victim);
 
             // Act
-            List<Kill> deaths = user.GetAllDeaths();
+            IEnumerable<Kill> deaths = user.GetAllDeaths();
 
             // Assert — both valid and invalid kills where user is victim
-            Assert.Equal(2, deaths.Count);
+            Assert.Equal(2, deaths.Count());
         }
 
         [Fact]

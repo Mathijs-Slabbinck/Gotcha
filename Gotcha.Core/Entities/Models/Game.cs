@@ -12,13 +12,13 @@ namespace Gotcha.Core.Entities.Models
         public DateTime CreationDate { get; init; } = DateTime.UtcNow;
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public List<Player> Players { get; set; } = new List<Player>();
-        public List<Kill> Kills { get; set; } = new List<Kill>();
+        public ICollection<Player> Players { get; set; } = new List<Player>();
+        public ICollection<Kill> Kills { get; set; } = new List<Kill>();
         public Rules Rules { get; set; } = new Rules();
         public bool HasStarted { get; set; } = false;
         public bool IsFinished { get; set; } = false;
         public Guid? WinnerId { get; set; }
-        public List<Guid> AdminIds { get; set; } = new List<Guid>();
+        public ICollection<Guid> AdminIds { get; set; } = new List<Guid>();
         public int MaxPlayers { get; set; } = 1;
         public Guid CreatorId { get; set; } = Guid.Empty;
         #endregion
@@ -30,13 +30,12 @@ namespace Gotcha.Core.Entities.Models
             set { WinnerId = value?.Id; }
         }
 
-        public List<Player> Admins
+        public IEnumerable<Player> Admins
         {
             get
             {
                 return Players
-                        .Where(p => AdminIds.Contains(p.Id))
-                        .ToList();
+                        .Where(p => AdminIds.Contains(p.Id));
             }
         }
 
@@ -47,25 +46,22 @@ namespace Gotcha.Core.Entities.Models
         #endregion
 
         #region Query Methods
-        public List<Player> GetLivingPlayers()
+        public IEnumerable<Player> GetLivingPlayers()
         {
             return Players
-                    .Where(p => p.IsAlive)
-                    .ToList();
+                    .Where(p => p.IsAlive);
         }
 
-        public List<Player> GetEliminatedPlayers()
+        public IEnumerable<Player> GetEliminatedPlayers()
         {
             return Players
-                    .Where(p => !p.IsAlive)
-                    .ToList();
+                    .Where(p => !p.IsAlive);
         }
 
-        public List<Kill> GetDisputedKills()
+        public IEnumerable<Kill> GetDisputedKills()
         {
             return Kills
-                    .Where(k => !k.IsValid)
-                    .ToList();
+                    .Where(k => !k.IsValid);
         }
         #endregion
 

@@ -15,9 +15,9 @@ namespace Gotcha.Core.Entities.Models
         public bool ShowLivingPlayerNamesToDeath { get; set; } = false;
         public bool IsTimed { get; set; } = false;
         public TimeSpan TargetTimeOut { get; set; } = Timeout.InfiniteTimeSpan;
-        public List<string>? CustomRules { get; set; }
+        public ICollection<string>? CustomRules { get; set; }
         public bool CustomKillMethods { get; set; } = false;
-        public List<string>? KillMethods { get; set; }
+        public ICollection<string>? KillMethods { get; set; }
         public bool IsChaos { get; set; } = false;
         public TimeSpan ChaosTimerMin { get; set; } = Timeout.InfiniteTimeSpan;
         public TimeSpan ChaosTimerMax { get; set; } = Timeout.InfiniteTimeSpan;

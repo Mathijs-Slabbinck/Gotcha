@@ -48,7 +48,13 @@
 	}
 
 	<div class="row justify-content-center mt-5">
-		<input type="submit" class="btn-1 col-4 col-lg-2 mb-5" value="Save Changes" />
+		<input type="submit" class="btn-1 col-4 col-lg-2" value="Save Changes" />
+	</div>
+
+	<div class="row justify-content-center mt-5 mb-5">
+		<form asp-area="" asp-controller="Accounts" asp-action="Logout" method="post" class="text-center p-0">
+			<button type="submit" class="logoutBtn col-4 col-lg-2">Log Out</button>
+		</form>
 	</div>
 </form>
 

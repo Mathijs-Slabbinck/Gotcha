@@ -17,7 +17,7 @@ namespace Gotcha.Core.Entities.Models
         public Genders Gender { get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime AccountCreationDate { get; init; } = DateTime.UtcNow;
-        public List<Player> PlayerAccounts { get; set; } = new List<Player>();
+        public ICollection<Player> PlayerAccounts { get; set; } = new List<Player>();
         public VipSettings VipSettings { get; set; } = new VipSettings();
 
         // Guardian consent fields (COPPA/GDPR — required for users under 16)
@@ -27,49 +27,43 @@ namespace Gotcha.Core.Entities.Models
         #endregion
 
         #region Query Methods
-        public List<Game> GetAllGamesPlayed()
+        public IEnumerable<Game> GetAllGamesPlayed()
+        {
+            return PlayerAccounts
+                    .Select(p => p.Game);
+        }
+
+        public IEnumerable<Game> GetAllActiveGames()
         {
             return PlayerAccounts
                     .Select(p => p.Game)
-                    .ToList();
+                    .Where(g => g.IsFinished == false);
         }
 
-        public List<Game> GetAllActiveGames()
+        public IEnumerable<Game> GetAllFinishedGames()
         {
             return PlayerAccounts
                     .Select(p => p.Game)
-                    .Where(g => g.IsFinished == false)
-                    .ToList();
+                    .Where(g => g.IsFinished == true);
         }
 
-        public List<Game> GetAllFinishedGames()
-        {
-            return PlayerAccounts
-                    .Select(p => p.Game)
-                    .Where(g => g.IsFinished == true)
-                    .ToList();
-        }
-
-        public List<Game> GetAllWonGames()
+        public IEnumerable<Game> GetAllWonGames()
         {
             return PlayerAccounts
                     .Where(p => p.Game.Winner != null && p.Game.Winner.Id == p.Id)
-                    .Select(p => p.Game)
-                    .ToList();
+                    .Select(p => p.Game);
         }
 
-        public List<Kill> GetAllKills()
+        public IEnumerable<Kill> GetAllKills()
         {
             return PlayerAccounts
-                    .SelectMany(p => p.Game.Kills.Where(k => k.KillerId == p.Id && k.IsValid))
-                    .ToList();
+                    .SelectMany(p => p.Game.Kills.Where(k => k.KillerId == p.Id && k.IsValid));
         }
 
-        public List<Kill> GetAllDeaths()
+        public IEnumerable<Kill> GetAllDeaths()
         {
             return PlayerAccounts
-                    .SelectMany(p => p.Game.Kills.Where(k => k.VictimId == p.Id))
-                    .ToList();
+                    .SelectMany(p => p.Game.Kills.Where(k => k.VictimId == p.Id));
         }
         #endregion
 

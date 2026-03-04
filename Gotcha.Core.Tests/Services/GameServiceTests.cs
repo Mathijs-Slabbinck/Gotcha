@@ -163,18 +163,21 @@ namespace Gotcha.Core.Tests.Services
 
             // Verify circular chain: follow the chain from player1, should visit all players
             HashSet<Guid> visited = new HashSet<Guid>();
-            Player current = game.Players[0];
+            Player? firstPlayer = game.Players.FirstOrDefault();
+            Assert.NotNull(firstPlayer);
+            Player current = firstPlayer;
 
             for (int i = 0; i < game.Players.Count; i++)
             {
                 visited.Add(current.Id);
-                TargetAssignment assignment = current.TargetAssignments.First();
+                TargetAssignment? assignment = current.TargetAssignments.FirstOrDefault();
+                Assert.NotNull(assignment);
                 current = assignment.Target;
             }
 
             // After full loop, should have visited all players and returned to start
             Assert.Equal(game.Players.Count, visited.Count);
-            Assert.Equal(game.Players[0].Id, current.Id);
+            Assert.Equal(firstPlayer.Id, current.Id);
         }
 
         [Fact]
@@ -272,7 +275,8 @@ namespace Gotcha.Core.Tests.Services
 
             // Assert
             Assert.Single(game.Kills);
-            Kill kill = game.Kills[0];
+            Kill? kill = game.Kills.FirstOrDefault();
+            Assert.NotNull(kill);
             Assert.True(kill.IsValid);
             Assert.Equal(killer.Id, kill.KillerId);
             Assert.Equal(victim.Id, kill.VictimId);
@@ -760,7 +764,9 @@ namespace Gotcha.Core.Tests.Services
 
             // Assert
             Assert.Single(game.Kills);
-            Assert.False(game.Kills[0].IsValid);
+            Kill? invalidKill = game.Kills.FirstOrDefault();
+            Assert.NotNull(invalidKill);
+            Assert.False(invalidKill.IsValid);
         }
 
         [Fact]
@@ -794,7 +800,9 @@ namespace Gotcha.Core.Tests.Services
             _gameService.HandleInValidKill(game, killer, victim, reason: null);
 
             // Assert
-            Assert.Equal("No reason provided.", game.Kills[0].Reason);
+            Kill? defaultReasonKill = game.Kills.FirstOrDefault();
+            Assert.NotNull(defaultReasonKill);
+            Assert.Equal("No reason provided.", defaultReasonKill.Reason);
         }
 
         [Fact]
@@ -808,7 +816,9 @@ namespace Gotcha.Core.Tests.Services
             _gameService.HandleInValidKill(game, killer, victim, reason: "Victim disputed the kill");
 
             // Assert
-            Assert.Equal("Victim disputed the kill", game.Kills[0].Reason);
+            Kill? customReasonKill = game.Kills.FirstOrDefault();
+            Assert.NotNull(customReasonKill);
+            Assert.Equal("Victim disputed the kill", customReasonKill.Reason);
         }
 
         [Fact]

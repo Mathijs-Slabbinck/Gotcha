@@ -61,12 +61,11 @@ namespace Gotcha.Core.Entities.Models
             return currentAssignment?.Hunter;
         }
 
-        public List<Player> GetKilledPlayers()
+        public IEnumerable<Player> GetKilledPlayers()
         {
             return TargetAssignments
                             .Where(ta => ta.Kill != null)
-                            .Select(ta => ta.Target)
-                            .ToList();
+                            .Select(ta => ta.Target);
         }
 
         public Player? GetKiller(Game game)

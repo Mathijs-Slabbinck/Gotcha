@@ -309,7 +309,7 @@ namespace Gotcha.Core.Services
                 throw new GameRuleViolationException("CustomKillMethods", "Custom weapons are on so weapon cannot be null.");
             }
 
-            List<Player> players = game.GetLivingPlayers();
+            IEnumerable<Player> players = game.GetLivingPlayers();
 
             Random rand = new Random();
             List<Player> shuffledPlayers = players.OrderBy(p => rand.Next()).ToList();

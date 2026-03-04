@@ -107,10 +107,10 @@ namespace Gotcha.Core.Tests.Entities
             game.AdminIds.Add(admin2.Id);
 
             // Act
-            List<Player> admins = game.Admins;
+            IEnumerable<Player> admins = game.Admins;
 
             // Assert
-            Assert.Equal(2, admins.Count);
+            Assert.Equal(2, admins.Count());
             Assert.Contains(admin1, admins);
             Assert.Contains(admin2, admins);
             Assert.DoesNotContain(normalPlayer, admins);
@@ -158,10 +158,10 @@ namespace Gotcha.Core.Tests.Entities
             game.Players.Add(dead);
 
             // Act
-            List<Player> living = game.GetLivingPlayers();
+            IEnumerable<Player> living = game.GetLivingPlayers();
 
             // Assert
-            Assert.Equal(2, living.Count);
+            Assert.Equal(2, living.Count());
             Assert.Contains(alive1, living);
             Assert.Contains(alive2, living);
             Assert.DoesNotContain(dead, living);
@@ -188,10 +188,10 @@ namespace Gotcha.Core.Tests.Entities
             game.Players.Add(dead2);
 
             // Act
-            List<Player> eliminated = game.GetEliminatedPlayers();
+            IEnumerable<Player> eliminated = game.GetEliminatedPlayers();
 
             // Assert
-            Assert.Equal(2, eliminated.Count);
+            Assert.Equal(2, eliminated.Count());
             Assert.Contains(dead1, eliminated);
             Assert.Contains(dead2, eliminated);
             Assert.DoesNotContain(alive, eliminated);
@@ -236,11 +236,13 @@ namespace Gotcha.Core.Tests.Entities
             game.Kills.Add(invalidKill);
 
             // Act
-            List<Kill> disputed = game.GetDisputedKills();
+            IEnumerable<Kill> disputed = game.GetDisputedKills();
 
             // Assert
             Assert.Single(disputed);
-            Assert.False(disputed[0].IsValid);
+            Kill? disputedKill = disputed.FirstOrDefault();
+            Assert.NotNull(disputedKill);
+            Assert.False(disputedKill.IsValid);
         }
 
         [Fact]

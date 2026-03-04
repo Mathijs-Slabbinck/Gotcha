@@ -317,10 +317,10 @@ namespace Gotcha.Core.Tests.Entities
             killer.TargetAssignments.Add(assignment2);
 
             // Act
-            List<Player> killedPlayers = killer.GetKilledPlayers();
+            IEnumerable<Player> killedPlayers = killer.GetKilledPlayers();
 
             // Assert
-            Assert.Equal(2, killedPlayers.Count);
+            Assert.Equal(2, killedPlayers.Count());
             Assert.Contains(victim1, killedPlayers);
             Assert.Contains(victim2, killedPlayers);
         }
