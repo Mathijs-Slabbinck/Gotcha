@@ -6,6 +6,18 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Subproject Guides
+
+Before working in a subproject, read its guide file first:
+
+|     Subproject     |              Guide File              |         Type          |
+| :----------------: | :----------------------------------: | :-------------------: |
+|    Gotcha.Core     |    `Gotcha.Core/CLAUDE-CORE.md`      |    Class Library      |
+| Gotcha.Core.Tests  | `Gotcha.Core.Tests/CLAUDE-CORE-TESTS.md` |    xUnit Tests    |
+|    Gotcha.Web      |    `Gotcha.Web/CLAUDE-WEB.md`        |  ASP.NET Core MVC     |
+|    Gotcha.Maui     |    `Gotcha.Maui/CLAUDE-MAUI.md`      |     .NET MAUI         |
+|    Gotcha.API      |    `Gotcha.API/CLAUDE-API.md`        | ASP.NET Core Web API  |
+
 ## Build & Run Commands
 
 ```bash
@@ -30,11 +42,12 @@ dotnet ef database update --project Gotcha.Core --startup-project Gotcha.Web
 
 ## Architecture
 
-**Four-project solution** targeting .NET 10.0 with EF Core 10 + SQL Server Express (local):
+**Five-project solution** targeting .NET 10.0 with EF Core 10 + SQL Server Express (local):
 
 - **Gotcha.Core** — Class library containing all domain logic, entities, services, and data access. Nullable reference types enabled.
 - **Gotcha.Core.Tests** — xUnit test project for unit testing Core. References Gotcha.Core with `InternalsVisibleTo`.
-- **Gotcha.Web** — ASP.NET Core MVC app (Razor views, Bootstrap 5, jQuery). Nullable reference types disabled. References Gotcha.Core.
+- **Gotcha.Web** — ASP.NET Core MVC app (Razor views, Bootstrap 5, jQuery). Nullable reference types enabled. References Gotcha.Core.
+- **Gotcha.Maui** — .NET MAUI mobile app (Android/iOS/Windows). Uses CommunityToolkit.Mvvm and CommunityToolkit.Maui.
 - **Gotcha.API** — Internal API project with DTOs for model entities. Not public-facing.
 
 ### MVC Areas
@@ -60,8 +73,16 @@ Each area has its own `_Layout.cshtml`. The Player area uses partials for alive/
 - Exceptions: `Gotcha.Core/Exceptions/` (GotchaException base + specific types + NotFound/)
 - CSS/JS: `Gotcha.Web/wwwroot/css/` and `Gotcha.Web/wwwroot/js/`
 - Player ViewModels: `Gotcha.Web/Areas/Player/ViewModels/` (+ BaseViewModels/)
-- API DTOs: `Gotcha.API/Dtos/` (Models/ and Logs/)
+- User ViewModels: `Gotcha.Web/Areas/User/ViewModels/` (GameItemViewModel, GamesViewModel, NewGameViewModel, StoreViewModel)
+- API DTOs: `Gotcha.API/Dtos/` (Attackers/, Games/, GotchaUsers/, Kills/, Logs/, Players/, Rules/, TargetAssignments/, VipSettings/)
+- API Controllers: `Gotcha.API/Controllers/` (one per entity: Attackers, Games, GotchaUsers, Kills, Logs, Players, Rules, TargetAssignments, VipSettings)
 - Tests: `Gotcha.Core.Tests/Services/` and `Gotcha.Core.Tests/Entities/`
+- Data Annotations: `Gotcha.Core/Validation/DataAnnotations/` (BirthDay, GuardianRequired, Name, Picture, UserName, UserNameOrEmail)
+- MAUI Pages: `Gotcha.Maui/Pages/` (Unauthenticated/ and Authenticated/User/ + Player/)
+- MAUI ViewModels: `Gotcha.Maui/ViewModels/`
+- MAUI Fonts: `Gotcha.Maui/Resources/Fonts/`
+- MAUI Images: `Gotcha.Maui/Resources/Images/`
+- Shared fonts (source): `fonts/` (Nosifer, Bungee, Roboto, Roboto Slab — downloaded from Google Fonts)
 
 ### Domain Model
 
@@ -127,3 +148,4 @@ Razor views with Bootstrap 5, jQuery, jQuery Validation, and Google Fonts (Nosif
 - `.cshtml.css` files use attribute scoping (`[b-abc123]`)
 - Elements inside nested Razor blocks (`@if`, `@switch`) may not get the scope attribute
 - Use `::deep .className` to target those elements
+

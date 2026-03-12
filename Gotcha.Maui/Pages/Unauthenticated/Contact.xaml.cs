@@ -1,9 +1,15 @@
+using Gotcha.Maui.ViewModels;
+
 namespace Gotcha.Maui.Pages.Unauthenticated;
 
 public partial class Contact : ContentPage
 {
-	public Contact()
-	{
-		InitializeComponent();
-	}
+    private readonly ContactViewModel viewModel;
+
+    public Contact(ContactViewModel viewModel)
+    {
+        InitializeComponent();
+        this.viewModel = viewModel;
+        BindingContext = viewModel;
+    }
 }

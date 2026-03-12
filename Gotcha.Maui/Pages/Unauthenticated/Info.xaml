@@ -1,12 +1,192 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Gotcha.Maui.ViewModels"
+             x:DataType="viewmodels:InfoViewModel"
              x:Class="Gotcha.Maui.Pages.Unauthenticated.Info"
-             Title="Info">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Info"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource OffBlack}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0" VerticalOptions="Center" Padding="0,30,0,0">
+
+            <!-- GOTCHA title -->
+            <Label Text="WELCOME TO GOTCHA!"
+                   TextColor="{StaticResource Primary}"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   FontFamily="Bungee"
+                   Margin="0,0,0,25" />
+
+            <!-- Info card (white background) -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    Stroke="{StaticResource Secondary}"
+                    StrokeThickness="0"
+                    Margin="20,0"
+                    Padding="0">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <!-- Card header -->
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label Text="INFO"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center" />
+                    </Border>
+
+                    <!-- Separator under header -->
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <!-- Info content -->
+                    <VerticalStackLayout Padding="30,20" Spacing="5">
+
+                        <!-- What is Gotcha? -->
+                        <Label Text="What is Gotcha?"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,0,0,10" />
+
+                        <Label Text="Gotcha (also known as Assassin) is a social elimination game that's all about stealth, creativity, and timing."
+                               TextColor="{StaticResource Gray600}"
+                               FontFamily="Roboto"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,0,0,5" />
+
+                        <Label Text="Everyone gets assigned a secret target from the player list."
+                               TextColor="{StaticResource Gray600}"
+                               FontFamily="Roboto"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,0,0,5" />
+
+                        <Label Text="Your goal? &quot;Eliminate&quot; your target by completing your chosen style of challenge."
+                               TextColor="{StaticResource Gray600}"
+                               FontFamily="Roboto"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,0,0,5" />
+
+                        <Label Text="It could be getting them to do something, or by catching them with a specific item. (This is customizable per game)."
+                               TextColor="{StaticResource Gray600}"
+                               FontFamily="Roboto"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,0,0,5" />
+
+                        <Label Text="Once you succeed, your target is out, and you take on their target."
+                               TextColor="{StaticResource Gray600}"
+                               FontFamily="Roboto"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,0,0,5" />
+
+                        <Label Text="The game continues until only one player remains!"
+                               TextColor="{StaticResource Gray600}"
+                               FontFamily="Roboto"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,0,0,5" />
+
+                        <!-- Separator -->
+                        <BoxView HeightRequest="1"
+                                 BackgroundColor="{StaticResource Gray200}"
+                                 HorizontalOptions="Fill"
+                                 Margin="0,15" />
+
+                        <!-- What the app offers -->
+                        <Label Text="What the app offers"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,0,0,10" />
+
+                        <Label Text="Gotcha is a great game to play with big groups, but setting it up can be quite a hassle."
+                               TextColor="{StaticResource Gray600}"
+                               FontFamily="Roboto"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,0,0,5" />
+
+                        <Label Text="This app will remove the hassle of printing names and weapons and assigning them and will do it for you."
+                               TextColor="{StaticResource Gray600}"
+                               FontFamily="Roboto"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,0,0,5" />
+
+                        <Label Text="Working with traditional paper is also quite limited."
+                               TextColor="{StaticResource Gray600}"
+                               FontFamily="Roboto"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,0,0,5" />
+
+                        <Label Text="This app allows you to control what info people see to make it easier. (For example, you can turn on player images for groups where not everyone may know each other that well)."
+                               TextColor="{StaticResource Gray600}"
+                               FontFamily="Roboto"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,0,0,5" />
+
+                        <Label Text="The app also offers custom game modes that aren't possible with traditional paper."
+                               TextColor="{StaticResource Gray600}"
+                               FontFamily="Roboto"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,0,0,5" />
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Back to Sign In section (cyan background) -->
+            <Border BackgroundColor="{StaticResource Primary}"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 12"
+                    Margin="20,25,20,30"
+                    Padding="25,20">
+
+                <VerticalStackLayout Spacing="8">
+
+                    <Label Text="READY TO PLAY?"
+                           TextColor="White"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           FontFamily="RobotoSlab"
+                           HorizontalTextAlignment="Center" />
+
+                    <Label Text="Sign in or create an account to get started."
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           FontSize="14"
+                           HorizontalTextAlignment="Center"
+                           Margin="0,10,0,0" />
+
+                    <!-- Back to Sign In button -->
+                    <Button Text="Back to Sign In"
+                            Style="{StaticResource SecondaryButton}"
+                            HorizontalOptions="Center"
+                            WidthRequest="220"
+                            Margin="0,10,0,0"
+                            Command="{Binding BackToSignInCommand}"
+                            AutomationId="BackToSignInButton" />
+
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

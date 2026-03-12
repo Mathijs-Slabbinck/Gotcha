@@ -1,5 +1,16 @@
 # Gotcha.Web Conventions
 
+## Conventions
+
+Before writing code in this subproject, read these convention files from `.claude/conventions/`:
+- `CLAUDE_CS.md` — C# code style, naming, OOP, LINQ
+- `CLAUDE_DOTNET.md` — Shared .NET: DI, async, ResultModel, HttpClient
+- `CLAUDE_MVC_WEB-BACKEND.md` — ASP.NET MVC: controllers, Razor, EF Core, Identity
+- `CLAUDE_HTML.md` — HTML5 structure, forms, accessibility
+- `CLAUDE_CSS.md` — Box model, selectors, flexbox, grid, responsive
+- `CLAUDE_JAVASCRIPT.md` — JS strict mode, DOM, events, fetch
+- `CLAUDE_GIT.md` — Commit conventions, Git Flow, branching
+
 ## MVC Areas
 
 The web app uses three routing contexts:

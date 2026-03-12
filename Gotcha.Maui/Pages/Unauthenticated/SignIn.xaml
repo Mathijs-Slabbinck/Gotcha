@@ -45,7 +45,7 @@
                                TextColor="{StaticResource Tertiary}"
                                FontSize="20"
                                FontAttributes="Bold"
-                               FontFamily="Roboto_Slab"
+                               FontFamily="RobotoSlab"
                                HorizontalTextAlignment="Center" />
                     </Border>
 
@@ -69,7 +69,7 @@
                                 StrokeThickness="2"
                                 StrokeShape="RoundRectangle 4"
                                 Padding="8,0"
-                                BackgroundColor="White"
+                                BackgroundColor="{StaticResource White}"
                                 HorizontalOptions="Fill">
                             <Entry Text="{Binding UsernameOrEmail}"
                                    Placeholder="john.doe@example.com"
@@ -79,7 +79,8 @@
                                    ReturnType="Next"
                                    TextColor="{StaticResource Gray900}"
                                    PlaceholderColor="{StaticResource Gray400}"
-                                   BackgroundColor="Transparent" />
+                                   BackgroundColor="Transparent"
+                                   AutomationId="EmailEntry" />
                         </Border>
 
                         <!-- Password label -->
@@ -94,7 +95,7 @@
                                 StrokeThickness="2"
                                 StrokeShape="RoundRectangle 4"
                                 Padding="8,0"
-                                BackgroundColor="White"
+                                BackgroundColor="{StaticResource White}"
                                 HorizontalOptions="Fill">
                             <Grid ColumnDefinitions="*,Auto">
                                 <Entry Grid.Column="0"
@@ -106,7 +107,8 @@
                                        ReturnType="Done"
                                        TextColor="{StaticResource Gray900}"
                                        PlaceholderColor="{StaticResource Gray400}"
-                                       BackgroundColor="Transparent" />
+                                       BackgroundColor="Transparent"
+                                       AutomationId="PasswordEntry" />
 
                                 <ImageButton Grid.Column="1"
                                              Command="{Binding TogglePasswordVisibilityCommand}"
@@ -114,35 +116,45 @@
                                              WidthRequest="44"
                                              HeightRequest="44"
                                              BackgroundColor="Transparent"
-                                             Padding="8" />
+                                             Padding="8"
+                                             AutomationId="TogglePasswordButton"
+                                             SemanticProperties.Description="Toggle password visibility" />
                             </Grid>
                         </Border>
 
                         <!-- Remember me -->
                         <HorizontalStackLayout HorizontalOptions="Center" Spacing="5" Margin="0,10,0,0">
-                            <CheckBox IsChecked="{Binding RememberMe}" VerticalOptions="Center" Color="{StaticResource Primary}" />
+                            <CheckBox IsChecked="{Binding RememberMe}"
+                                      VerticalOptions="Center"
+                                      Color="{StaticResource Primary}"
+                                      AutomationId="RememberMeCheckBox" />
                             <Label Text="Remember me" VerticalOptions="Center" TextColor="{StaticResource Gray600}" />
                         </HorizontalStackLayout>
 
                         <!-- Error message -->
                         <Label Text="{Binding ErrorMessage}"
-                               TextColor="Red"
+                               TextColor="{StaticResource Danger}"
                                HorizontalTextAlignment="Center"
-                               IsVisible="{Binding ErrorMessage, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" />
+                               IsVisible="{Binding ErrorMessage, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"
+                               AutomationId="ErrorMessageLabel" />
 
                         <!-- Log in button -->
-                        <Button Text="log in"
+                        <Button Text="Log In"
                                 Command="{Binding SignInCommand}"
+                                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
                                 HorizontalOptions="Center"
                                 WidthRequest="220"
-                                Margin="0,10,0,0" />
+                                Margin="0,10,0,0"
+                                AutomationId="SignInButton" />
 
                         <!-- Forgot password -->
                         <Label Text="Forgot password?"
                                TextColor="{StaticResource Secondary}"
                                TextDecorations="Underline"
                                HorizontalTextAlignment="Center"
-                               Margin="0,10,0,0">
+                               Margin="0,10,0,0"
+                               AutomationId="ForgotPasswordLabel"
+                               SemanticProperties.Hint="Tap to reset your password">
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}" />
                             </Label.GestureRecognizers>
@@ -165,6 +177,7 @@
                            TextColor="White"
                            FontSize="20"
                            FontAttributes="Bold"
+                           FontFamily="RobotoSlab"
                            HorizontalTextAlignment="Center" />
 
                     <Label Text="Please log in to continue."
@@ -184,7 +197,6 @@
                                       FontSize="14" />
                                 <Span Text="sign up"
                                       TextColor="White"
-                                      TextDecorations="Underline"
                                       FontAttributes="Bold"
                                       FontSize="14" />
                                 <Span Text="."
@@ -196,12 +208,13 @@
                     </Label>
 
                     <!-- Sign up button -->
-                    <Button Text="sign up"
+                    <Button Text="Sign Up"
                             Style="{StaticResource SecondaryButton}"
                             HorizontalOptions="Center"
                             WidthRequest="220"
                             Margin="0,10,0,0"
-                            Command="{Binding SignUpCommand}" />
+                            Command="{Binding SignUpCommand}"
+                            AutomationId="SignUpButton" />
 
                 </VerticalStackLayout>
             </Border>

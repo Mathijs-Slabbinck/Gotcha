@@ -1,5 +1,13 @@
 # Gotcha.Core.Tests Conventions
 
+## Conventions
+
+Before writing code in this subproject, read these convention files from `.claude/conventions/`:
+- `CLAUDE_CS.md` — C# code style, naming, OOP, LINQ
+- `CLAUDE_DOTNET.md` — Shared .NET: DI, async, ResultModel, HttpClient
+- `CLAUDE_TESTS.md` — xUnit, Fact/Theory, AAA, Moq
+- `CLAUDE_GIT.md` — Commit conventions, Git Flow, branching
+
 ## Run Tests
 
 ```bash

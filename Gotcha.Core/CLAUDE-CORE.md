@@ -1,5 +1,12 @@
 # Gotcha.Core Conventions
 
+## Conventions
+
+Before writing code in this subproject, read these convention files from `.claude/conventions/`:
+- `CLAUDE_CS.md` — C# code style, naming, OOP, LINQ
+- `CLAUDE_DOTNET.md` — Shared .NET: DI, async, ResultModel, HttpClient
+- `CLAUDE_GIT.md` — Commit conventions, Git Flow, branching
+
 ## Entity Conventions
 
 - Entities are **POCOs** — no validation in property setters, no business logic

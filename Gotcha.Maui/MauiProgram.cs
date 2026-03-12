@@ -1,7 +1,12 @@
 ﻿using CommunityToolkit.Maui;
-using Gotcha.Maui.Pages.Unauthenticated;
 using Gotcha.Maui.ViewModels;
 using Microsoft.Extensions.Logging;
+
+using Contact = Gotcha.Maui.Pages.Unauthenticated.Contact;
+using Info = Gotcha.Maui.Pages.Unauthenticated.Info;
+using ResetPassword = Gotcha.Maui.Pages.Unauthenticated.ResetPassword;
+using SignIn = Gotcha.Maui.Pages.Unauthenticated.SignIn;
+using SignUp = Gotcha.Maui.Pages.Unauthenticated.SignUp;
 
 namespace Gotcha.Maui
 {
@@ -25,9 +30,18 @@ namespace Gotcha.Maui
                     fonts.AddFont("RobotoSlab-Bold.ttf", "RobotoSlabBold");
                 });
 
-            // Pages & ViewModels
-            builder.Services.AddSingleton<SignInViewModel>();
-            builder.Services.AddSingleton<SignIn>();
+            // ViewModels
+            builder.Services.AddTransient<SignInViewModel>();
+            builder.Services.AddTransient<SignUpViewModel>();
+            builder.Services.AddTransient<InfoViewModel>();
+            builder.Services.AddTransient<ContactViewModel>();
+
+            // Pages
+            builder.Services.AddTransient<SignIn>();
+            builder.Services.AddTransient<SignUp>();
+            builder.Services.AddTransient<ResetPassword>();
+            builder.Services.AddTransient<Contact>();
+            builder.Services.AddTransient<Info>();
 
 #if DEBUG
     		builder.Logging.AddDebug();
