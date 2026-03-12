@@ -30,7 +30,18 @@ public class SignInViewModel : ObservableObject
     public bool IsPasswordVisible
     {
         get { return isPasswordVisible; }
-        set { SetProperty(ref isPasswordVisible, value); }
+        set
+        {
+            if (SetProperty(ref isPasswordVisible, value))
+            {
+                OnPropertyChanged(nameof(EyeIconSource));
+            }
+        }
+    }
+
+    public string EyeIconSource
+    {
+        get { return IsPasswordVisible ? "eye_open.svg" : "eye_closed.svg"; }
     }
 
     private string errorMessage = string.Empty;

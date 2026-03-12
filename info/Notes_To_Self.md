@@ -86,3 +86,20 @@ C# 11 introduced `required`, which forces a property to be set in object initial
 - Examples: `"https://example.com"` → scheme is `"https"`, `"ftp://files.com"` → scheme is `"ftp"`
 - `Uri.UriSchemeHttp` is just the string `"http"`, `Uri.UriSchemeHttps` is just `"https"` (built-in constants so you don't hardcode strings)
 - We only allow `http` and `https` to block dangerous schemes like `javascript:` (XSS), `file:` (local file access), `data:` (embedded content), and `ftp:`
+
+
+
+### Note 6:
+#### MAUI Splash Screen
+
+The splash screen is the image shown briefly when the app first launches, before the first page loads. It's configured in the `.csproj` file:
+
+```xml
+<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#252729" BaseSize="128,128" />
+```
+
+- **`Include`** — points to the SVG (or PNG) image file
+- **`Color`** — the background color that fills the screen behind the image
+- **`BaseSize`** — the size the image is rendered at (MAUI scales it for different screen densities)
+
+The splash SVG is separate from the app icon. The app icon uses two files (`appicon.svg` for the background + `appiconfg.svg` for the foreground), while the splash screen is a single image on a solid color background.

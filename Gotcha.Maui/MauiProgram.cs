@@ -17,6 +17,12 @@ namespace Gotcha.Maui
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("Nosifer-Regular.ttf", "Nosifer");
+                    fonts.AddFont("Bungee-Regular.ttf", "Bungee");
+                    fonts.AddFont("Roboto-Regular.ttf", "Roboto");
+                    fonts.AddFont("Roboto-Bold.ttf", "RobotoBold");
+                    fonts.AddFont("RobotoSlab-Regular.ttf", "RobotoSlab");
+                    fonts.AddFont("RobotoSlab-Bold.ttf", "RobotoSlabBold");
                 });
 
             // Pages & ViewModels
