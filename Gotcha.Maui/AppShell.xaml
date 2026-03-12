@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Gotcha.Maui.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Gotcha.Maui"
+    xmlns:unauthenticated="clr-namespace:Gotcha.Maui.Pages.Unauthenticated"
+    Shell.FlyoutBehavior="Disabled"
+    Title="Gotcha">
+
+    <ShellContent
+        Title="Sign In"
+        ContentTemplate="{DataTemplate unauthenticated:SignIn}"
+        Route="SignIn" />
+
+</Shell>

@@ -1,5 +1,8 @@
 <!-- This file is for PROJECT-SPECIFIC info only — architecture, entities, services, patterns, key paths. Global rules (code style, prompt logging) live in ~/CLAUDE.md. -->
+
 # CLAUDE.md
+
+**CONVENTIONS**: Read the files in `.claude/conventions/` before writing code. They contain the coding standards for this project.
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 

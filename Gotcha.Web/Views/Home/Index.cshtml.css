@@ -1,5 +1,5 @@
 @media only screen and (max-width: 991px){
-    #loginFormCardLeft input:last-of-type {
+    #loginFormCardLeft input:last-of-type:not(input[type="checkbox"]) {
         margin-top: 3vh !important;
     }
 
