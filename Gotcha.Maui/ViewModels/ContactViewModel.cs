@@ -109,7 +109,7 @@ namespace Gotcha.Maui.ViewModels
         {
             try
             {
-                await Shell.Current.GoToAsync("..");
+                await Shell.Current.GoToAsync("//SignIn");
             }
             catch (Exception ex)
             {

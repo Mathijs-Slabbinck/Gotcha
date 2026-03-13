@@ -1,9 +1,15 @@
+using Gotcha.Maui.ViewModels;
+
 namespace Gotcha.Maui.Pages.Authenticated.User;
 
 public partial class Home : ContentPage
 {
-	public Home()
-	{
-		InitializeComponent();
-	}
+    private readonly HomeViewModel viewModel;
+
+    public Home(HomeViewModel viewModel)
+    {
+        InitializeComponent();
+        this.viewModel = viewModel;
+        BindingContext = viewModel;
+    }
 }

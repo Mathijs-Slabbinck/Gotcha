@@ -9,7 +9,14 @@ namespace Gotcha.Maui.ViewModels
 
         private async void ExecuteBackToSignInCommand()
         {
-            await Shell.Current.GoToAsync("..");
+            try
+            {
+                await Shell.Current.GoToAsync("//SignIn");
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlertAsync("Error", ex.Message, "OK");
+            }
         }
     }
 }

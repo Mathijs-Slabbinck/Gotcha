@@ -2,11 +2,11 @@ using Gotcha.Maui.ViewModels;
 
 namespace Gotcha.Maui.Pages.Authenticated.User;
 
-public partial class Store : ContentPage
+public partial class NewGame : ContentPage
 {
-    private readonly StoreViewModel viewModel;
+    private readonly NewGameViewModel viewModel;
 
-    public Store(StoreViewModel viewModel)
+    public NewGame(NewGameViewModel viewModel)
     {
         InitializeComponent();
         this.viewModel = viewModel;

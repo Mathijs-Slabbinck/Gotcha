@@ -1,12 +1,251 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Gotcha.Maui.ViewModels"
+             x:DataType="viewmodels:GamesViewModel"
              x:Class="Gotcha.Maui.Pages.Authenticated.User.Games"
-             Title="Games">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Games"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource OffBlack}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0" Padding="0,30,0,0">
+
+            <!-- MY GAMES heading -->
+            <Label Text="MY GAMES"
+                   TextColor="{StaticResource Primary}"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   FontFamily="Bungee"
+                   Margin="0,0,0,25" />
+
+            <!-- Pending Games card -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    Margin="20,0"
+                    Padding="0">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <!-- Card header -->
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label Text="PENDING GAMES"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center" />
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout Padding="15,10" Spacing="0">
+
+                        <!-- Column headers -->
+                        <Grid ColumnDefinitions="*,Auto,Auto" Padding="5,5" ColumnSpacing="10">
+                            <Label Grid.Column="0" Text="Name" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" />
+                            <Label Grid.Column="1" Text="Created" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" WidthRequest="70" />
+                            <Label Grid.Column="2" Text="Players" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" WidthRequest="50" HorizontalTextAlignment="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}" HorizontalOptions="Fill" />
+
+                        <!-- Game rows -->
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding PendingGames}" Spacing="0">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="viewmodels:GamesViewModel+GameItem">
+                                    <Grid ColumnDefinitions="*,Auto,Auto" Padding="5,8" ColumnSpacing="10">
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:GamesViewModel}}, Path=GameTappedCommand}"
+                                                                  CommandParameter="{Binding}" />
+                                        </Grid.GestureRecognizers>
+                                        <Label Grid.Column="0" Text="{Binding Name}" TextColor="{StaticResource Gray900}" FontSize="13" LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="1" Text="{Binding CreatedDate}" TextColor="{StaticResource Gray600}" FontSize="12" WidthRequest="70" />
+                                        <Label Grid.Column="2" Text="{Binding PlayerCount}" TextColor="{StaticResource Gray900}" FontSize="13" WidthRequest="50" HorizontalTextAlignment="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                            <BindableLayout.EmptyView>
+                                <Label Text="No pending games"
+                                       TextColor="{StaticResource Gray400}"
+                                       HorizontalTextAlignment="Center"
+                                       Margin="0,10" />
+                            </BindableLayout.EmptyView>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Active Games card -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    Margin="20,20,20,0"
+                    Padding="0">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label Text="ACTIVE GAMES"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center" />
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout Padding="15,10" Spacing="0">
+
+                        <!-- Column headers -->
+                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" Padding="5,5" ColumnSpacing="10">
+                            <Label Grid.Column="0" Text="Name" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" />
+                            <Label Grid.Column="1" Text="Started" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" WidthRequest="70" />
+                            <Label Grid.Column="2" Text="Alive" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" WidthRequest="40" HorizontalTextAlignment="Center" />
+                            <Label Grid.Column="3" Text="Players" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" WidthRequest="50" HorizontalTextAlignment="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}" HorizontalOptions="Fill" />
+
+                        <!-- Game rows -->
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding ActiveGames}" Spacing="0">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="viewmodels:GamesViewModel+GameItem">
+                                    <Grid ColumnDefinitions="*,Auto,Auto,Auto" Padding="5,8" ColumnSpacing="10">
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:GamesViewModel}}, Path=GameTappedCommand}"
+                                                                  CommandParameter="{Binding}" />
+                                        </Grid.GestureRecognizers>
+                                        <Label Grid.Column="0" Text="{Binding Name}" TextColor="{StaticResource Gray900}" FontSize="13" LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="1" Text="{Binding StartDate}" TextColor="{StaticResource Gray600}" FontSize="12" WidthRequest="70" />
+                                        <Label Grid.Column="2" Text="{Binding IsAlive, Converter={StaticResource AliveStatusTextConverter}}"
+                                               TextColor="{Binding IsAlive, Converter={StaticResource AliveStatusColorConverter}}"
+                                               FontAttributes="Bold" FontSize="12" WidthRequest="40" HorizontalTextAlignment="Center" />
+                                        <Label Grid.Column="3" Text="{Binding PlayerCount}" TextColor="{StaticResource Gray900}" FontSize="13" WidthRequest="50" HorizontalTextAlignment="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                            <BindableLayout.EmptyView>
+                                <Label Text="No active games"
+                                       TextColor="{StaticResource Gray400}"
+                                       HorizontalTextAlignment="Center"
+                                       Margin="0,10" />
+                            </BindableLayout.EmptyView>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- New Game button -->
+            <Button Text="New Game"
+                    Command="{Binding NewGameCommand}"
+                    HorizontalOptions="Center"
+                    WidthRequest="220"
+                    Margin="0,20,0,0"
+                    AutomationId="NewGameButton" />
+
+            <!-- Ended Games card -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    Margin="20,20,20,0"
+                    Padding="0">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label Text="ENDED GAMES"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center" />
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout Padding="15,10" Spacing="0">
+
+                        <!-- Column headers -->
+                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" Padding="5,5" ColumnSpacing="10">
+                            <Label Grid.Column="0" Text="Name" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" />
+                            <Label Grid.Column="1" Text="Ended" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" WidthRequest="70" />
+                            <Label Grid.Column="2" Text="Winner" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" WidthRequest="70" />
+                            <Label Grid.Column="3" Text="Players" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" WidthRequest="50" HorizontalTextAlignment="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}" HorizontalOptions="Fill" />
+
+                        <!-- Game rows -->
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding EndedGames}" Spacing="0">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="viewmodels:GamesViewModel+GameItem">
+                                    <Grid ColumnDefinitions="*,Auto,Auto,Auto" Padding="5,8" ColumnSpacing="10">
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:GamesViewModel}}, Path=GameTappedCommand}"
+                                                                  CommandParameter="{Binding}" />
+                                        </Grid.GestureRecognizers>
+                                        <Label Grid.Column="0" Text="{Binding Name}" TextColor="{StaticResource Gray900}" FontSize="13" LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="1" Text="{Binding EndDate}" TextColor="{StaticResource Gray600}" FontSize="12" WidthRequest="70" />
+                                        <Label Grid.Column="2" Text="{Binding WinnerName}" TextColor="{StaticResource Gray900}" FontSize="12" WidthRequest="70" LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="3" Text="{Binding PlayerCount}" TextColor="{StaticResource Gray900}" FontSize="13" WidthRequest="50" HorizontalTextAlignment="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                            <BindableLayout.EmptyView>
+                                <Label Text="No ended games"
+                                       TextColor="{StaticResource Gray400}"
+                                       HorizontalTextAlignment="Center"
+                                       Margin="0,10" />
+                            </BindableLayout.EmptyView>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Bottom spacer -->
+            <BoxView HeightRequest="30" BackgroundColor="Transparent" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

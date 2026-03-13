@@ -7,4 +7,11 @@
     <toolkit:InvertedBoolConverter x:Key="InvertBoolConverter" />
     <toolkit:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter" />
 
+    <toolkit:BoolToObjectConverter x:Key="AliveStatusColorConverter"
+        TrueObject="{StaticResource Success}"
+        FalseObject="{StaticResource Danger}" />
+    <toolkit:BoolToObjectConverter x:Key="AliveStatusTextConverter"
+        TrueObject="Yes"
+        FalseObject="No" />
+
 </ResourceDictionary>

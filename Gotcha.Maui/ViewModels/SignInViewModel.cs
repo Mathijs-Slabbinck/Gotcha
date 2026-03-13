@@ -124,7 +124,7 @@ namespace Gotcha.Maui.ViewModels
         {
             try
             {
-                await Shell.Current.GoToAsync("SignUp");
+                await Shell.Current.GoToAsync("//SignUp");
             }
             catch (Exception ex)
             {

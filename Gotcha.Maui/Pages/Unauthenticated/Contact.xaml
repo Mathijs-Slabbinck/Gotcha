@@ -133,7 +133,7 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Info section (cyan background) -->
+            <!-- Ready to play section (cyan background) -->
             <Border BackgroundColor="{StaticResource Primary}"
                     StrokeThickness="0"
                     StrokeShape="RoundRectangle 12"
@@ -142,28 +142,28 @@
 
                 <VerticalStackLayout Spacing="8">
 
-                    <Label Text="GET IN TOUCH"
+                    <Label Text="READY TO PLAY?"
                            TextColor="White"
                            FontSize="20"
                            FontAttributes="Bold"
                            FontFamily="RobotoSlab"
                            HorizontalTextAlignment="Center" />
 
-                    <Label Text="Have a question, found a bug, or just want to say hi? We'd love to hear from you."
+                    <Label Text="Sign in or create an account to get started."
                            TextColor="White"
                            FontAttributes="Bold"
                            FontSize="14"
                            HorizontalTextAlignment="Center"
                            Margin="0,10,0,0" />
 
-                    <!-- Go back button -->
-                    <Button Text="Go Back"
+                    <!-- Back to Sign In button -->
+                    <Button Text="Back to Sign In"
                             Style="{StaticResource SecondaryButton}"
                             HorizontalOptions="Center"
                             WidthRequest="220"
                             Margin="0,10,0,0"
                             Command="{Binding GoBackCommand}"
-                            AutomationId="GoBackButton" />
+                            AutomationId="BackToSignInButton" />
 
                 </VerticalStackLayout>
             </Border>

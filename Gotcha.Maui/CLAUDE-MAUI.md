@@ -27,14 +27,40 @@ Pages mirror the Web areas:
 |          Folder          |                    Pages                     |
 | :----------------------: | :------------------------------------------: |
 | `Pages/Unauthenticated/` | SignIn, SignUp, Contact, Info, ResetPassword  |
-| `Pages/Authenticated/User/` | Home, Games, Settings, Store, Shared      |
+| `Pages/Authenticated/User/` | Home, Games, NewGame, Settings, Store     |
 | `Pages/Authenticated/Player/` | Home, ConfirmKill, Settings, Admin      |
 
 ## DI & Routing
 
 - All Pages and ViewModels are registered as **Transient** in `MauiProgram.cs` (never Singleton — state must not persist across navigations)
-- Shell routes for non-tab pages (SignUp, ResetPassword, Contact, Info) are registered in `AppShell.xaml.cs` via `Routing.RegisterRoute`
-- Navigate with relative routes (`Shell.Current.GoToAsync("SignUp")`) for registered routes
+- Push routes (e.g., `ResetPassword`) are registered in `MauiProgram.cs` via `Routing.RegisterRoute` (before `builder` creation) — never in `AppShell.xaml.cs`
+
+## Navigation
+
+Shell TabBar navigation with two TabBars (authenticated and unauthenticated).
+
+**Authenticated User TabBar** (shown first in AppShell.xaml for dev/testing — move below unauthenticated TabBar when auth is wired up):
+
+|    Tab    |      Route      |      Page       |        Icon         |
+| :-------: | :-------------: | :-------------: | :-----------------: |
+|   Home    | `//UserHome`    | `Home.xaml`     | `tab_home.svg`      |
+|   Games   | `//UserGames`   | `Games.xaml`    | `tab_games.svg`     |
+| Settings  | `//UserSettings`| `Settings.xaml` | `tab_settings.svg`  |
+|   Store   | `//UserStore`   | `Store.xaml`    | `tab_store.svg`     |
+
+**Unauthenticated TabBar:**
+
+|   Tab    |    Route    |     Page      |       Icon        |
+| :------: | :---------: | :-----------: | :---------------: |
+| Sign In  | `//SignIn`  | `SignIn.xaml`  | `tab_signin.svg`  |
+| Sign Up  | `//SignUp`  | `SignUp.xaml`  | `tab_signup.svg`  |
+|   Info   | `//Info`    | `Info.xaml`    | `tab_info.svg`    |
+| Contact  | `//Contact` | `Contact.xaml` | `tab_contact.svg` |
+
+- Tab switching uses absolute routes (`//SignIn`, `//UserHome`, etc.)
+- Push routes: `ResetPassword` (pushed on top of Sign In tab), `NewGame` (pushed on top of Games tab)
+- Shell navbar hidden globally (`Shell.NavBarIsVisible="False"` on Shell element), except NewGame page (shows back button)
+- Tab bar styled via `Styles.xaml`: OffBlack background, Primary cyan selected, Gray200 unselected
 
 ## MVVM Rules
 
@@ -90,7 +116,7 @@ Use `FontFamily="Alias"` in XAML (e.g., `FontFamily="RobotoSlab"`, not `Roboto_S
 ## Key Paths
 
 - Pages: `Pages/Unauthenticated/` and `Pages/Authenticated/` (User/ + Player/)
-- ViewModels: `ViewModels/` (SignInViewModel, SignUpViewModel, InfoViewModel, ContactViewModel)
+- ViewModels: `ViewModels/` (SignInViewModel, SignUpViewModel, InfoViewModel, ContactViewModel, HomeViewModel, GamesViewModel, NewGameViewModel, SettingsViewModel, StoreViewModel)
 - Converters: `Converters/` (custom classes) + `Resources/Styles/Converters.xaml` (declarations)
 - Extensions: `Extensions/` (currently empty)
 - Styles: `Resources/Styles/Colors.xaml`, `Resources/Styles/Styles.xaml`, and `Resources/Styles/Converters.xaml`

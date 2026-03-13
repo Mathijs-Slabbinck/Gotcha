@@ -5,12 +5,46 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Gotcha.Maui"
     xmlns:unauthenticated="clr-namespace:Gotcha.Maui.Pages.Unauthenticated"
+    xmlns:user="clr-namespace:Gotcha.Maui.Pages.Authenticated.User"
     Shell.FlyoutBehavior="Disabled"
+    Shell.NavBarIsVisible="False"
     Title="Gotcha">
 
-    <ShellContent
-        Title="Sign In"
-        ContentTemplate="{DataTemplate unauthenticated:SignIn}"
-        Route="SignIn" />
+    <!-- DEV: Authenticated TabBar shown first for testing. Move below unauthenticated TabBar when auth is wired up. -->
+    <TabBar>
+        <Tab Title="Home" Icon="tab_home.svg" Route="UserHome">
+            <ShellContent ContentTemplate="{DataTemplate user:Home}" />
+        </Tab>
+
+        <Tab Title="Games" Icon="tab_games.svg" Route="UserGames">
+            <ShellContent ContentTemplate="{DataTemplate user:Games}" />
+        </Tab>
+
+        <Tab Title="Settings" Icon="tab_settings.svg" Route="UserSettings">
+            <ShellContent ContentTemplate="{DataTemplate user:Settings}" />
+        </Tab>
+
+        <Tab Title="Store" Icon="tab_store.svg" Route="UserStore">
+            <ShellContent ContentTemplate="{DataTemplate user:Store}" />
+        </Tab>
+    </TabBar>
+
+    <TabBar>
+        <Tab Title="Sign In" Icon="tab_signin.svg" Route="SignIn">
+            <ShellContent ContentTemplate="{DataTemplate unauthenticated:SignIn}" />
+        </Tab>
+
+        <Tab Title="Sign Up" Icon="tab_signup.svg" Route="SignUp">
+            <ShellContent ContentTemplate="{DataTemplate unauthenticated:SignUp}" />
+        </Tab>
+
+        <Tab Title="Info" Icon="tab_info.svg" Route="Info">
+            <ShellContent ContentTemplate="{DataTemplate unauthenticated:Info}" />
+        </Tab>
+
+        <Tab Title="Contact" Icon="tab_contact.svg" Route="Contact">
+            <ShellContent ContentTemplate="{DataTemplate unauthenticated:Contact}" />
+        </Tab>
+    </TabBar>
 
 </Shell>
