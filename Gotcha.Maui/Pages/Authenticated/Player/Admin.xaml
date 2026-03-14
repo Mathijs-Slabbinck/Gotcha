@@ -1,12 +1,469 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Gotcha.Maui.ViewModels"
+             xmlns:models="clr-namespace:Gotcha.Maui.Models"
+             x:DataType="viewmodels:PlayerAdminViewModel"
              x:Class="Gotcha.Maui.Pages.Authenticated.Player.Admin"
-             Title="Admin">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Admin"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource OffBlack}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0" Padding="0,30,0,0">
+
+            <!-- GAME ADMIN heading -->
+            <Label Text="GAME ADMIN"
+                   TextColor="{StaticResource Primary}"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   FontFamily="Bungee"
+                   Margin="0,0,0,25"
+                   SemanticProperties.HeadingLevel="Level1" />
+
+            <!-- Players card -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    Margin="20,0"
+                    Padding="0">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center"
+                               SemanticProperties.HeadingLevel="Level2">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="PLAYERS (" />
+                                    <Span Text="{Binding GameName}" />
+                                    <Span Text=" — " />
+                                    <Span Text="{Binding PlayerCount}" />
+                                    <Span Text="/" />
+                                    <Span Text="{Binding MaxPlayers}" />
+                                    <Span Text=")" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout Padding="15,10" Spacing="0">
+
+                        <!-- Column headers -->
+                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" Padding="5,5" ColumnSpacing="8">
+                            <Label Grid.Column="0" Text="Name" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" />
+                            <Label Grid.Column="1" Text="Username" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" WidthRequest="70" />
+                            <Label Grid.Column="2" Text="Image" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" WidthRequest="40" HorizontalTextAlignment="Center" />
+                            <Label Grid.Column="3" Text="Actions" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" WidthRequest="60" HorizontalTextAlignment="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}" HorizontalOptions="Fill" />
+
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Players}" Spacing="0">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:AdminPlayerItem">
+                                    <Grid ColumnDefinitions="*,Auto,Auto,Auto" Padding="5,8" ColumnSpacing="8" MinimumHeightRequest="44">
+                                        <Label Grid.Column="0" Text="{Binding Name}" TextColor="{StaticResource Gray900}" FontSize="13" LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="1" Text="{Binding Username}" TextColor="{StaticResource Gray600}" FontSize="12" WidthRequest="70" LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="2"
+                                               Text="{Binding HasImage, Converter={StaticResource YesNoTextConverter}}"
+                                               TextColor="{Binding HasImage, Converter={StaticResource BoolToSuccessDangerColorConverter}}"
+                                               FontSize="12" WidthRequest="40" HorizontalTextAlignment="Center" />
+                                        <Label Grid.Column="3" Text="Manage" TextColor="{StaticResource Primary}" FontSize="12"
+                                               MinimumWidthRequest="44" MinimumHeightRequest="44"
+                                               WidthRequest="60" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                               SemanticProperties.Hint="Tap to manage this player">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PlayerAdminViewModel}}, Path=PlayerActionCommand}"
+                                                                      CommandParameter="{Binding Name}" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                            <BindableLayout.EmptyView>
+                                <Label Text="No players yet"
+                                       TextColor="{StaticResource Gray400}"
+                                       HorizontalTextAlignment="Center"
+                                       Margin="0,10" />
+                            </BindableLayout.EmptyView>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Invite Players card -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    Margin="20,20,20,0"
+                    Padding="0"
+                    IsVisible="{Binding IsNotStarted}">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label Text="INVITE PLAYERS"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center"
+                               SemanticProperties.HeadingLevel="Level2" />
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout Padding="20,15" Spacing="8">
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Border Grid.Column="0"
+                                    Style="{StaticResource FormEntryBorder}">
+                                <Entry Text="{Binding InviteLink}"
+                                       IsReadOnly="True"
+                                       TextColor="{StaticResource Gray600}"
+                                       FontSize="12"
+                                       AutomationId="InviteLinkEntry" />
+                            </Border>
+
+                            <Button Grid.Column="1"
+                                    Text="Copy"
+                                    Command="{Binding CopyLinkCommand}"
+                                    HeightRequest="40"
+                                    Padding="15,0"
+                                    AutomationId="CopyLinkButton" />
+                        </Grid>
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Pending Kills card -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    Margin="20,20,20,0"
+                    Padding="0"
+                    IsVisible="{Binding HasStarted}">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label Text="PENDING KILLS"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center"
+                               SemanticProperties.HeadingLevel="Level2" />
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout Padding="15,10" Spacing="0">
+
+                        <!-- Column headers -->
+                        <Grid ColumnDefinitions="*,*,Auto,Auto,Auto" Padding="5,5" ColumnSpacing="6">
+                            <Label Grid.Column="0" Text="Killer" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="11" />
+                            <Label Grid.Column="1" Text="Victim" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="11" />
+                            <Label Grid.Column="2" Text="Weapon" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="11" WidthRequest="55" />
+                            <Label Grid.Column="3" Text="Time" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="11" WidthRequest="55" />
+                            <Label Grid.Column="4" Text="Action" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="11" WidthRequest="45" HorizontalTextAlignment="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}" HorizontalOptions="Fill" />
+
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding PendingKills}" Spacing="0">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:AdminKillItem">
+                                    <Grid ColumnDefinitions="*,*,Auto,Auto,Auto" Padding="5,8" ColumnSpacing="6" MinimumHeightRequest="44">
+                                        <Label Grid.Column="0" Text="{Binding KillerName}" TextColor="{StaticResource Gray900}" FontSize="12" LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="1" Text="{Binding VictimName}" TextColor="{StaticResource Gray900}" FontSize="12" LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="2" Text="{Binding Weapon}" TextColor="{StaticResource Gray600}" FontSize="11" WidthRequest="55" LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="3" Text="{Binding Moment, StringFormat='{0:MMM d, yyyy HH:mm}'}" TextColor="{StaticResource Gray600}" FontSize="10" WidthRequest="55" LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="4" Text="Cancel" TextColor="{StaticResource Danger}" FontSize="11"
+                                               MinimumWidthRequest="44" MinimumHeightRequest="44"
+                                               WidthRequest="45" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                               SemanticProperties.Hint="Tap to cancel this kill">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PlayerAdminViewModel}}, Path=CancelKillCommand}"
+                                                                      CommandParameter="{Binding KillId}" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                            <BindableLayout.EmptyView>
+                                <Label Text="No pending kills"
+                                       TextColor="{StaticResource Gray400}"
+                                       HorizontalTextAlignment="Center"
+                                       Margin="0,10" />
+                            </BindableLayout.EmptyView>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Game Settings card -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    Margin="20,20,20,0"
+                    Padding="0">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label Text="GAME SETTINGS"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center"
+                               SemanticProperties.HeadingLevel="Level2" />
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout Padding="30,20" Spacing="5">
+
+                        <!-- Display Settings section -->
+                        <Label Text="Display Settings"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               Margin="0,0,0,10"
+                               SemanticProperties.HeadingLevel="Level3" />
+
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="8">
+                            <Label Grid.Row="0" Grid.Column="0" Text="Show Player Images" TextColor="{StaticResource Gray600}" VerticalTextAlignment="Center" />
+                            <Switch Grid.Row="0" Grid.Column="1" IsToggled="{Binding ShowPlayerImages}" OnColor="{StaticResource Primary}" AutomationId="ShowPlayerImagesSwitch" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="Show Gender" TextColor="{StaticResource Gray600}" VerticalTextAlignment="Center" />
+                            <Switch Grid.Row="1" Grid.Column="1" IsToggled="{Binding ShowGender}" OnColor="{StaticResource Primary}" AutomationId="ShowGenderSwitch" />
+
+                            <Label Grid.Row="2" Grid.Column="0" Text="Enforce Player Images" TextColor="{StaticResource Gray600}" VerticalTextAlignment="Center" />
+                            <Switch Grid.Row="2" Grid.Column="1" IsToggled="{Binding EnforcePlayerImages}" OnColor="{StaticResource Primary}" AutomationId="EnforcePlayerImagesSwitch" />
+
+                            <Label Grid.Row="3" Grid.Column="0" Text="Show Real Names" TextColor="{StaticResource Gray600}" VerticalTextAlignment="Center" />
+                            <Switch Grid.Row="3" Grid.Column="1" IsToggled="{Binding ShowRealNames}" OnColor="{StaticResource Primary}" AutomationId="ShowRealNamesSwitch" />
+
+                            <Label Grid.Row="4" Grid.Column="0" Text="Show Usernames" TextColor="{StaticResource Gray600}" VerticalTextAlignment="Center" />
+                            <Switch Grid.Row="4" Grid.Column="1" IsToggled="{Binding ShowUsernames}" OnColor="{StaticResource Primary}" AutomationId="ShowUsernamesSwitch" />
+
+                            <Label Grid.Row="5" Grid.Column="0" Text="Show Living Player Count" TextColor="{StaticResource Gray600}" VerticalTextAlignment="Center" />
+                            <Switch Grid.Row="5" Grid.Column="1" IsToggled="{Binding ShowLivingPlayerCount}" OnColor="{StaticResource Primary}" AutomationId="ShowLivingPlayerCountSwitch" />
+
+                            <Label Grid.Row="6" Grid.Column="0" Text="Show Living Player Names" TextColor="{StaticResource Gray600}" VerticalTextAlignment="Center" />
+                            <Switch Grid.Row="6" Grid.Column="1" IsToggled="{Binding ShowLivingPlayerNames}" OnColor="{StaticResource Primary}" AutomationId="ShowLivingPlayerNamesSwitch" />
+
+                            <Label Grid.Row="7" Grid.Column="0" Text="Show Names to Death" TextColor="{StaticResource Gray600}" VerticalTextAlignment="Center" />
+                            <Switch Grid.Row="7" Grid.Column="1" IsToggled="{Binding ShowLivingPlayerNamesToDeath}" OnColor="{StaticResource Primary}" AutomationId="ShowLivingPlayerNamesToDeathSwitch" />
+                        </Grid>
+
+                        <!-- Game Mode section -->
+                        <Label Text="Game Mode"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               Margin="0,20,0,10"
+                               SemanticProperties.HeadingLevel="Level3" />
+
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="8">
+                            <Label Grid.Row="0" Grid.Column="0" Text="Assassin Mode" TextColor="{StaticResource Gray600}" VerticalTextAlignment="Center" />
+                            <Switch Grid.Row="0" Grid.Column="1" IsToggled="{Binding IsAssassin}" IsEnabled="{Binding AssassinModeUnlocked}" OnColor="{StaticResource Primary}" AutomationId="IsAssassinSwitch" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="Show Hunter" TextColor="{StaticResource Gray600}" VerticalTextAlignment="Center" />
+                            <Switch Grid.Row="1" Grid.Column="1" IsToggled="{Binding ShowHunter}" OnColor="{StaticResource Primary}" AutomationId="ShowHunterSwitch" />
+
+                            <Label Grid.Row="2" Grid.Column="0" Text="Chaos Mode" TextColor="{StaticResource Gray600}" VerticalTextAlignment="Center" />
+                            <Switch Grid.Row="2" Grid.Column="1" IsToggled="{Binding IsChaos}" IsEnabled="{Binding ChaosModeUnlocked}" OnColor="{StaticResource Primary}" AutomationId="IsChaosSwitch" />
+
+                            <Label Grid.Row="3" Grid.Column="0" Text="Timed Kills" TextColor="{StaticResource Gray600}" VerticalTextAlignment="Center" />
+                            <Switch Grid.Row="3" Grid.Column="1" IsToggled="{Binding IsTimed}" IsEnabled="{Binding TimedKillsUnlocked}" OnColor="{StaticResource Primary}" AutomationId="IsTimedSwitch" />
+
+                            <Label Grid.Row="4" Grid.Column="0" Text="Custom Kill Methods" TextColor="{StaticResource Gray600}" VerticalTextAlignment="Center" />
+                            <Switch Grid.Row="4" Grid.Column="1" IsToggled="{Binding CustomKillMethods}" OnColor="{StaticResource Primary}" AutomationId="CustomKillMethodsSwitch" />
+                        </Grid>
+
+                        <!-- Chaos Timer -->
+                        <Label Text="Chaos Timer (hours):"
+                               TextColor="{StaticResource Secondary}"
+                               FontAttributes="Bold"
+                               Margin="0,15,0,5" />
+
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                            <Border Style="{StaticResource FormEntryBorder}"
+                                    WidthRequest="80">
+                                <Entry Text="{Binding ChaosTimerMinHours}"
+                                       Keyboard="Numeric"
+                                       HorizontalTextAlignment="Center"
+                                       TextColor="{StaticResource Gray900}"
+                                       AutomationId="ChaosTimerMinEntry" />
+                            </Border>
+
+                            <Label Text="to" TextColor="{StaticResource Gray600}" VerticalTextAlignment="Center" />
+
+                            <Border Style="{StaticResource FormEntryBorder}"
+                                    WidthRequest="80">
+                                <Entry Text="{Binding ChaosTimerMaxHours}"
+                                       Keyboard="Numeric"
+                                       HorizontalTextAlignment="Center"
+                                       TextColor="{StaticResource Gray900}"
+                                       AutomationId="ChaosTimerMaxEntry" />
+                            </Border>
+                        </HorizontalStackLayout>
+
+                        <!-- Target Timeout -->
+                        <Label Text="Target Timeout (hours):"
+                               TextColor="{StaticResource Secondary}"
+                               FontAttributes="Bold"
+                               Margin="0,15,0,5" />
+
+                        <Border Style="{StaticResource FormEntryBorder}"
+                                HorizontalOptions="Center"
+                                WidthRequest="120">
+                            <Entry Text="{Binding TargetTimeOutHours}"
+                                   Keyboard="Numeric"
+                                   HorizontalTextAlignment="Center"
+                                   TextColor="{StaticResource Gray900}"
+                                   AutomationId="TargetTimeOutEntry" />
+                        </Border>
+
+                        <!-- Kill Methods -->
+                        <Label Text="Kill Methods:"
+                               TextColor="{StaticResource Secondary}"
+                               FontAttributes="Bold"
+                               Margin="0,15,0,5" />
+
+                        <Border Style="{StaticResource FormEntryBorder}"
+                                HorizontalOptions="Fill">
+                            <Entry Text="{Binding KillMethods}"
+                                   Placeholder="e.g. Water gun, Nerf, Tag"
+                                   IsEnabled="{Binding CustomKillMethods}"
+                                   HorizontalTextAlignment="Center"
+                                   TextColor="{StaticResource Gray900}"
+                                   PlaceholderColor="{StaticResource Gray400}"
+                                   AutomationId="KillMethodsEntry" />
+                        </Border>
+
+                        <!-- Custom Rules -->
+                        <Label Text="Custom Rules:"
+                               TextColor="{StaticResource Secondary}"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,15,0,5" />
+
+                        <Border Style="{StaticResource FormEntryBorder}"
+                                Padding="8,4"
+                                HorizontalOptions="Fill">
+                            <Editor Text="{Binding CustomRulesText}"
+                                    Placeholder="Add any custom rules here..."
+                                    PlaceholderColor="{StaticResource Gray400}"
+                                    TextColor="{StaticResource Gray900}"
+                                    HeightRequest="100"
+                                    MaxLength="2000"
+                                    AutomationId="CustomRulesEditor" />
+                        </Border>
+
+                        <!-- Error message -->
+                        <Label Text="{Binding ErrorMessage}"
+                               TextColor="{StaticResource Danger}"
+                               HorizontalTextAlignment="Center"
+                               IsVisible="{Binding ErrorMessage, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"
+                               Margin="0,5,0,0"
+                               AutomationId="ErrorMessageLabel" />
+
+                        <!-- Save Settings button -->
+                        <Button Text="Save Settings"
+                                Command="{Binding SaveSettingsCommand}"
+                                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
+                                HorizontalOptions="Fill"
+                                MaximumWidthRequest="300"
+                                Margin="0,15,0,0"
+                                AutomationId="SaveSettingsButton" />
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Start / End Game buttons -->
+            <Button Text="Start Game"
+                    Command="{Binding StartGameCommand}"
+                    HorizontalOptions="Fill"
+                    MaximumWidthRequest="300"
+                    Margin="20,20,20,0"
+                    IsVisible="{Binding IsNotStarted}"
+                    AutomationId="StartGameButton" />
+
+            <Button Text="End Game"
+                    Command="{Binding EndGameCommand}"
+                    BackgroundColor="{StaticResource Danger}"
+                    HorizontalOptions="Fill"
+                    MaximumWidthRequest="300"
+                    Margin="20,20,20,0"
+                    IsVisible="{Binding HasStarted}"
+                    AutomationId="EndGameButton" />
+
+            <!-- Bottom spacer -->
+            <BoxView HeightRequest="30" BackgroundColor="{StaticResource Transparent}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

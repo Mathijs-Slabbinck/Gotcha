@@ -1,12 +1,205 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Gotcha.Maui.ViewModels"
+             x:DataType="viewmodels:ConfirmKillViewModel"
              x:Class="Gotcha.Maui.Pages.Authenticated.Player.ConfirmKill"
-             Title="ConfirmKill">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Confirm Kill"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource OffBlack}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0" Padding="0,30,0,0">
+
+            <!-- CONFIRM KILL heading -->
+            <Label Text="CONFIRM KILL"
+                   TextColor="{StaticResource Primary}"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   FontFamily="Bungee"
+                   Margin="0,0,0,25"
+                   SemanticProperties.HeadingLevel="Level1" />
+
+            <!-- Card 1: I Killed My Target -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    Margin="20,0"
+                    Padding="0">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label Text="I KILLED MY TARGET"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center"
+                               SemanticProperties.HeadingLevel="Level2" />
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout Padding="20,15" Spacing="8">
+
+                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="6" ColumnSpacing="10">
+                            <Label Grid.Row="0" Grid.Column="0" Text="Target:" TextColor="{StaticResource Secondary}" FontAttributes="Bold" />
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding TargetName}" TextColor="{StaticResource Gray900}" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="Username:" TextColor="{StaticResource Secondary}" FontAttributes="Bold" />
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding TargetUsername}" TextColor="{StaticResource Gray900}" />
+
+                            <Label Grid.Row="2" Grid.Column="0" Text="Weapon:" TextColor="{StaticResource Secondary}" FontAttributes="Bold" />
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding Weapon}" TextColor="{StaticResource Gray900}" />
+                        </Grid>
+
+                        <Button Text="Confirm Kill"
+                                Command="{Binding ConfirmKillCommand}"
+                                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
+                                HorizontalOptions="Fill"
+                                MaximumWidthRequest="300"
+                                Margin="0,5,0,0"
+                                AutomationId="ConfirmKillButton" />
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Card 2: I Got Killed -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    Margin="20,20,20,0"
+                    Padding="0">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label Text="I GOT KILLED"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center"
+                               SemanticProperties.HeadingLevel="Level2" />
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout Padding="20,15" Spacing="8">
+
+                        <Label Text="If someone eliminated you, confirm your death here."
+                               TextColor="{StaticResource Gray600}"
+                               HorizontalTextAlignment="Center" />
+
+                        <Button Text="Confirm Death"
+                                Command="{Binding ConfirmDeathCommand}"
+                                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
+                                HorizontalOptions="Fill"
+                                MaximumWidthRequest="300"
+                                Margin="0,5,0,0"
+                                AutomationId="ConfirmDeathButton" />
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Card 3: I Killed My Hunter (Assassin mode only) -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    Margin="20,20,20,0"
+                    Padding="0"
+                    IsVisible="{Binding IsAssassinMode}">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label Text="I KILLED MY HUNTER"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center"
+                               SemanticProperties.HeadingLevel="Level2" />
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout Padding="20,15" Spacing="8">
+
+                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" RowSpacing="6" ColumnSpacing="10"
+                              IsVisible="{Binding ShowHunter}">
+                            <Label Grid.Row="0" Grid.Column="0" Text="Hunter:" TextColor="{StaticResource Secondary}" FontAttributes="Bold" />
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding HunterName}" TextColor="{StaticResource Gray900}" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="Username:" TextColor="{StaticResource Secondary}" FontAttributes="Bold" />
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding HunterUsername}" TextColor="{StaticResource Gray900}" />
+                        </Grid>
+
+                        <Label Text="In Assassin mode, if your hunter attacks you and fails, you can claim the kill."
+                               TextColor="{StaticResource Gray600}"
+                               HorizontalTextAlignment="Center" />
+
+                        <Button Text="Confirm Hunter Kill"
+                                Command="{Binding ConfirmHunterKillCommand}"
+                                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
+                                HorizontalOptions="Fill"
+                                MaximumWidthRequest="300"
+                                Margin="0,5,0,0"
+                                AutomationId="ConfirmHunterKillButton" />
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Error message -->
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="{StaticResource Danger}"
+                   HorizontalTextAlignment="Center"
+                   IsVisible="{Binding ErrorMessage, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"
+                   Margin="20,15,20,0"
+                   AutomationId="ErrorMessageLabel" />
+
+            <!-- Bottom spacer -->
+            <BoxView HeightRequest="30" BackgroundColor="{StaticResource Transparent}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

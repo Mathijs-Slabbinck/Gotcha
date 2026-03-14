@@ -65,6 +65,15 @@
         <Setter Property="MinimumWidthRequest" Value="44"/>
     </Style>
 
+    <!-- Reusable form entry border (white background, cyan stroke, rounded corners) -->
+    <Style TargetType="Border" x:Key="FormEntryBorder">
+        <Setter Property="Stroke" Value="{StaticResource Secondary}" />
+        <Setter Property="StrokeThickness" Value="2" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 4" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="BackgroundColor" Value="{StaticResource White}" />
+    </Style>
+
     <Style TargetType="CheckBox">
         <Setter Property="Color" Value="{StaticResource Primary}" />
         <Setter Property="MinimumHeightRequest" Value="44"/>

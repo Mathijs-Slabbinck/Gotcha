@@ -1,12 +1,413 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Gotcha.Maui.ViewModels"
+             xmlns:models="clr-namespace:Gotcha.Maui.Models"
+             x:DataType="viewmodels:PlayerHomeViewModel"
              x:Class="Gotcha.Maui.Pages.Authenticated.Player.Home"
-             Title="Home">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Home"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource OffBlack}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0" Padding="0,30,0,0">
+
+            <!-- STATUS heading -->
+            <Label Text="STATUS"
+                   TextColor="{StaticResource Primary}"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   FontFamily="Bungee"
+                   Margin="0,0,0,25"
+                   SemanticProperties.HeadingLevel="Level1" />
+
+            <!-- Current Target card -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    Margin="20,0"
+                    Padding="0"
+                    IsVisible="{Binding ShowTargetCard}">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label Text="YOUR TARGET"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center"
+                               SemanticProperties.HeadingLevel="Level2" />
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout Padding="20,15" Spacing="8">
+
+                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="6" ColumnSpacing="10">
+                            <Label Grid.Row="0" Grid.Column="0" Text="Name:" TextColor="{StaticResource Secondary}" FontAttributes="Bold" />
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding TargetName}" TextColor="{StaticResource Gray900}" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="Username:" TextColor="{StaticResource Secondary}" FontAttributes="Bold" />
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding TargetUsername}" TextColor="{StaticResource Gray900}" />
+
+                            <Label Grid.Row="2" Grid.Column="0" Text="Weapon:" TextColor="{StaticResource Secondary}" FontAttributes="Bold" />
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding Weapon}" TextColor="{StaticResource Gray900}" />
+                        </Grid>
+
+                        <Label Text="{Binding AssignmentExpirationDate, StringFormat='Expires: {0:MMMM d, yyyy HH:mm}'}"
+                               TextColor="{StaticResource Danger}"
+                               FontAttributes="Bold"
+                               FontSize="12"
+                               HorizontalTextAlignment="Center"
+                               IsVisible="{Binding IsTimed}"
+                               Margin="0,5,0,0" />
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Game Rules card -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    Margin="20,20,20,0"
+                    Padding="0">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label Text="GAME RULES"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center"
+                               SemanticProperties.HeadingLevel="Level2" />
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout Padding="20,15" Spacing="6">
+
+                        <Label Text="Assassin Mode"
+                               TextColor="{StaticResource Gray900}"
+                               IsVisible="{Binding IsAssassin}" />
+
+                        <Label TextColor="{StaticResource Gray900}"
+                               IsVisible="{Binding IsChaos}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Chaos Mode — " />
+                                    <Span Text="{Binding ChaosTimerMinHours, StringFormat='{0}h'}" />
+                                    <Span Text=" to " />
+                                    <Span Text="{Binding ChaosTimerMaxHours, StringFormat='{0}h'}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <Label TextColor="{StaticResource Gray900}"
+                               IsVisible="{Binding IsTimed}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Timed Kills — " />
+                                    <Span Text="{Binding TargetTimeOutHours, StringFormat='{0}h'}" />
+                                    <Span Text=" to eliminate target" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding CustomRules}" Spacing="4" Margin="0,5,0,0">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <Label TextColor="{StaticResource Gray600}" FontSize="13">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="• " />
+                                                <Span Text="{Binding .}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Your Hunter card -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    Margin="20,20,20,0"
+                    Padding="0"
+                    IsVisible="{Binding ShowHunterCard}">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label Text="YOUR HUNTER"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center"
+                               SemanticProperties.HeadingLevel="Level2" />
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout Padding="20,15" Spacing="6">
+                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" RowSpacing="6" ColumnSpacing="10">
+                            <Label Grid.Row="0" Grid.Column="0" Text="Name:" TextColor="{StaticResource Secondary}" FontAttributes="Bold" />
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding HunterName}" TextColor="{StaticResource Gray900}" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="Alias:" TextColor="{StaticResource Secondary}" FontAttributes="Bold" />
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding HunterOtherName}" TextColor="{StaticResource Gray900}" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Game Stats card -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    Margin="20,20,20,0"
+                    Padding="0">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label Text="GAME STATS"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center"
+                               SemanticProperties.HeadingLevel="Level2" />
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout Padding="20,15" Spacing="6">
+
+                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="6" ColumnSpacing="10">
+                            <Label Grid.Row="0" Grid.Column="0" Text="Started:" TextColor="{StaticResource Secondary}" FontAttributes="Bold"
+                                   IsVisible="{Binding StartDate, Converter={StaticResource IsNotNullConverter}}" />
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding StartDate, StringFormat='{0:MMMM d, yyyy}'}" TextColor="{StaticResource Gray900}"
+                                   IsVisible="{Binding StartDate, Converter={StaticResource IsNotNullConverter}}" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="Ended:" TextColor="{StaticResource Secondary}" FontAttributes="Bold"
+                                   IsVisible="{Binding EndDate, Converter={StaticResource IsNotNullConverter}}" />
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding EndDate, StringFormat='{0:MMMM d, yyyy}'}" TextColor="{StaticResource Gray900}"
+                                   IsVisible="{Binding EndDate, Converter={StaticResource IsNotNullConverter}}" />
+
+                            <Label Grid.Row="2" Grid.Column="0" Text="Winner:" TextColor="{StaticResource Secondary}" FontAttributes="Bold"
+                                   IsVisible="{Binding WinnerName, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" />
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding WinnerName}" TextColor="{StaticResource Gray900}"
+                                   IsVisible="{Binding WinnerName, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" />
+
+                            <Label Grid.Row="3" Grid.Column="0" Text="Killed by:" TextColor="{StaticResource Secondary}" FontAttributes="Bold"
+                                   IsVisible="{Binding KillerName, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" />
+                            <Label Grid.Row="3" Grid.Column="1" Text="{Binding KillerName}" TextColor="{StaticResource Gray900}"
+                                   IsVisible="{Binding KillerName, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" />
+
+                            <Label Grid.Row="4" Grid.Column="0" Text="Killed on:" TextColor="{StaticResource Secondary}" FontAttributes="Bold"
+                                   IsVisible="{Binding KilledOnDate, Converter={StaticResource IsNotNullConverter}}" />
+                            <Label Grid.Row="4" Grid.Column="1" Text="{Binding KilledOnDate, StringFormat='{0:MMMM d, yyyy}'}" TextColor="{StaticResource Gray900}"
+                                   IsVisible="{Binding KilledOnDate, Converter={StaticResource IsNotNullConverter}}" />
+
+                            <Label Grid.Row="5" Grid.Column="0" Text="Your Kills:" TextColor="{StaticResource Secondary}" FontAttributes="Bold" />
+                            <Label Grid.Row="5" Grid.Column="1" Text="{Binding KillCount}" TextColor="{StaticResource Gray900}" />
+
+                            <Label Grid.Row="6" Grid.Column="0" Text="Players:" TextColor="{StaticResource Secondary}" FontAttributes="Bold" />
+                            <Label Grid.Row="6" Grid.Column="1" Text="{Binding PlayerCount}" TextColor="{StaticResource Gray900}" />
+
+                            <Label Grid.Row="7" Grid.Column="0" Text="Alive:" TextColor="{StaticResource Secondary}" FontAttributes="Bold"
+                                   IsVisible="{Binding ShowLivingPlayerCount}" />
+                            <Label Grid.Row="7" Grid.Column="1" Text="{Binding LivingPlayerCount}" TextColor="{StaticResource Gray900}"
+                                   IsVisible="{Binding ShowLivingPlayerCount}" />
+                        </Grid>
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Kill History card -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    Margin="20,20,20,0"
+                    Padding="0"
+                    IsVisible="{Binding HasKills}">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label Text="YOUR KILLS"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center"
+                               SemanticProperties.HeadingLevel="Level2" />
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout Padding="15,10" Spacing="0">
+
+                        <!-- Column headers -->
+                        <Grid ColumnDefinitions="*,Auto,Auto" Padding="5,5" ColumnSpacing="10">
+                            <Label Grid.Column="0" Text="Victim" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" />
+                            <Label Grid.Column="1" Text="Weapon" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" WidthRequest="70" />
+                            <Label Grid.Column="2" Text="Date" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" WidthRequest="80" />
+                        </Grid>
+
+                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}" HorizontalOptions="Fill" />
+
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Kills}" Spacing="0">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:KillItem">
+                                    <Grid ColumnDefinitions="*,Auto,Auto" Padding="5,8" ColumnSpacing="10">
+                                        <Label Grid.Column="0" Text="{Binding VictimName}" TextColor="{StaticResource Gray900}" FontSize="13" LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="1" Text="{Binding Weapon}" TextColor="{StaticResource Gray600}" FontSize="12" WidthRequest="70" />
+                                        <Label Grid.Column="2" Text="{Binding TimeStamp, StringFormat='{0:MMM d, yyyy}'}" TextColor="{StaticResource Gray600}" FontSize="11" WidthRequest="80" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Player List card -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0"
+                    Margin="20,20,20,0"
+                    Padding="0"
+                    IsVisible="{Binding ShowLivingPlayerNames}">
+                <Border.Shadow>
+                    <Shadow Brush="{StaticResource PrimaryBrush}"
+                            Offset="0,0"
+                            Radius="20"
+                            Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="0">
+
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="0,14">
+                        <Label Text="PLAYERS"
+                               TextColor="{StaticResource Tertiary}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoSlab"
+                               HorizontalTextAlignment="Center"
+                               SemanticProperties.HeadingLevel="Level2" />
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource Gray200}"
+                             HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout Padding="15,10" Spacing="0">
+
+                        <!-- Column headers -->
+                        <Grid ColumnDefinitions="*,*,Auto" Padding="5,5" ColumnSpacing="10">
+                            <Label Grid.Column="0" Text="Name" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" />
+                            <Label Grid.Column="1" Text="Alias" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" />
+                            <Label Grid.Column="2" Text="Status" TextColor="{StaticResource Secondary}" FontAttributes="Bold" FontSize="12" WidthRequest="50" HorizontalTextAlignment="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}" HorizontalOptions="Fill" />
+
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Players}" Spacing="0">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:PlayerItem">
+                                    <Grid ColumnDefinitions="*,*,Auto" Padding="5,8" ColumnSpacing="10">
+                                        <Label Grid.Column="0" Text="{Binding Name}" TextColor="{StaticResource Gray900}" FontSize="13" LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="1" Text="{Binding OtherName}" TextColor="{StaticResource Gray600}" FontSize="13" LineBreakMode="TailTruncation" />
+                                        <Label Grid.Column="2"
+                                               Text="{Binding IsAlive, Converter={StaticResource AliveStatusTextConverter}}"
+                                               TextColor="{Binding IsAlive, Converter={StaticResource BoolToSuccessDangerColorConverter}}"
+                                               FontAttributes="Bold" FontSize="12" WidthRequest="50" HorizontalTextAlignment="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Bottom spacer -->
+            <BoxView HeightRequest="30" BackgroundColor="{StaticResource Transparent}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

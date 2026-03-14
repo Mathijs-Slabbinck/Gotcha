@@ -14,16 +14,21 @@ using UserSettings = Gotcha.Maui.Pages.Authenticated.User.Settings;
 using UserStore = Gotcha.Maui.Pages.Authenticated.User.Store;
 using NewGame = Gotcha.Maui.Pages.Authenticated.User.NewGame;
 
+using PlayerHome = Gotcha.Maui.Pages.Authenticated.Player.Home;
+using PlayerConfirmKill = Gotcha.Maui.Pages.Authenticated.Player.ConfirmKill;
+using PlayerSettings = Gotcha.Maui.Pages.Authenticated.Player.Settings;
+using PlayerAdmin = Gotcha.Maui.Pages.Authenticated.Player.Admin;
+
 namespace Gotcha.Maui
 {
     public static class MauiProgram
     {
         public static MauiApp CreateMauiApp()
         {
-            Routing.RegisterRoute("ResetPassword", typeof(ResetPassword));
-            Routing.RegisterRoute("NewGame", typeof(NewGame));
+            Routing.RegisterRoute(Routes.ResetPassword, typeof(ResetPassword));
+            Routing.RegisterRoute(Routes.NewGame, typeof(NewGame));
 
-            var builder = MauiApp.CreateBuilder();
+            MauiAppBuilder builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
@@ -66,8 +71,20 @@ namespace Gotcha.Maui
             builder.Services.AddTransient<UserStore>();
             builder.Services.AddTransient<NewGame>();
 
+            // Authenticated Player ViewModels
+            builder.Services.AddTransient<PlayerHomeViewModel>();
+            builder.Services.AddTransient<ConfirmKillViewModel>();
+            builder.Services.AddTransient<PlayerSettingsViewModel>();
+            builder.Services.AddTransient<PlayerAdminViewModel>();
+
+            // Authenticated Player Pages
+            builder.Services.AddTransient<PlayerHome>();
+            builder.Services.AddTransient<PlayerConfirmKill>();
+            builder.Services.AddTransient<PlayerSettings>();
+            builder.Services.AddTransient<PlayerAdmin>();
+
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

@@ -37,7 +37,7 @@ Pages mirror the Web areas:
 
 ## Navigation
 
-Shell TabBar navigation with two TabBars (authenticated and unauthenticated).
+Shell TabBar navigation with three TabBars (authenticated user, authenticated player, and unauthenticated).
 
 **Authenticated User TabBar** (shown first in AppShell.xaml for dev/testing — move below unauthenticated TabBar when auth is wired up):
 
@@ -47,6 +47,15 @@ Shell TabBar navigation with two TabBars (authenticated and unauthenticated).
 |   Games   | `//UserGames`   | `Games.xaml`    | `tab_games.svg`     |
 | Settings  | `//UserSettings`| `Settings.xaml` | `tab_settings.svg`  |
 |   Store   | `//UserStore`   | `Store.xaml`    | `tab_store.svg`     |
+
+**Authenticated Player TabBar** (shown second in AppShell.xaml for dev/testing):
+
+|      Tab      |        Route         |        Page         |           Icon            |
+| :-----------: | :------------------: | :-----------------: | :-----------------------: |
+|     Home      | `//PlayerHome`       | `Home.xaml`         | `tab_player_home.svg`     |
+| Confirm Kill  | `//PlayerConfirmKill`| `ConfirmKill.xaml`  | `tab_confirm_kill.svg`    |
+|   Settings    | `//PlayerSettings`   | `Settings.xaml`     | `tab_player_settings.svg` |
+|    Admin      | `//PlayerAdmin`      | `Admin.xaml`        | `tab_admin.svg`           |
 
 **Unauthenticated TabBar:**
 
@@ -116,7 +125,7 @@ Use `FontFamily="Alias"` in XAML (e.g., `FontFamily="RobotoSlab"`, not `Roboto_S
 ## Key Paths
 
 - Pages: `Pages/Unauthenticated/` and `Pages/Authenticated/` (User/ + Player/)
-- ViewModels: `ViewModels/` (SignInViewModel, SignUpViewModel, InfoViewModel, ContactViewModel, HomeViewModel, GamesViewModel, NewGameViewModel, SettingsViewModel, StoreViewModel)
+- ViewModels: `ViewModels/` (SignInViewModel, SignUpViewModel, InfoViewModel, ContactViewModel, HomeViewModel, GamesViewModel, NewGameViewModel, SettingsViewModel, StoreViewModel, PlayerHomeViewModel, ConfirmKillViewModel, PlayerSettingsViewModel, PlayerAdminViewModel)
 - Converters: `Converters/` (custom classes) + `Resources/Styles/Converters.xaml` (declarations)
 - Extensions: `Extensions/` (currently empty)
 - Styles: `Resources/Styles/Colors.xaml`, `Resources/Styles/Styles.xaml`, and `Resources/Styles/Converters.xaml`

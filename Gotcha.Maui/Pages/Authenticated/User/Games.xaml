@@ -145,7 +145,7 @@
                                         <Label Grid.Column="0" Text="{Binding Name}" TextColor="{StaticResource Gray900}" FontSize="13" LineBreakMode="TailTruncation" />
                                         <Label Grid.Column="1" Text="{Binding StartDate}" TextColor="{StaticResource Gray600}" FontSize="12" WidthRequest="70" />
                                         <Label Grid.Column="2" Text="{Binding IsAlive, Converter={StaticResource AliveStatusTextConverter}}"
-                                               TextColor="{Binding IsAlive, Converter={StaticResource AliveStatusColorConverter}}"
+                                               TextColor="{Binding IsAlive, Converter={StaticResource BoolToSuccessDangerColorConverter}}"
                                                FontAttributes="Bold" FontSize="12" WidthRequest="40" HorizontalTextAlignment="Center" />
                                         <Label Grid.Column="3" Text="{Binding PlayerCount}" TextColor="{StaticResource Gray900}" FontSize="13" WidthRequest="50" HorizontalTextAlignment="Center" />
                                     </Grid>

@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:Gotcha.Maui"
     xmlns:unauthenticated="clr-namespace:Gotcha.Maui.Pages.Unauthenticated"
     xmlns:user="clr-namespace:Gotcha.Maui.Pages.Authenticated.User"
+    xmlns:player="clr-namespace:Gotcha.Maui.Pages.Authenticated.Player"
     Shell.FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False"
     Title="Gotcha">
@@ -26,6 +27,25 @@
 
         <Tab Title="Store" Icon="tab_store.svg" Route="UserStore">
             <ShellContent ContentTemplate="{DataTemplate user:Store}" />
+        </Tab>
+    </TabBar>
+
+    <!-- DEV: Player TabBar shown second for testing. -->
+    <TabBar>
+        <Tab Title="Home" Icon="tab_player_home.svg" Route="PlayerHome">
+            <ShellContent ContentTemplate="{DataTemplate player:Home}" />
+        </Tab>
+
+        <Tab Title="Confirm Kill" Icon="tab_confirm_kill.svg" Route="PlayerConfirmKill">
+            <ShellContent ContentTemplate="{DataTemplate player:ConfirmKill}" />
+        </Tab>
+
+        <Tab Title="Settings" Icon="tab_player_settings.svg" Route="PlayerSettings">
+            <ShellContent ContentTemplate="{DataTemplate player:Settings}" />
+        </Tab>
+
+        <Tab Title="Admin" Icon="tab_admin.svg" Route="PlayerAdmin">
+            <ShellContent ContentTemplate="{DataTemplate player:Admin}" />
         </Tab>
     </TabBar>
 

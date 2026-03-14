@@ -2,7 +2,21 @@
 
 # CLAUDE.md
 
-**CONVENTIONS**: Read the files in `.claude/conventions/` before writing code. They contain the coding standards for this project.
+**CONVENTIONS** — Read before writing code:
+- `.claude/conventions/CLAUDE_GIT.md`
+- `.claude/conventions/CLAUDE_CS.md`
+- `.claude/conventions/CLAUDE_CSS.md`
+- `.claude/conventions/CLAUDE_HTML.md`
+- `.claude/conventions/CLAUDE_JAVASCRIPT.md`
+- `.claude/conventions/CLAUDE_DOTNET.md`
+- `.claude/conventions/CLAUDE_MVC_WEB-BACKEND.md`
+- `.claude/conventions/CLAUDE_API.md`
+- `.claude/conventions/CLAUDE_MAUI.md`
+- `.claude/conventions/CLAUDE_TESTS.md`
+
+**REGULATIONS** — Legal/compliance rules to follow:
+- `.claude/regulations/data-privacy-laws-default.md`
+- `.claude/regulations/accessibility-default.md`
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
