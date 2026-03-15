@@ -59,7 +59,7 @@
 
                         <!-- Email label -->
                         <Label Text="Email:"
-                               TextColor="{StaticResource Secondary}"
+                               TextColor="{StaticResource Tertiary}"
                                FontAttributes="Bold"
                                HorizontalTextAlignment="Center"
                                Margin="0,0,0,5" />
@@ -85,7 +85,7 @@
 
                         <!-- Password label -->
                         <Label Text="Password:"
-                               TextColor="{StaticResource Secondary}"
+                               TextColor="{StaticResource Tertiary}"
                                FontAttributes="Bold"
                                HorizontalTextAlignment="Center"
                                Margin="0,15,0,5" />
@@ -164,8 +164,8 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Welcome / Sign up section (cyan background) -->
-            <Border BackgroundColor="{StaticResource Primary}"
+            <!-- Welcome / Sign up section (teal background) -->
+            <Border BackgroundColor="{StaticResource Tertiary}"
                     StrokeThickness="0"
                     StrokeShape="RoundRectangle 12"
                     Margin="20,25,20,30"

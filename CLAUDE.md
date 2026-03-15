@@ -44,6 +44,9 @@ dotnet build
 # Run the web application (from repo root)
 dotnet run --project Gotcha.Web
 
+# Run the API (for MAUI app)
+dotnet run --project Gotcha.API --launch-profile http
+
 # Run unit tests
 dotnet test Gotcha.Core.Tests
 
@@ -62,7 +65,7 @@ dotnet ef database update --project Gotcha.Core --startup-project Gotcha.Web
 - **Gotcha.Core.Tests** — xUnit test project for unit testing Core. References Gotcha.Core with `InternalsVisibleTo`.
 - **Gotcha.Web** — ASP.NET Core MVC app (Razor views, Bootstrap 5, jQuery). Nullable reference types enabled. References Gotcha.Core.
 - **Gotcha.Maui** — .NET MAUI mobile app (Android/iOS/Windows). Uses CommunityToolkit.Mvvm and CommunityToolkit.Maui.
-- **Gotcha.API** — Internal API project with DTOs for model entities. Not public-facing.
+- **Gotcha.API** — Internal ASP.NET Core Web API. References Gotcha.Core. Serves data to the MAUI app via REST endpoints.
 
 ### MVC Areas
 
@@ -88,12 +91,18 @@ Each area has its own `_Layout.cshtml`. The Player area uses partials for alive/
 - CSS/JS: `Gotcha.Web/wwwroot/css/` and `Gotcha.Web/wwwroot/js/`
 - Player ViewModels: `Gotcha.Web/Areas/Player/ViewModels/` (+ BaseViewModels/)
 - User ViewModels: `Gotcha.Web/Areas/User/ViewModels/` (GameItemViewModel, GamesViewModel, NewGameViewModel, StoreViewModel)
-- API DTOs: `Gotcha.API/Dtos/` (Attackers/, Games/, GotchaUsers/, Kills/, Logs/, Players/, Rules/, TargetAssignments/, VipSettings/)
-- API Controllers: `Gotcha.API/Controllers/` (one per entity: Attackers, Games, GotchaUsers, Kills, Logs, Players, Rules, TargetAssignments, VipSettings)
+- API DTOs: `Gotcha.API/Dtos/` (Attackers/, Games/, GotchaUsers/, Kills/, Logs/, Players/, Rules/, TargetAssignments/, VipSettings/) — includes composite DTOs (UserProfileResponseDto, GameItemResponseDto, PlayerHomeResponseDto, ConfirmKillResponseDto, AdminDataResponseDto)
+- API Controllers: `Gotcha.API/Controllers/` (one per entity: Attackers, Games, GotchaUsers, Kills, Logs, Players, Rules, TargetAssignments, VipSettings) — GotchaUsers and Players have composite endpoints
+- API Constants: `Gotcha.API/Constants/DevConstants.cs` (TestUserId linked to Seeder)
 - Tests: `Gotcha.Core.Tests/Services/` and `Gotcha.Core.Tests/Entities/`
 - Data Annotations: `Gotcha.Core/Validation/DataAnnotations/` (BirthDay, GuardianRequired, Name, Picture, UserName, UserNameOrEmail)
 - MAUI Pages: `Gotcha.Maui/Pages/` (Unauthenticated/ and Authenticated/User/ + Player/)
 - MAUI ViewModels: `Gotcha.Maui/ViewModels/`
+- MAUI Services: `Gotcha.Maui/Services/` (interfaces) + `Services/Api/` (API implementations) + `Services/Mock/` (mock implementations)
+- MAUI Models: `Gotcha.Maui/Models/` (UserProfile, GameItem, PlayerHomeData, ConfirmKillData, AdminData, StoreState, etc.)
+- MAUI Enums: `Gotcha.Maui/Enums/` (Plan)
+- MAUI Routes: `Gotcha.Maui/Routes.cs` (all Shell route constants)
+- MAUI Constants: `Gotcha.Maui/Constants/DevConstants.cs` (TestUserId matching Seeder)
 - MAUI Fonts: `Gotcha.Maui/Resources/Fonts/`
 - MAUI Images: `Gotcha.Maui/Resources/Images/`
 - Shared fonts (source): `fonts/` (Nosifer, Bungee, Roboto, Roboto Slab — downloaded from Google Fonts)
@@ -119,7 +128,7 @@ Games support two target assignment strategies: circular and random. User plans 
 - **Validation**: Split into 3 focused static services — `UserValidationService` (email, username, name, birthday), `ImageValidationService` (image URL, file extension, MIME type, file size, magic bytes, re-encoding), `SecurityValidationService` (IP validation). Reserved usernames = simple static HashSet, no config/DI.
 - **Custom exception hierarchy**: Base `GotchaException` with specific subtypes (`GameStateException`, `GameRuleViolationException`, `ValidationException`, etc.) and per-entity `NotFoundException` classes.
 - **Logging**: Custom `Log` entity system with `Attacker` tracking (IP, user agent, path) and subtypes (Error, Warning, HackAttempt).
-- **DI registration**: All 7 RepoServices and GameService registered as Scoped in `Gotcha.Web/Program.cs`. Identity services registered via `AddIdentity<IdentityUser, IdentityRole>` with `AddEntityFrameworkStores<GotchaDbContext>`.
+- **DI registration**: All 7 RepoServices and GameService registered as Scoped in both `Gotcha.Web/Program.cs` and `Gotcha.API/Program.cs`. Identity services registered via `AddIdentity<IdentityUser, IdentityRole>` with `AddEntityFrameworkStores<GotchaDbContext>` (Web only).
 - **Honeypot page**: `GotchaController` logs unauthorized direct navigation attempts (tracks Attacker info including session ID) and redirects to Contact with TempData pre-fill. Uses `_GotchaLayout.cshtml`.
 
 ### Entity Conventions
@@ -137,7 +146,7 @@ Games support two target assignment strategies: circular and random. User plans 
 - `GotchaDbContext` extends `IdentityDbContext` (adds Identity tables: AspNetUsers, AspNetRoles, etc.)
 - Password policy: min 12 chars, requires digit, lowercase, uppercase, special char, 4 unique chars
 - `app.UseAuthentication()` is called before `app.UseAuthorization()` in the middleware pipeline
-- Identity is set up but not yet fully wired (no login/register controllers, no `[Authorize]` attributes, no migration for Identity tables yet)
+- Identity tables exist in DB (migration applied), but not yet fully wired (no login/register controllers, no `[Authorize]` attributes)
 
 ### Session
 

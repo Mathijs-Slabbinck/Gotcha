@@ -1,13 +1,16 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Gotcha.Maui.Models;
+using Gotcha.Maui.Services;
 using System.Collections.ObjectModel;
 
 namespace Gotcha.Maui.ViewModels
 {
     public class PlayerHomeViewModel : ObservableObject
     {
+        private readonly IPlayerService playerService;
+
         // Status
-        private bool isAlive = true;
+        private bool isAlive;
         public bool IsAlive
         {
             get { return isAlive; }
@@ -59,7 +62,7 @@ namespace Gotcha.Maui.ViewModels
         }
 
         // Game rules
-        private bool isAssassin = true;
+        private bool isAssassin;
         public bool IsAssassin
         {
             get { return isAssassin; }
@@ -77,28 +80,28 @@ namespace Gotcha.Maui.ViewModels
             set { SetProperty(ref isChaos, value); }
         }
 
-        private bool isTimed = true;
+        private bool isTimed;
         public bool IsTimed
         {
             get { return isTimed; }
             set { SetProperty(ref isTimed, value); }
         }
 
-        private int chaosTimerMinHours = 2;
+        private int chaosTimerMinHours;
         public int ChaosTimerMinHours
         {
             get { return chaosTimerMinHours; }
             set { SetProperty(ref chaosTimerMinHours, value); }
         }
 
-        private int chaosTimerMaxHours = 6;
+        private int chaosTimerMaxHours;
         public int ChaosTimerMaxHours
         {
             get { return chaosTimerMaxHours; }
             set { SetProperty(ref chaosTimerMaxHours, value); }
         }
 
-        private int targetTimeOutHours = 48;
+        private int targetTimeOutHours;
         public int TargetTimeOutHours
         {
             get { return targetTimeOutHours; }
@@ -113,7 +116,7 @@ namespace Gotcha.Maui.ViewModels
         }
 
         // Hunter info
-        private bool showHunter = true;
+        private bool showHunter;
         public bool ShowHunter
         {
             get { return showHunter; }
@@ -189,14 +192,14 @@ namespace Gotcha.Maui.ViewModels
         }
 
         // Visibility settings
-        private bool showLivingPlayerCount = true;
+        private bool showLivingPlayerCount;
         public bool ShowLivingPlayerCount
         {
             get { return showLivingPlayerCount; }
             set { SetProperty(ref showLivingPlayerCount, value); }
         }
 
-        private bool showLivingPlayerNames = true;
+        private bool showLivingPlayerNames;
         public bool ShowLivingPlayerNames
         {
             get { return showLivingPlayerNames; }
@@ -259,50 +262,87 @@ namespace Gotcha.Maui.ViewModels
             get { return Players.Count(p => p.IsAlive); }
         }
 
-        public PlayerHomeViewModel()
+        private bool isBusy;
+        public bool IsBusy
         {
-            LoadMockData();
+            get { return isBusy; }
+            set { SetProperty(ref isBusy, value); }
         }
 
-        private void LoadMockData()
+        private string errorMessage = string.Empty;
+        public string ErrorMessage
         {
-            TargetName = "Player Bravo";
-            TargetUsername = "BravoFox";
-            Weapon = "Water Gun";
-            AssignmentExpirationDate = new DateTime(2026, 3, 20, 18, 0, 0);
+            get { return errorMessage; }
+            set { SetProperty(ref errorMessage, value); }
+        }
 
-            HunterName = "Player Charlie";
-            HunterOtherName = "CharlieGhost";
+        public PlayerHomeViewModel(IPlayerService playerService)
+        {
+            this.playerService = playerService;
+        }
 
-            StartDate = new DateTime(2026, 3, 1);
-
-            CustomRules.Add("No kills inside classrooms");
-            CustomRules.Add("Safe zones: library and cafeteria");
-
-            Kills.Add(new KillItem
+        public async void LoadData()
+        {
+            try
             {
-                VictimName = "Player Delta",
-                VictimUsername = "DeltaHawk",
-                Weapon = "Water Gun",
-                TimeStamp = new DateTime(2026, 3, 5, 14, 30, 0)
-            });
-            Kills.Add(new KillItem
+                IsBusy = true;
+                ErrorMessage = string.Empty;
+                var data = await playerService.GetPlayerHomeDataAsync(Guid.Empty);
+
+                IsAlive = data.IsAlive;
+                IsSpectator = data.IsSpectator;
+                TargetName = data.TargetName;
+                TargetUsername = data.TargetUsername;
+                Weapon = data.Weapon;
+                AssignmentExpirationDate = data.AssignmentExpirationDate;
+                IsAssassin = data.IsAssassin;
+                IsChaos = data.IsChaos;
+                IsTimed = data.IsTimed;
+                ChaosTimerMinHours = data.ChaosTimerMinHours;
+                ChaosTimerMaxHours = data.ChaosTimerMaxHours;
+                TargetTimeOutHours = data.TargetTimeOutHours;
+                ShowHunter = data.ShowHunter;
+                HunterName = data.HunterName;
+                HunterOtherName = data.HunterOtherName;
+                StartDate = data.StartDate;
+                EndDate = data.EndDate;
+                WinnerName = data.WinnerName;
+                WinnerOtherName = data.WinnerOtherName;
+                KilledOnDate = data.KilledOnDate;
+                KillerName = data.KillerName;
+                KillerOtherName = data.KillerOtherName;
+                ShowLivingPlayerCount = data.ShowLivingPlayerCount;
+                ShowLivingPlayerNames = data.ShowLivingPlayerNames;
+
+                CustomRules.Clear();
+                foreach (var rule in data.CustomRules)
+                {
+                    CustomRules.Add(rule);
+                }
+
+                Kills.Clear();
+                foreach (var kill in data.Kills)
+                {
+                    Kills.Add(kill);
+                }
+
+                Players.Clear();
+                foreach (var player in data.Players)
+                {
+                    Players.Add(player);
+                }
+
+                OnPropertyChanged(nameof(HasKills));
+                OnPropertyChanged(nameof(KillCount));
+                OnPropertyChanged(nameof(PlayerCount));
+                OnPropertyChanged(nameof(LivingPlayerCount));
+            }
+            catch
             {
-                VictimName = "Player Echo",
-                VictimUsername = "EchoRanger",
-                Weapon = "Nerf Dart",
-                TimeStamp = new DateTime(2026, 3, 8, 9, 15, 0)
-            });
+                ErrorMessage = "Something went wrong loading game data.";
+            }
 
-            Players.Add(new PlayerItem { Name = "Player Alpha", OtherName = "AlphaWolf", IsAlive = true });
-            Players.Add(new PlayerItem { Name = "Player Bravo", OtherName = "BravoFox", IsAlive = true });
-            Players.Add(new PlayerItem { Name = "Player Charlie", OtherName = "CharlieGhost", IsAlive = true });
-            Players.Add(new PlayerItem { Name = "Player Delta", OtherName = "DeltaHawk", IsAlive = false });
-
-            OnPropertyChanged(nameof(HasKills));
-            OnPropertyChanged(nameof(KillCount));
-            OnPropertyChanged(nameof(PlayerCount));
-            OnPropertyChanged(nameof(LivingPlayerCount));
+            IsBusy = false;
         }
     }
 }

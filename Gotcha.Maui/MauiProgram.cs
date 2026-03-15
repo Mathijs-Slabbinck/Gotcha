@@ -1,4 +1,8 @@
 using CommunityToolkit.Maui;
+using Gotcha.Maui.Constants;
+using Gotcha.Maui.Services;
+using Gotcha.Maui.Services.Api;
+using Gotcha.Maui.Services.Mock;
 using Gotcha.Maui.ViewModels;
 using Microsoft.Extensions.Logging;
 
@@ -43,6 +47,34 @@ namespace Gotcha.Maui
                     fonts.AddFont("RobotoSlab-Regular.ttf", "RobotoSlab");
                     fonts.AddFont("RobotoSlab-Bold.ttf", "RobotoSlabBold");
                 });
+
+            // HttpClient for API calls
+            builder.Services.AddHttpClient("GotchaApi", client =>
+            {
+                // Android emulator can't reach localhost — use 10.0.2.2
+                string baseUrl = DeviceInfo.Platform == DevicePlatform.Android
+                    ? "http://10.0.2.2:5208"
+                    : "http://localhost:5208";
+                client.BaseAddress = new Uri(baseUrl);
+            });
+
+            // Services — toggle between mock and API implementations
+            if (DevConstants.UseMockServices)
+            {
+                builder.Services.AddTransient<IUserService, MockUserService>();
+                builder.Services.AddTransient<IGameService, MockGameService>();
+                builder.Services.AddTransient<IPlayerService, MockPlayerService>();
+                builder.Services.AddTransient<IStoreService, MockStoreService>();
+                builder.Services.AddTransient<IContactService, MockContactService>();
+            }
+            else
+            {
+                builder.Services.AddTransient<IUserService, ApiUserService>();
+                builder.Services.AddTransient<IGameService, ApiGameService>();
+                builder.Services.AddTransient<IPlayerService, ApiPlayerService>();
+                builder.Services.AddTransient<IStoreService, ApiStoreService>();
+                builder.Services.AddTransient<IContactService, ApiContactService>();
+            }
 
             // Unauthenticated ViewModels
             builder.Services.AddTransient<SignInViewModel>();

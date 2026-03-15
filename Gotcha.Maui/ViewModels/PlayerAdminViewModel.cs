@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Gotcha.Maui.Models;
+using Gotcha.Maui.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -7,6 +8,8 @@ namespace Gotcha.Maui.ViewModels
 {
     public class PlayerAdminViewModel : ObservableObject
     {
+        private readonly IPlayerService playerService;
+
         // Game info
         private bool hasStarted;
         public bool HasStarted
@@ -38,14 +41,14 @@ namespace Gotcha.Maui.ViewModels
             set { SetProperty(ref inviteLink, value); }
         }
 
-        private int playerCount = 8;
+        private int playerCount;
         public int PlayerCount
         {
             get { return playerCount; }
             set { SetProperty(ref playerCount, value); }
         }
 
-        private int maxPlayers = 50;
+        private int maxPlayers;
         public int MaxPlayers
         {
             get { return maxPlayers; }
@@ -89,7 +92,7 @@ namespace Gotcha.Maui.ViewModels
             set { SetProperty(ref enforcePlayerImages, value); }
         }
 
-        private bool showRealNames = true;
+        private bool showRealNames;
         public bool ShowRealNames
         {
             get { return showRealNames; }
@@ -196,7 +199,7 @@ namespace Gotcha.Maui.ViewModels
         }
 
         // VIP unlock flags
-        private bool assassinModeUnlocked = true;
+        private bool assassinModeUnlocked;
         public bool AssassinModeUnlocked
         {
             get { return assassinModeUnlocked; }
@@ -210,7 +213,7 @@ namespace Gotcha.Maui.ViewModels
             set { SetProperty(ref chaosModeUnlocked, value); }
         }
 
-        private bool timedKillsUnlocked = true;
+        private bool timedKillsUnlocked;
         public bool TimedKillsUnlocked
         {
             get { return timedKillsUnlocked; }
@@ -239,59 +242,72 @@ namespace Gotcha.Maui.ViewModels
         public ICommand StartGameCommand { get; }
         public ICommand EndGameCommand { get; }
 
-        public PlayerAdminViewModel()
+        public PlayerAdminViewModel(IPlayerService playerService)
         {
+            this.playerService = playerService;
+
             PlayerActionCommand = new Command<string>(ExecutePlayerActionCommand);
             CopyLinkCommand = new Command(ExecuteCopyLinkCommand);
             CancelKillCommand = new Command<Guid>(ExecuteCancelKillCommand);
             SaveSettingsCommand = new Command(ExecuteSaveSettingsCommand);
             StartGameCommand = new Command(ExecuteStartGameCommand);
             EndGameCommand = new Command(ExecuteEndGameCommand);
-
-            LoadMockData();
         }
 
-        private void LoadMockData()
+        public async void LoadData()
         {
-            GameName = "Friday Night Gotcha";
-            InviteLink = "https://gotcha.app/join/abc123";
+            try
+            {
+                IsBusy = true;
+                ErrorMessage = string.Empty;
 
-            Players.Add(new AdminPlayerItem
-            {
-                PlayerId = Guid.NewGuid(),
-                Name = "Player Alpha",
-                Username = "AlphaWolf",
-                HasImage = true,
-                IsAdmin = true,
-                IsSpectator = false
-            });
-            Players.Add(new AdminPlayerItem
-            {
-                PlayerId = Guid.NewGuid(),
-                Name = "Player Bravo",
-                Username = "BravoFox",
-                HasImage = false,
-                IsAdmin = false,
-                IsSpectator = false
-            });
-            Players.Add(new AdminPlayerItem
-            {
-                PlayerId = Guid.NewGuid(),
-                Name = "Player Charlie",
-                Username = "CharlieGhost",
-                HasImage = true,
-                IsAdmin = false,
-                IsSpectator = true
-            });
+                var data = await playerService.GetAdminDataAsync(Guid.Empty);
 
-            PendingKills.Add(new AdminKillItem
+                HasStarted = data.HasStarted;
+                GameName = data.GameName;
+                InviteLink = data.InviteLink;
+                PlayerCount = data.PlayerCount;
+                MaxPlayers = data.MaxPlayers;
+                ShowPlayerImages = data.ShowPlayerImages;
+                ShowGender = data.ShowGender;
+                EnforcePlayerImages = data.EnforcePlayerImages;
+                ShowRealNames = data.ShowRealNames;
+                ShowUsernames = data.ShowUsernames;
+                ShowLivingPlayerCount = data.ShowLivingPlayerCount;
+                ShowLivingPlayerNames = data.ShowLivingPlayerNames;
+                ShowLivingPlayerNamesToDeath = data.ShowLivingPlayerNamesToDeath;
+                IsAssassin = data.IsAssassin;
+                ShowHunter = data.ShowHunter;
+                IsChaos = data.IsChaos;
+                IsTimed = data.IsTimed;
+                CustomKillMethods = data.CustomKillMethods;
+                KillMethods = data.KillMethods;
+                ChaosTimerMinHours = data.ChaosTimerMinHours;
+                ChaosTimerMaxHours = data.ChaosTimerMaxHours;
+                TargetTimeOutHours = data.TargetTimeOutHours;
+                CustomRulesText = data.CustomRulesText;
+                AssassinModeUnlocked = data.AssassinModeUnlocked;
+                ChaosModeUnlocked = data.ChaosModeUnlocked;
+                TimedKillsUnlocked = data.TimedKillsUnlocked;
+
+                Players.Clear();
+                foreach (var player in data.Players)
+                {
+                    Players.Add(player);
+                }
+
+                PendingKills.Clear();
+                foreach (var kill in data.PendingKills)
+                {
+                    PendingKills.Add(kill);
+                }
+            }
+            catch
             {
-                KillId = Guid.NewGuid(),
-                KillerName = "AlphaWolf",
-                VictimName = "BravoFox",
-                Weapon = "Water Gun",
-                Moment = new DateTime(2026, 3, 10, 15, 30, 0)
-            });
+                ErrorMessage = "Something went wrong loading admin data.";
+            }
+
+            IsBusy = false;
         }
 
         private async void ExecutePlayerActionCommand(string action)

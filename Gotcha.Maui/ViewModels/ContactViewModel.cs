@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using Gotcha.Maui.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -6,6 +7,8 @@ namespace Gotcha.Maui.ViewModels
 {
     public class ContactViewModel : ObservableObject
     {
+        private readonly IContactService contactService;
+
         private string selectedReason = string.Empty;
         public string SelectedReason
         {
@@ -58,8 +61,10 @@ namespace Gotcha.Maui.ViewModels
         public ICommand SubmitCommand { get; }
         public ICommand GoBackCommand { get; }
 
-        public ContactViewModel()
+        public ContactViewModel(IContactService contactService)
         {
+            this.contactService = contactService;
+
             SubmitCommand = new Command(ExecuteSubmitCommand);
             GoBackCommand = new Command(ExecuteGoBackCommand);
         }
@@ -85,35 +90,29 @@ namespace Gotcha.Maui.ViewModels
 
                 IsBusy = true;
 
-                try
-                {
-                    // TODO: Send the contact form to the API
-                    await Task.Delay(500);
+                await contactService.SubmitAsync(SelectedReason, Message);
 
-                    SuccessMessage = "Your message has been sent. We'll get back to you soon!";
-                    SelectedReason = string.Empty;
-                    Message = string.Empty;
-                }
-                finally
-                {
-                    IsBusy = false;
-                }
+                SuccessMessage = "Your message has been sent. We'll get back to you soon!";
+                SelectedReason = string.Empty;
+                Message = string.Empty;
             }
-            catch (Exception ex)
+            catch
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = "Something went wrong. Please try again.";
             }
+
+            IsBusy = false;
         }
 
         private async void ExecuteGoBackCommand()
         {
             try
             {
-                await Shell.Current.GoToAsync("//SignIn");
+                await Shell.Current.GoToAsync(Routes.SignIn);
             }
-            catch (Exception ex)
+            catch
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = "Something went wrong. Please try again.";
             }
         }
     }

@@ -1,10 +1,13 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using Gotcha.Maui.Services;
 using System.Windows.Input;
 
 namespace Gotcha.Maui.ViewModels
 {
     public class PlayerSettingsViewModel : ObservableObject
     {
+        private readonly IPlayerService playerService;
+
         private string username = string.Empty;
         public string Username
         {
@@ -43,17 +46,24 @@ namespace Gotcha.Maui.ViewModels
         public ICommand SaveChangesCommand { get; }
         public ICommand LogoutCommand { get; }
 
-        public PlayerSettingsViewModel()
+        public PlayerSettingsViewModel(IPlayerService playerService)
         {
+            this.playerService = playerService;
+
             SaveChangesCommand = new Command(ExecuteSaveChangesCommand);
             LogoutCommand = new Command(ExecuteLogoutCommand);
-
-            LoadMockData();
         }
 
-        private void LoadMockData()
+        public async void LoadData()
         {
-            Username = "AlphaWolf";
+            try
+            {
+                Username = await playerService.GetPlayerUsernameAsync(Guid.Empty);
+            }
+            catch
+            {
+                ErrorMessage = "Something went wrong loading your profile.";
+            }
         }
 
         private async void ExecuteSaveChangesCommand()
@@ -71,19 +81,15 @@ namespace Gotcha.Maui.ViewModels
 
                 IsBusy = true;
 
-                await Shell.Current.DisplayAlertAsync(
-                    "Not yet implemented",
-                    "Saving player settings is not yet available.",
-                    "OK");
+                await playerService.UpdatePlayerUsernameAsync(Guid.Empty, Username);
+                SuccessMessage = "Your changes have been saved.";
             }
             catch
             {
                 ErrorMessage = "Something went wrong. Please try again.";
             }
-            finally
-            {
-                IsBusy = false;
-            }
+
+            IsBusy = false;
         }
 
         private async void ExecuteLogoutCommand()

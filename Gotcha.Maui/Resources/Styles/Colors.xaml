@@ -9,7 +9,7 @@
     <Color x:Key="PrimaryDarkText">#FFFFFF</Color>
     <Color x:Key="Secondary">#27BBC4</Color>
     <Color x:Key="SecondaryDarkText">#27BBC4</Color>
-    <Color x:Key="Tertiary">#1F969D</Color>
+    <Color x:Key="Tertiary">#0E6B71</Color>
 
     <Color x:Key="Transparent">Transparent</Color>
     <Color x:Key="White">White</Color>
@@ -20,7 +20,7 @@
     <Color x:Key="CyanTransparent">#405AD6DE</Color>
 
     <Color x:Key="Danger">#D32F2F</Color>
-    <Color x:Key="Success">#4CAF50</Color>
+    <Color x:Key="Success">#2E7D32</Color>
 
     <Color x:Key="Gray100">#E1E1E1</Color>
     <Color x:Key="Gray200">#C8C8C8</Color>

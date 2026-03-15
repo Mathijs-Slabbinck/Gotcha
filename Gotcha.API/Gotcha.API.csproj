@@ -8,18 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\GotchaUsers\" />
-    <Folder Include="Dtos\Kills\" />
-    <Folder Include="Dtos\Attackers\" />
-    <Folder Include="Dtos\Logs\" />
-    <Folder Include="Dtos\Games\" />
-    <Folder Include="Dtos\VipSettings\" />
-    <Folder Include="Dtos\TargetAssignments\" />
-    <Folder Include="Dtos\Rules\" />
-    <Folder Include="Dtos\Players\" />
+    <ProjectReference Include="..\Gotcha.Core\Gotcha.Core.csproj" />
   </ItemGroup>
 
 </Project>

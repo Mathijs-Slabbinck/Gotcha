@@ -57,7 +57,7 @@
 
                         <!-- First Name -->
                         <Label Text="First Name:"
-                               TextColor="{StaticResource Secondary}"
+                               TextColor="{StaticResource Tertiary}"
                                FontAttributes="Bold"
                                HorizontalTextAlignment="Center"
                                Margin="0,0,0,5" />
@@ -80,7 +80,7 @@
 
                         <!-- Last Name -->
                         <Label Text="Last Name:"
-                               TextColor="{StaticResource Secondary}"
+                               TextColor="{StaticResource Tertiary}"
                                FontAttributes="Bold"
                                HorizontalTextAlignment="Center"
                                Margin="0,15,0,5" />
@@ -103,7 +103,7 @@
 
                         <!-- Username -->
                         <Label Text="Username:"
-                               TextColor="{StaticResource Secondary}"
+                               TextColor="{StaticResource Tertiary}"
                                FontAttributes="Bold"
                                HorizontalTextAlignment="Center"
                                Margin="0,15,0,5" />
@@ -126,7 +126,7 @@
 
                         <!-- Email -->
                         <Label Text="Email:"
-                               TextColor="{StaticResource Secondary}"
+                               TextColor="{StaticResource Tertiary}"
                                FontAttributes="Bold"
                                HorizontalTextAlignment="Center"
                                Margin="0,15,0,5" />
@@ -150,7 +150,7 @@
 
                         <!-- Birthday -->
                         <Label Text="Birthday:"
-                               TextColor="{StaticResource Secondary}"
+                               TextColor="{StaticResource Tertiary}"
                                FontAttributes="Bold"
                                HorizontalTextAlignment="Center"
                                Margin="0,15,0,5" />

@@ -1,11 +1,15 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using Gotcha.Maui.Enums;
+using Gotcha.Maui.Services;
 using System.Windows.Input;
 
 namespace Gotcha.Maui.ViewModels
 {
     public class StoreViewModel : ObservableObject
     {
-        // Game feature unlocks (mock: all locked)
+        private readonly IStoreService storeService;
+
+        // Game feature unlocks
         private bool assassinUnlocked;
         public bool AssassinUnlocked
         {
@@ -34,7 +38,7 @@ namespace Gotcha.Maui.ViewModels
             set { SetProperty(ref customKillMethodsUnlocked, value); }
         }
 
-        // Lobby size unlocks (mock: all not owned)
+        // Lobby size unlocks
         private bool lobby100Owned;
         public bool Lobby100Owned
         {
@@ -64,8 +68,8 @@ namespace Gotcha.Maui.ViewModels
         }
 
         // Subscription plan
-        private string currentPlan = "Standard";
-        public string CurrentPlan
+        private Plan currentPlan = Plan.Standard;
+        public Plan CurrentPlan
         {
             get { return currentPlan; }
             set
@@ -81,17 +85,24 @@ namespace Gotcha.Maui.ViewModels
 
         public bool IsStandardPlan
         {
-            get { return CurrentPlan == "Standard"; }
+            get { return CurrentPlan == Plan.Standard; }
         }
 
         public bool IsPremiumPlan
         {
-            get { return CurrentPlan == "Premium"; }
+            get { return CurrentPlan == Plan.Premium; }
         }
 
         public bool IsDeluxePlan
         {
-            get { return CurrentPlan == "Deluxe"; }
+            get { return CurrentPlan == Plan.Deluxe; }
+        }
+
+        private bool isBusy;
+        public bool IsBusy
+        {
+            get { return isBusy; }
+            set { SetProperty(ref isBusy, value); }
         }
 
         private string errorMessage = string.Empty;
@@ -104,10 +115,39 @@ namespace Gotcha.Maui.ViewModels
         public ICommand BuyFeatureCommand { get; }
         public ICommand SubscribeCommand { get; }
 
-        public StoreViewModel()
+        public StoreViewModel(IStoreService storeService)
         {
+            this.storeService = storeService;
+
             BuyFeatureCommand = new Command<string>(ExecuteBuyFeatureCommand);
             SubscribeCommand = new Command<string>(ExecuteSubscribeCommand);
+        }
+
+        public async void LoadData()
+        {
+            try
+            {
+                IsBusy = true;
+                ErrorMessage = string.Empty;
+
+                var state = await storeService.GetStoreStateAsync();
+
+                AssassinUnlocked = state.AssassinUnlocked;
+                ChaosUnlocked = state.ChaosUnlocked;
+                TimedKillsUnlocked = state.TimedKillsUnlocked;
+                CustomKillMethodsUnlocked = state.CustomKillMethodsUnlocked;
+                Lobby100Owned = state.Lobby100Owned;
+                Lobby150Owned = state.Lobby150Owned;
+                Lobby500Owned = state.Lobby500Owned;
+                Lobby10000Owned = state.Lobby10000Owned;
+                CurrentPlan = state.CurrentPlan;
+            }
+            catch
+            {
+                ErrorMessage = "Something went wrong loading the store.";
+            }
+
+            IsBusy = false;
         }
 
         private async void ExecuteBuyFeatureCommand(string featureName)
@@ -119,9 +159,9 @@ namespace Gotcha.Maui.ViewModels
                     $"Purchasing \"{featureName}\" is not yet available.",
                     "OK");
             }
-            catch (Exception ex)
+            catch
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = "Something went wrong. Please try again.";
             }
         }
 
@@ -134,9 +174,9 @@ namespace Gotcha.Maui.ViewModels
                     $"Subscribing to \"{planName}\" is not yet available.",
                     "OK");
             }
-            catch (Exception ex)
+            catch
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = "Something went wrong. Please try again.";
             }
         }
     }

@@ -18,6 +18,7 @@ Before writing code in this subproject, read these convention files from `.claud
 - CommunityToolkit.Mvvm (`ObservableObject`, `RelayCommand`)
 - CommunityToolkit.Maui (converters, behaviors)
 - FluentValidation for input validation
+- Microsoft.Extensions.Http (`IHttpClientFactory` for API calls)
 - Shell navigation (`Shell.Current.GoToAsync`)
 
 ## Page Structure
@@ -29,6 +30,35 @@ Pages mirror the Web areas:
 | `Pages/Unauthenticated/` | SignIn, SignUp, Contact, Info, ResetPassword  |
 | `Pages/Authenticated/User/` | Home, Games, NewGame, Settings, Store     |
 | `Pages/Authenticated/Player/` | Home, ConfirmKill, Settings, Admin      |
+
+## API Integration
+
+- MAUI app connects to Gotcha.API at `http://localhost:5208` (Android emulator: `http://10.0.2.2:5208`)
+- `IHttpClientFactory` configured as named client `"GotchaApi"` in `MauiProgram.cs`
+- 5 service interfaces with two implementations each:
+  - `Services/Api/` — real API implementations (currently active)
+  - `Services/Mock/` — mock implementations for offline dev
+- Swap between them in `MauiProgram.cs` DI registrations
+- `Constants/DevConstants.cs` has `TestUserId` (fixed GUID matching Seeder) — used until auth is wired up
+
+### Service → API Endpoint Mapping
+
+|           MAUI Method            |                  API Endpoint                   |
+| :------------------------------: | :---------------------------------------------: |
+|  `IUserService.GetProfileAsync`  |    `GET api/gotchausers/{userId}/profile`        |
+| `IUserService.UpdateProfileAsync` |      `PUT api/gotchausers/{userId}`             |
+| `IGameService.GetPendingGamesAsync` | `GET api/gotchausers/{userId}/games?status=pending` |
+| `IGameService.GetActiveGamesAsync` | `GET api/gotchausers/{userId}/games?status=active` |
+|  `IGameService.GetEndedGamesAsync` | `GET api/gotchausers/{userId}/games?status=ended` |
+|  `IGameService.CreateGameAsync`  |            `POST api/games`                     |
+| `IPlayerService.GetPlayerHomeDataAsync` |    `GET api/players/{playerId}/home`       |
+| `IPlayerService.GetConfirmKillDataAsync` | `GET api/players/{playerId}/confirmkill` |
+|  `IPlayerService.GetAdminDataAsync` |     `GET api/players/{playerId}/admin`       |
+| `IPlayerService.GetPlayerUsernameAsync` |     `GET api/players/{playerId}`          |
+| `IPlayerService.UpdatePlayerUsernameAsync` | `PATCH api/players/{playerId}`         |
+| `IStoreService.GetStoreStateAsync` |     `GET api/vipsettings/{userId}`            |
+|  `IStoreService.BuyFeatureAsync` |       `PATCH api/vipsettings/{userId}`          |
+| `IContactService.SubmitAsync`    |            `POST api/logs`                      |
 
 ## DI & Routing
 
@@ -79,6 +109,92 @@ Shell TabBar navigation with three TabBars (authenticated user, authenticated pl
 - Add an `IsBusy` property to ViewModels that make network calls; bind `IsEnabled` on buttons to prevent double-submits
 - Every page with bindings **must** declare `x:DataType` on the `ContentPage` element for compiled bindings
 
+## ViewModel Patterns
+
+### LoadData in OnAppearing, not in constructors
+
+`LoadData()` must be `public async void` on the ViewModel. The page code-behind calls it from `OnAppearing`:
+
+```csharp
+// ViewModel — public, no call in constructor
+public async void LoadData() { ... }
+
+// Page code-behind
+protected override void OnAppearing()
+{
+    base.OnAppearing();
+    _viewModel.LoadData();
+}
+```
+
+### IsBusy + ErrorMessage in every LoadData
+
+Every ViewModel with a `LoadData()` must have `IsBusy` and `ErrorMessage` properties. Wrap the body:
+
+```csharp
+public async void LoadData()
+{
+    try
+    {
+        IsBusy = true;
+        ErrorMessage = string.Empty;
+        // ... load data ...
+    }
+    catch
+    {
+        ErrorMessage = "Something went wrong loading ...";
+    }
+
+    IsBusy = false;
+}
+```
+
+### Clear collections before reload
+
+If `LoadData()` appends to `ObservableCollection` via `.Add()`, call `.Clear()` before the foreach to prevent duplicates on re-navigation:
+
+```csharp
+Players.Clear();
+foreach (var player in data.Players)
+{
+    Players.Add(player);
+}
+```
+
+### No raw exception messages in UI
+
+Never expose `ex.Message` to users — use fixed, user-friendly strings:
+
+```csharp
+// Bad
+catch (Exception ex) { ErrorMessage = ex.Message; }
+
+// Good
+catch { ErrorMessage = "Something went wrong. Please try again."; }
+```
+
+### Flat try/catch — avoid nested try/finally
+
+Don't nest `try/finally` inside `try/catch`. Keep one level with `IsBusy = false` after the try/catch block:
+
+```csharp
+try
+{
+    IsBusy = true;
+    // ... work ...
+}
+catch
+{
+    ErrorMessage = "Something went wrong. Please try again.";
+}
+
+IsBusy = false;
+```
+
+### Route constants
+
+Use `Routes.SignIn`, `Routes.UserStore`, etc. instead of magic strings like `"//SignIn"`.
+
 ## Converters
 
 - CommunityToolkit.Maui converters are declared in `Resources/Styles/Converters.xaml` (merged in `App.xaml`)
@@ -126,6 +242,13 @@ Use `FontFamily="Alias"` in XAML (e.g., `FontFamily="RobotoSlab"`, not `Roboto_S
 
 - Pages: `Pages/Unauthenticated/` and `Pages/Authenticated/` (User/ + Player/)
 - ViewModels: `ViewModels/` (SignInViewModel, SignUpViewModel, InfoViewModel, ContactViewModel, HomeViewModel, GamesViewModel, NewGameViewModel, SettingsViewModel, StoreViewModel, PlayerHomeViewModel, ConfirmKillViewModel, PlayerSettingsViewModel, PlayerAdminViewModel)
+- Services: `Services/` (interfaces: IUserService, IGameService, IPlayerService, IStoreService, IContactService)
+- API Services: `Services/Api/` (ApiUserService, ApiGameService, ApiPlayerService, ApiStoreService, ApiContactService)
+- Mock Services: `Services/Mock/` (MockUserService, MockGameService, MockPlayerService, MockStoreService, MockContactService)
+- Models: `Models/` (UserProfile, GameItem, PlayerHomeData, ConfirmKillData, AdminData, StoreState, KillItem, PlayerItem, AdminPlayerItem, AdminKillItem)
+- Enums: `Enums/` (Plan)
+- Routes: `Routes.cs` (all Shell route constants — use `Routes.SignIn`, not `"//SignIn"`)
+- Constants: `Constants/DevConstants.cs`
 - Converters: `Converters/` (custom classes) + `Resources/Styles/Converters.xaml` (declarations)
 - Extensions: `Extensions/` (currently empty)
 - Styles: `Resources/Styles/Colors.xaml`, `Resources/Styles/Styles.xaml`, and `Resources/Styles/Converters.xaml`

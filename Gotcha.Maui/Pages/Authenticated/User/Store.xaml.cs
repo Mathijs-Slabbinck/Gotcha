@@ -12,4 +12,10 @@ public partial class Store : ContentPage
         this.viewModel = viewModel;
         BindingContext = viewModel;
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        viewModel.LoadData();
+    }
 }

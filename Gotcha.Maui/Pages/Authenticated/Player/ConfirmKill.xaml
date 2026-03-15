@@ -189,12 +189,18 @@
             </Border>
 
             <!-- Error message -->
-            <Label Text="{Binding ErrorMessage}"
-                   TextColor="{StaticResource Danger}"
-                   HorizontalTextAlignment="Center"
-                   IsVisible="{Binding ErrorMessage, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"
-                   Margin="20,15,20,0"
-                   AutomationId="ErrorMessageLabel" />
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 8"
+                    StrokeThickness="0"
+                    Margin="20,15,20,0"
+                    Padding="10"
+                    IsVisible="{Binding ErrorMessage, Converter={StaticResource IsStringNotNullOrEmptyConverter}}">
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="{StaticResource Danger}"
+                       FontSize="14"
+                       HorizontalTextAlignment="Center"
+                       AutomationId="ErrorMessageLabel" />
+            </Border>
 
             <!-- Bottom spacer -->
             <BoxView HeightRequest="30" BackgroundColor="{StaticResource Transparent}" />
