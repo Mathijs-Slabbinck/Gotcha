@@ -48,6 +48,34 @@ namespace Gotcha.Maui
                     fonts.AddFont("RobotoSlab-Bold.ttf", "RobotoSlabBold");
                 });
 
+            // Make switch off-track visible on white card backgrounds
+            Microsoft.Maui.Handlers.SwitchHandler.Mapper.AppendToMapping("OffTrackColor", (handler, view) =>
+            {
+#if WINDOWS
+                var toggle = handler.PlatformView;
+                var offTrackBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(
+                    Windows.UI.Color.FromArgb(255, 200, 200, 200));
+
+                toggle.Resources["ToggleSwitchFillOff"] = offTrackBrush;
+                toggle.Resources["ToggleSwitchFillOffPointerOver"] = offTrackBrush;
+                toggle.Resources["ToggleSwitchFillOffPressed"] = offTrackBrush;
+                toggle.Resources["ToggleSwitchStrokeOff"] = offTrackBrush;
+                toggle.Resources["ToggleSwitchStrokeOffPointerOver"] = offTrackBrush;
+                toggle.Resources["ToggleSwitchStrokeOffPressed"] = offTrackBrush;
+#elif ANDROID
+                var offTrackColor = Android.Graphics.Color.ParseColor("#C8C8C8");
+                var onTrackColor = Android.Graphics.Color.ParseColor("#5AD6DE");
+
+                handler.PlatformView.TrackTintList = new Android.Content.Res.ColorStateList(
+                    new int[][]
+                    {
+                        new int[] { Android.Resource.Attribute.StateChecked },
+                        new int[] { -Android.Resource.Attribute.StateChecked }
+                    },
+                    new int[] { onTrackColor, offTrackColor });
+#endif
+            });
+
             // HttpClient for API calls
             builder.Services.AddHttpClient("GotchaApi", client =>
             {
