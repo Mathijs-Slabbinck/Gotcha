@@ -38,9 +38,10 @@
 
 ## Privacy Dashboard Page
 
-- [ ] **Build the page** — `PrivacyDashboard.xaml` is a placeholder ("Welcome to .NET MAUI!"). Build it out with real content (delete account, download data, etc.).
-- [ ] **Create PrivacyDashboardViewModel** — No ViewModel exists yet.
-- [ ] **Register the route** — Add `Routing.RegisterRoute` for `PrivacyDashboard` in `MauiProgram.cs` and link to it from the Settings page.
+- [x] **Build the page** — `PrivacyDashboard.xaml` now has Download My Data + Delete Account sections matching the web design. Delete triggers a confirmation alert, clears SecureStorage + SessionService, swaps to the unauthenticated TabBar, and routes to Sign In.
+- [x] **Create PrivacyDashboardViewModel** — Holds `DownloadDataCommand` (calls `IUserService.ExportDataAsync`, writes JSON to cache, shares via `Share.Default.RequestAsync`) and `DeleteAccountCommand` (calls `IUserService.DeleteAccountAsync`).
+- [x] **Register the route** — `Routes.PrivacyDashboard` added, registered via `Routing.RegisterRoute` in `MauiProgram.cs`, and linked from the Settings page bottom-links list.
+- [x] **API + web parity** — Added `DELETE api/gotchausers/{id}` (soft delete + anonymize, mirrors web) and `GET api/gotchausers/{id}/export` (GDPR JSON export). Web `PrivacyDashboardController` also got a new `DownloadData` action + view button for parity.
 
 ---
 

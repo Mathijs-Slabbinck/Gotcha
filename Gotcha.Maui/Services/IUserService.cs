@@ -6,5 +6,7 @@ namespace Gotcha.Maui.Services
     {
         Task<UserProfile> GetProfileAsync();
         Task<bool> UpdateProfileAsync(UserProfile profile);
+        Task<bool> DeleteAccountAsync();
+        Task<string?> ExportDataAsync();
     }
 }

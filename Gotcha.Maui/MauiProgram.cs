@@ -17,6 +17,7 @@ using UserGames = Gotcha.Maui.Pages.Authenticated.User.Games;
 using UserSettings = Gotcha.Maui.Pages.Authenticated.User.Settings;
 using UserStore = Gotcha.Maui.Pages.Authenticated.User.Store;
 using NewGame = Gotcha.Maui.Pages.Authenticated.User.NewGame;
+using PrivacyDashboard = Gotcha.Maui.Pages.Authenticated.User.PrivacyDashboard;
 
 using PlayerHome = Gotcha.Maui.Pages.Authenticated.Player.Home;
 using PlayerConfirmKill = Gotcha.Maui.Pages.Authenticated.Player.ConfirmKill;
@@ -31,6 +32,7 @@ namespace Gotcha.Maui
         {
             Routing.RegisterRoute(Routes.ResetPassword, typeof(ResetPassword));
             Routing.RegisterRoute(Routes.NewGame, typeof(NewGame));
+            Routing.RegisterRoute(Routes.PrivacyDashboard, typeof(PrivacyDashboard));
 
             MauiAppBuilder builder = MauiApp.CreateBuilder();
             builder
@@ -138,6 +140,8 @@ namespace Gotcha.Maui
             builder.Services.AddTransient<UserSettings>();
             builder.Services.AddTransient<UserStore>();
             builder.Services.AddTransient<NewGame>();
+            builder.Services.AddTransient<PrivacyDashboard>();
+            builder.Services.AddTransient<PrivacyDashboardViewModel>();
 
             // Authenticated Player ViewModels
             builder.Services.AddTransient<PlayerHomeViewModel>();

@@ -48,6 +48,7 @@ builder.Services.AddScoped<UserRepoService>();
 
 // Business Logic Services
 builder.Services.AddScoped<GameService>();
+builder.Services.AddScoped<Gotcha.Core.Services.AccountPrivacy.AccountPrivacyService>();
 
 // Email Service
 builder.Services.AddScoped<IEmailService, EmailService>();

@@ -81,7 +81,7 @@ namespace Gotcha.Maui.ViewModels
 
                     if (RememberMe)
                     {
-                        await SecureStorage.SetAsync("userId", userId.Value.ToString());
+                        await SecureStorage.SetAsync(SessionService.StoredUserIdKey, userId.Value.ToString());
                     }
 
                     ((AppShell)Shell.Current).SwitchToUserTabBar();

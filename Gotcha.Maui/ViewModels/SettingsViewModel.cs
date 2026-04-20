@@ -54,6 +54,7 @@ namespace Gotcha.Maui.ViewModels
         public ICommand SaveChangesCommand { get; }
         public ICommand ResetPasswordCommand { get; }
         public ICommand UnlockFeaturesCommand { get; }
+        public ICommand PrivacyDashboardCommand { get; }
 
         public SettingsViewModel(IUserService userService)
         {
@@ -62,6 +63,7 @@ namespace Gotcha.Maui.ViewModels
             SaveChangesCommand = new Command(ExecuteSaveChangesCommand);
             ResetPasswordCommand = new Command(ExecuteResetPasswordCommand);
             UnlockFeaturesCommand = new Command(ExecuteUnlockFeaturesCommand);
+            PrivacyDashboardCommand = new Command(ExecutePrivacyDashboardCommand);
         }
 
         public async void LoadData()
@@ -158,6 +160,18 @@ namespace Gotcha.Maui.ViewModels
             try
             {
                 await Shell.Current.GoToAsync(Routes.UserStore);
+            }
+            catch
+            {
+                ErrorMessage = "Something went wrong. Please try again.";
+            }
+        }
+
+        private async void ExecutePrivacyDashboardCommand()
+        {
+            try
+            {
+                await Shell.Current.GoToAsync(Routes.PrivacyDashboard);
             }
             catch
             {

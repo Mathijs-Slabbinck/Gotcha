@@ -13,6 +13,7 @@ namespace Gotcha.Maui
         public const string UserSettings = "//UserSettings";
         public const string UserStore = "//UserStore";
         public const string NewGame = "NewGame";
+        public const string PrivacyDashboard = "PrivacyDashboard";
 
         public const string PlayerHome = "//PlayerHome";
         public const string PlayerConfirmKill = "//PlayerConfirmKill";

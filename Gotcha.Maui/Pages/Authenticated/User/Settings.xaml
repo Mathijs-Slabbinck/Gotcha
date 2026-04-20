@@ -223,6 +223,17 @@
                     </Label.GestureRecognizers>
                 </Label>
 
+                <Label Text="Privacy Dashboard"
+                       TextColor="{StaticResource Secondary}"
+                       TextDecorations="Underline"
+                       HorizontalTextAlignment="Center"
+                       AutomationId="PrivacyDashboardLabel"
+                       SemanticProperties.Hint="Tap to manage your data and account">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding PrivacyDashboardCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+
             </VerticalStackLayout>
 
         </VerticalStackLayout>

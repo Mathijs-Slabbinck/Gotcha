@@ -106,10 +106,7 @@ namespace Gotcha.Maui.ViewModels
         {
             try
             {
-                _sessionService.Clear();
-                SecureStorage.Remove("userId");
-
-                await Shell.Current.GoToAsync(Routes.SignIn);
+                await _sessionService.SignOutAsync();
             }
             catch
             {

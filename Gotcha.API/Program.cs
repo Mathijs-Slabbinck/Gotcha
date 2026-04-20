@@ -47,6 +47,7 @@ builder.Services.AddScoped<UserRepoService>();
 
 // Business Logic Services
 builder.Services.AddScoped<GameService>();
+builder.Services.AddScoped<Gotcha.Core.Services.AccountPrivacy.AccountPrivacyService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 // CORS — allow all for development

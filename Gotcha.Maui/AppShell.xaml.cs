@@ -18,7 +18,7 @@ namespace Gotcha.Maui
 
         private async Task CheckRememberedSessionAsync()
         {
-            string? stored = await SecureStorage.GetAsync("userId");
+            string? stored = await SecureStorage.GetAsync(SessionService.StoredUserIdKey);
 
             if (stored != null && Guid.TryParse(stored, out Guid userId))
             {

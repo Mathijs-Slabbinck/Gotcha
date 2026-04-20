@@ -27,5 +27,29 @@ namespace Gotcha.Maui.Services.Mock
         {
             return Task.FromResult(true);
         }
+
+        public Task<bool> DeleteAccountAsync()
+        {
+            return Task.FromResult(true);
+        }
+
+        public Task<string?> ExportDataAsync()
+        {
+            string mockJson = """
+            {
+              "ExportedAt": "2026-01-01T00:00:00Z",
+              "Profile": {
+                "FirstName": "John",
+                "LastName": "Doe",
+                "UserName": "TheLegend27",
+                "Email": "john.doe@example.com"
+              },
+              "Games": [],
+              "Kills": [],
+              "Deaths": []
+            }
+            """;
+            return Task.FromResult<string?>(mockJson);
+        }
     }
 }

@@ -1,5 +1,6 @@
 using Gotcha.API.Dtos.GotchaUsers;
 using Gotcha.Core.Data;
+using Gotcha.Core.Services.AccountPrivacy;
 using Gotcha.Core.Services.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,11 +13,13 @@ namespace Gotcha.API.Controllers
     {
         private readonly UserRepoService _userRepo;
         private readonly GotchaDbContext _context;
+        private readonly AccountPrivacyService _accountPrivacy;
 
-        public GotchaUsersController(UserRepoService userRepo, GotchaDbContext context)
+        public GotchaUsersController(UserRepoService userRepo, GotchaDbContext context, AccountPrivacyService accountPrivacy)
         {
             _userRepo = userRepo;
             _context = context;
+            _accountPrivacy = accountPrivacy;
         }
 
         // GET api/gotchausers
@@ -212,6 +215,34 @@ namespace Gotcha.API.Controllers
             }).ToList();
 
             return Ok(dtos);
+        }
+
+        // DELETE api/gotchausers/{id} — soft delete + anonymize (keeps game history under "Deleted User")
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> DeleteAccount(Guid id)
+        {
+            bool success = await _accountPrivacy.SoftDeleteAndAnonymizeAsync(id);
+
+            if (!success)
+            {
+                return NotFound("User not found.");
+            }
+
+            return NoContent();
+        }
+
+        // GET api/gotchausers/{id}/export — GDPR data export
+        [HttpGet("{id:guid}/export")]
+        public async Task<IActionResult> ExportData(Guid id)
+        {
+            UserDataExport? export = await _accountPrivacy.BuildExportAsync(id);
+
+            if (export == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            return Ok(export);
         }
     }
 }

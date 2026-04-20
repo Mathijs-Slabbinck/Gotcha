@@ -70,6 +70,43 @@ namespace Gotcha.Maui.Services.Api
             }
         }
 
+        public async Task<bool> DeleteAccountAsync()
+        {
+            try
+            {
+                var response = await _httpClient.DeleteAsync(
+                    $"api/gotchausers/{DevConstants.TestUserId}");
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ApiUserService.DeleteAccountAsync failed: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<string?> ExportDataAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync(
+                    $"api/gotchausers/{DevConstants.TestUserId}/export");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ApiUserService.ExportDataAsync failed: {ex.Message}");
+                return null;
+            }
+        }
+
         // Response DTO for deserialization (matches API's UserProfileResponseDto)
         private class UserProfileResponse
         {
