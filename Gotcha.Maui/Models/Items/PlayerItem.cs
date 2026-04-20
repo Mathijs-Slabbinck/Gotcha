@@ -1,4 +1,4 @@
-namespace Gotcha.Maui.Models
+namespace Gotcha.Maui.Models.Items
 {
     public class PlayerItem
     {

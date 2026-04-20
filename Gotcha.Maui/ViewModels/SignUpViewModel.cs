@@ -1,4 +1,4 @@
-using Gotcha.Maui.Models;
+using Gotcha.Maui.Models.Forms;
 using Gotcha.Maui.Services;
 using Gotcha.Maui.ViewModels.BaseViewModels;
 using Gotcha.Shared.Helpers;

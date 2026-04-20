@@ -28,7 +28,7 @@ namespace Gotcha.API.Controllers
 
             if (user == null)
             {
-                return NotFound();
+                return NotFound("User not found.");
             }
 
             // Create default VipSettings if none exist
@@ -63,7 +63,7 @@ namespace Gotcha.API.Controllers
 
             if (user == null)
             {
-                return NotFound();
+                return NotFound("User not found.");
             }
 
             if (user.VipSettings == null)

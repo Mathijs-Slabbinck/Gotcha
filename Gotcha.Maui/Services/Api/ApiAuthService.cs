@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using Gotcha.Maui.Extensions;
-using Gotcha.Maui.Models;
+using Gotcha.Maui.Models.Forms;
 
 namespace Gotcha.Maui.Services.Api
 {

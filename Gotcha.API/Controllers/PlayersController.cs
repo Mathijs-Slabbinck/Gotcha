@@ -60,7 +60,7 @@ namespace Gotcha.API.Controllers
 
             if (!result.Success)
             {
-                return NotFound();
+                return NotFound("Player not found.");
             }
 
             var player = result.Data!;
@@ -88,7 +88,7 @@ namespace Gotcha.API.Controllers
 
             if (!result.Success)
             {
-                return NotFound();
+                return NotFound("Player not found.");
             }
 
             var player = result.Data!;
@@ -133,7 +133,7 @@ namespace Gotcha.API.Controllers
 
             if (player == null)
             {
-                return NotFound();
+                return NotFound("Player not found.");
             }
 
             var game = player.Game;
@@ -246,7 +246,7 @@ namespace Gotcha.API.Controllers
 
             if (player == null)
             {
-                return NotFound();
+                return NotFound("Player not found.");
             }
 
             var rules = player.Game.Rules;
@@ -287,7 +287,7 @@ namespace Gotcha.API.Controllers
 
             if (player == null)
             {
-                return NotFound();
+                return NotFound("Player not found.");
             }
 
             var game = player.Game;
@@ -326,7 +326,7 @@ namespace Gotcha.API.Controllers
 
             if (player == null)
             {
-                return NotFound();
+                return NotFound("Player not found.");
             }
 
             var game = player.Game;
@@ -365,7 +365,7 @@ namespace Gotcha.API.Controllers
 
             if (player == null)
             {
-                return NotFound();
+                return NotFound("Player not found.");
             }
 
             var game = player.Game;
@@ -404,7 +404,7 @@ namespace Gotcha.API.Controllers
 
             if (player == null)
             {
-                return NotFound();
+                return NotFound("Player not found.");
             }
 
             var game = player.Game;
@@ -442,7 +442,7 @@ namespace Gotcha.API.Controllers
 
             if (!result.Success)
             {
-                return NotFound();
+                return NotFound("Player not found.");
             }
 
             var player = result.Data!;
@@ -474,7 +474,7 @@ namespace Gotcha.API.Controllers
 
             if (player == null)
             {
-                return NotFound();
+                return NotFound("Player not found.");
             }
 
             var game = player.Game;
@@ -508,6 +508,7 @@ namespace Gotcha.API.Controllers
 
             var dto = new AdminDataResponseDto
             {
+                GameId = game.Id,
                 HasStarted = game.HasStarted,
                 GameName = game.Name,
                 InviteLink = $"gotcha://join/{game.Id}",

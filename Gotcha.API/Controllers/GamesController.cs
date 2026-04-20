@@ -61,7 +61,7 @@ namespace Gotcha.API.Controllers
 
             if (!result.Success)
             {
-                return NotFound();
+                return NotFound("Game not found.");
             }
 
             var game = result.Data!;
@@ -123,14 +123,14 @@ namespace Gotcha.API.Controllers
 
             if (game == null)
             {
-                return NotFound();
+                return NotFound("Game not found.");
             }
 
             var adminPlayer = game.Players.FirstOrDefault(p => p.Id == dto.AdminPlayerId);
 
             if (adminPlayer == null || !game.AdminIds.Contains(adminPlayer.Id))
             {
-                return Forbid();
+                return StatusCode(StatusCodes.Status403Forbidden, "You don't have permission to perform this action on the game.");
             }
 
             try
@@ -153,14 +153,14 @@ namespace Gotcha.API.Controllers
 
             if (game == null)
             {
-                return NotFound();
+                return NotFound("Game not found.");
             }
 
             var adminPlayer = game.Players.FirstOrDefault(p => p.Id == dto.AdminPlayerId);
 
             if (adminPlayer == null || !game.AdminIds.Contains(adminPlayer.Id))
             {
-                return Forbid();
+                return StatusCode(StatusCodes.Status403Forbidden, "You don't have permission to perform this action on the game.");
             }
 
             if (game.IsFinished)
@@ -194,14 +194,14 @@ namespace Gotcha.API.Controllers
 
             if (game == null)
             {
-                return NotFound();
+                return NotFound("Game not found.");
             }
 
             var adminPlayer = game.Players.FirstOrDefault(p => p.Id == dto.AdminPlayerId);
 
             if (adminPlayer == null || !game.AdminIds.Contains(adminPlayer.Id))
             {
-                return Forbid();
+                return StatusCode(StatusCodes.Status403Forbidden, "You don't have permission to perform this action on the game.");
             }
 
             var rules = game.Rules;

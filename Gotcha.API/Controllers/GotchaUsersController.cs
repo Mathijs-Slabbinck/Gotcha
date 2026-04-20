@@ -57,7 +57,7 @@ namespace Gotcha.API.Controllers
 
             if (!result.Success)
             {
-                return NotFound();
+                return NotFound("User not found.");
             }
 
             var user = result.Data!;
@@ -88,7 +88,7 @@ namespace Gotcha.API.Controllers
 
             if (!result.Success)
             {
-                return NotFound();
+                return NotFound("User not found.");
             }
 
             var user = result.Data!;
@@ -121,7 +121,7 @@ namespace Gotcha.API.Controllers
 
             if (user == null)
             {
-                return NotFound();
+                return NotFound("User not found.");
             }
 
             int gamesPlayed = user.PlayerAccounts.Count;

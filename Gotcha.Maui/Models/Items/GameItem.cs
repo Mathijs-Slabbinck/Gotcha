@@ -1,8 +1,8 @@
-namespace Gotcha.Maui.Models
+namespace Gotcha.Maui.Models.Items
 {
     public class GameItem
     {
-        public Guid GameId { get; set; }
+        public Guid GameId { get; init; }
         public string Name { get; set; } = string.Empty;
         public string CreatedDate { get; set; } = string.Empty;
         public string StartDate { get; set; } = string.Empty;

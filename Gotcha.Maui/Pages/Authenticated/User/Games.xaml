@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:Gotcha.Maui.ViewModels"
-             xmlns:models="clr-namespace:Gotcha.Maui.Models"
+             xmlns:items="clr-namespace:Gotcha.Maui.Models.Items"
              x:DataType="viewmodels:GamesViewModel"
              x:Class="Gotcha.Maui.Pages.Authenticated.User.Games"
              Title="Games"
@@ -87,7 +87,7 @@
                         <!-- Game rows -->
                         <VerticalStackLayout BindableLayout.ItemsSource="{Binding PendingGames}" Spacing="0">
                             <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="models:GameItem">
+                                <DataTemplate x:DataType="items:GameItem">
                                     <Grid ColumnDefinitions="*,Auto,Auto" Padding="5,8" ColumnSpacing="10">
                                         <Grid.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:GamesViewModel}}, Path=GameTappedCommand}"
@@ -157,7 +157,7 @@
                         <!-- Game rows -->
                         <VerticalStackLayout BindableLayout.ItemsSource="{Binding ActiveGames}" Spacing="0">
                             <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="models:GameItem">
+                                <DataTemplate x:DataType="items:GameItem">
                                     <Grid ColumnDefinitions="*,Auto,Auto,Auto" Padding="5,8" ColumnSpacing="10">
                                         <Grid.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:GamesViewModel}}, Path=GameTappedCommand}"
@@ -239,7 +239,7 @@
                         <!-- Game rows -->
                         <VerticalStackLayout BindableLayout.ItemsSource="{Binding EndedGames}" Spacing="0">
                             <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="models:GameItem">
+                                <DataTemplate x:DataType="items:GameItem">
                                     <Grid ColumnDefinitions="*,Auto,Auto,Auto" Padding="5,8" ColumnSpacing="10">
                                         <Grid.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:GamesViewModel}}, Path=GameTappedCommand}"

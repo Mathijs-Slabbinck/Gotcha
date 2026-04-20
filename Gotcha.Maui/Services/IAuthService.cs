@@ -1,4 +1,4 @@
-using Gotcha.Maui.Models;
+using Gotcha.Maui.Models.Forms;
 
 namespace Gotcha.Maui.Services
 {

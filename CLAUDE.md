@@ -84,7 +84,7 @@ Each area has its own `_Layout.cshtml`. The Player area uses partials for alive/
 ### Key Paths
 
 - Entities: `Gotcha.Core/Entities/Models/` (GotchaUser, Player, Game, Kill, Rules, TargetAssignment, VipSettings, ProfileImage)
-- Logging: `Gotcha.Core/Entities/Logging/` (Log, Attacker, Error, Warning, HackAttempt, OtherLogType)
+- Logging: `Gotcha.Core/Entities/Logging/` (Log, Attacker, Error, Warning, HackAttempt)
 - Services: `Gotcha.Core/Services/` (GameService + Repository/ + ValidationServices/ + ResultModel/ + Email/)
 - DbContext: `Gotcha.Core/Data/GotchaDbContext.cs` (extends `IdentityDbContext`)
 - Seeder: `Gotcha.Core/Data/Seeder/Seeder.cs`
@@ -103,7 +103,8 @@ Each area has its own `_Layout.cshtml`. The Player area uses partials for alive/
 - MAUI Pages: `Gotcha.Maui/Pages/` (Unauthenticated/ and Authenticated/User/ + Player/)
 - MAUI ViewModels: `Gotcha.Maui/ViewModels/`
 - MAUI Services: `Gotcha.Maui/Services/` (interfaces) + `Services/Api/` (API implementations) + `Services/Mock/` (mock implementations)
-- MAUI Models: `Gotcha.Maui/Models/` (UserProfile, GameItem, PlayerHomeData, ConfirmKillData, AdminData, StoreState, etc.)
+- MAUI Models: `Gotcha.Maui/Models/` organised by role — `PageData/` (AdminData, ConfirmKillData, PlayerHomeData, StoreState, UserProfile), `Items/` (GameItem, KillItem, PlayerItem, AdminPlayerItem, AdminKillItem), `Forms/` (SignUpData), `Payloads/` (PlayerActionCommand, UpdateGameSettingsCommand)
+- MAUI Enums: `Gotcha.Maui/Enums/` (AdminPlayerCommandActions)
 - MAUI Routes: `Gotcha.Maui/Routes.cs` (all Shell route constants)
 - MAUI Constants: `Gotcha.Maui/Constants/DevConstants.cs` (UseMockServices toggle — MAUI-only)
 - MAUI Fonts: `Gotcha.Maui/Resources/Fonts/`

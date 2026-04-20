@@ -1,4 +1,6 @@
-namespace Gotcha.Maui.Models
+using Gotcha.Maui.Models.Items;
+
+namespace Gotcha.Maui.Models.PageData
 {
     public class PlayerHomeData
     {

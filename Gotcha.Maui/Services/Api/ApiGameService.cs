@@ -1,5 +1,7 @@
 using System.Net.Http.Json;
-using Gotcha.Maui.Models;
+using Gotcha.Maui.Extensions;
+using Gotcha.Maui.Models.Items;
+using Gotcha.Maui.Models.Payloads;
 using Gotcha.Shared.Constants;
 
 namespace Gotcha.Maui.Services.Api
@@ -20,22 +22,22 @@ namespace Gotcha.Maui.Services.Api
             _httpClient = httpClientFactory.CreateClient("GotchaApi");
         }
 
-        public async Task<IEnumerable<GameItem>> GetPendingGamesAsync()
+        public Task<(IEnumerable<GameItem>? Data, string? ErrorMessage)> GetPendingGamesAsync()
         {
-            return await GetGamesByStatusAsync(GameStatus.Pending);
+            return GetGamesByStatusAsync(GameStatus.Pending);
         }
 
-        public async Task<IEnumerable<GameItem>> GetActiveGamesAsync()
+        public Task<(IEnumerable<GameItem>? Data, string? ErrorMessage)> GetActiveGamesAsync()
         {
-            return await GetGamesByStatusAsync(GameStatus.Active);
+            return GetGamesByStatusAsync(GameStatus.Active);
         }
 
-        public async Task<IEnumerable<GameItem>> GetEndedGamesAsync()
+        public Task<(IEnumerable<GameItem>? Data, string? ErrorMessage)> GetEndedGamesAsync()
         {
-            return await GetGamesByStatusAsync(GameStatus.Ended);
+            return GetGamesByStatusAsync(GameStatus.Ended);
         }
 
-        public async Task<bool> CreateGameAsync(string gameName)
+        public async Task<(bool Success, string? ErrorMessage)> CreateGameAsync(string gameName)
         {
             try
             {
@@ -46,29 +48,99 @@ namespace Gotcha.Maui.Services.Api
                     CreatorId = DevConstants.TestUserId
                 };
 
-                var response = await _httpClient.PostAsJsonAsync("api/games", dto);
-                return response.IsSuccessStatusCode;
+                HttpResponseMessage response = await _httpClient.PostAsJsonAsync("api/games", dto);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return (true, null);
+                }
+
+                string? serverMessage = await response.Content.ReadJsonStringAsync();
+                return (false, serverMessage ?? "Something went wrong. Please try again.");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"ApiGameService.CreateGameAsync failed: {ex.Message}");
-                return false;
+                return (false, "Could not reach the server. Please check your connection.");
             }
         }
 
-        private async Task<IEnumerable<GameItem>> GetGamesByStatusAsync(string status)
+        public Task<(bool Success, string? ErrorMessage)> StartGameAsync(Guid gameId, Guid adminPlayerId)
+        {
+            var dto = new { AdminPlayerId = adminPlayerId };
+            return PostJsonAsync($"api/games/{gameId}/start", dto);
+        }
+
+        public Task<(bool Success, string? ErrorMessage)> EndGameAsync(Guid gameId, Guid adminPlayerId)
+        {
+            var dto = new { AdminPlayerId = adminPlayerId };
+            return PostJsonAsync($"api/games/{gameId}/end", dto);
+        }
+
+        public async Task<(bool Success, string? ErrorMessage)> UpdateGameSettingsAsync(UpdateGameSettingsCommand command)
         {
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<List<GameItemResponse>>(
+                HttpResponseMessage response = await _httpClient.PatchAsJsonAsync(
+                    $"api/games/{command.GameId}/settings", command);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return (true, null);
+                }
+
+                string? serverMessage = await response.Content.ReadJsonStringAsync();
+                return (false, serverMessage ?? "Something went wrong. Please try again.");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ApiGameService.UpdateGameSettingsAsync failed: {ex.Message}");
+                return (false, "Could not reach the server. Please check your connection.");
+            }
+        }
+
+        private async Task<(bool Success, string? ErrorMessage)> PostJsonAsync(string endpoint, object body)
+        {
+            try
+            {
+                HttpResponseMessage response = await _httpClient.PostAsJsonAsync(endpoint, body);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return (true, null);
+                }
+
+                string? serverMessage = await response.Content.ReadJsonStringAsync();
+                return (false, serverMessage ?? "Something went wrong. Please try again.");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ApiGameService POST {endpoint} failed: {ex.Message}");
+                return (false, "Could not reach the server. Please check your connection.");
+            }
+        }
+
+        private async Task<(IEnumerable<GameItem>? Data, string? ErrorMessage)> GetGamesByStatusAsync(string status)
+        {
+            try
+            {
+                HttpResponseMessage httpResponse = await _httpClient.GetAsync(
                     $"api/gotchausers/{DevConstants.TestUserId}/games?status={status}");
+
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    string? serverMessage = await httpResponse.Content.ReadJsonStringAsync();
+                    return (null, serverMessage ?? "Something went wrong. Please try again.");
+                }
+
+                List<GameItemResponse>? response = await httpResponse.Content.ReadFromJsonAsync<List<GameItemResponse>>();
 
                 if (response == null)
                 {
-                    return new List<GameItem>();
+                    return (null, "No response from server.");
                 }
 
-                return response.Select(g => new GameItem
+                IEnumerable<GameItem> games = response.Select(g => new GameItem
                 {
                     GameId = g.Id,
                     Name = g.Name,
@@ -80,11 +152,13 @@ namespace Gotcha.Maui.Services.Api
                     IsAlive = g.IsAlive,
                     PlayerId = g.PlayerId
                 }).ToList();
+
+                return (games, null);
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"ApiGameService.GetGamesByStatusAsync({status}) failed: {ex.Message}");
-                return new List<GameItem>();
+                return (null, "Could not reach the server. Please check your connection.");
             }
         }
 

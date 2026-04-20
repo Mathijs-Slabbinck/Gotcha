@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:Gotcha.Maui.ViewModels"
-             xmlns:models="clr-namespace:Gotcha.Maui.Models"
+             xmlns:items="clr-namespace:Gotcha.Maui.Models.Items"
              x:DataType="viewmodels:PlayerAdminViewModel"
              x:Class="Gotcha.Maui.Pages.Authenticated.Player.Admin"
              Title="Admin"
@@ -21,6 +21,20 @@
                    FontFamily="Bungee"
                    Margin="0,0,0,25"
                    SemanticProperties.HeadingLevel="Level1" />
+
+            <!-- Error message -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 8"
+                    StrokeThickness="0"
+                    Margin="20,0,20,15"
+                    Padding="10"
+                    IsVisible="{Binding ErrorMessage, Converter={StaticResource IsStringNotNullOrEmptyConverter}}">
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="{StaticResource Danger}"
+                       FontSize="14"
+                       HorizontalTextAlignment="Center"
+                       AutomationId="ErrorMessageLabel" />
+            </Border>
 
             <!-- Players card -->
             <Border BackgroundColor="{StaticResource CardBackground}"
@@ -79,7 +93,7 @@
 
                         <VerticalStackLayout BindableLayout.ItemsSource="{Binding Players}" Spacing="0">
                             <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="models:AdminPlayerItem">
+                                <DataTemplate x:DataType="items:AdminPlayerItem">
                                     <Grid ColumnDefinitions="*,Auto,Auto,Auto" Padding="5,8" ColumnSpacing="8" MinimumHeightRequest="44">
                                         <Label Grid.Column="0" Text="{Binding Name}" TextColor="{StaticResource Gray900}" FontSize="13" LineBreakMode="TailTruncation" />
                                         <Label Grid.Column="1" Text="{Binding Username}" TextColor="{StaticResource Gray600}" FontSize="12" WidthRequest="70" LineBreakMode="TailTruncation" />
@@ -93,7 +107,7 @@
                                                SemanticProperties.Hint="Tap to manage this player">
                                             <Label.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PlayerAdminViewModel}}, Path=PlayerActionCommand}"
-                                                                      CommandParameter="{Binding Name}" />
+                                                                      CommandParameter="{Binding .}" />
                                             </Label.GestureRecognizers>
                                         </Label>
                                     </Grid>
@@ -216,7 +230,7 @@
 
                         <VerticalStackLayout BindableLayout.ItemsSource="{Binding PendingKills}" Spacing="0">
                             <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="models:AdminKillItem">
+                                <DataTemplate x:DataType="items:AdminKillItem">
                                     <Grid ColumnDefinitions="*,*,Auto,Auto,Auto" Padding="5,8" ColumnSpacing="6" MinimumHeightRequest="44">
                                         <Label Grid.Column="0" Text="{Binding KillerName}" TextColor="{StaticResource Gray900}" FontSize="12" LineBreakMode="TailTruncation" />
                                         <Label Grid.Column="1" Text="{Binding VictimName}" TextColor="{StaticResource Gray900}" FontSize="12" LineBreakMode="TailTruncation" />
@@ -420,14 +434,6 @@
                                     MaxLength="2000"
                                     AutomationId="CustomRulesEditor" />
                         </Border>
-
-                        <!-- Error message -->
-                        <Label Text="{Binding ErrorMessage}"
-                               TextColor="{StaticResource Danger}"
-                               HorizontalTextAlignment="Center"
-                               IsVisible="{Binding ErrorMessage, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"
-                               Margin="0,5,0,0"
-                               AutomationId="ErrorMessageLabel" />
 
                         <!-- Save Settings button -->
                         <Button Text="Save Settings"

@@ -7,7 +7,7 @@ namespace Gotcha.Maui.ViewModels.BaseViewModels
     // IsEnabled to !IsBusy and show errors in the same way across the app.
     public abstract class PageBaseViewModel : ObservableObject
     {
-        private bool isBusy;
+        private bool isBusy; // = false
         private string errorMessage = string.Empty;
 
         public bool IsBusy

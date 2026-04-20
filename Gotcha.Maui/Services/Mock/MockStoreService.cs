@@ -1,5 +1,5 @@
 using Gotcha.Shared.Enums;
-using Gotcha.Maui.Models;
+using Gotcha.Maui.Models.PageData;
 
 namespace Gotcha.Maui.Services.Mock
 {

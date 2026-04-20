@@ -23,7 +23,7 @@ namespace Gotcha.API.Controllers
 
             if (!result.Success)
             {
-                return NotFound();
+                return NotFound("Rules not found.");
             }
 
             var rules = result.Data!;

@@ -1,6 +1,6 @@
 using Gotcha.Shared.Enums;
 
-namespace Gotcha.Maui.Models
+namespace Gotcha.Maui.Models.PageData
 {
     public class StoreState
     {

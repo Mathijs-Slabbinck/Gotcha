@@ -2,6 +2,7 @@ namespace Gotcha.API.Dtos.Players
 {
     public class AdminDataResponseDto
     {
+        public Guid GameId { get; set; }
         public bool HasStarted { get; set; }
         public string GameName { get; set; } = string.Empty;
         public string InviteLink { get; set; } = string.Empty;

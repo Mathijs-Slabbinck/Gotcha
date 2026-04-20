@@ -1,4 +1,4 @@
-using Gotcha.Maui.Models;
+using Gotcha.Maui.Models.Items;
 using Gotcha.Maui.Services;
 using Gotcha.Maui.ViewModels.BaseViewModels;
 using System.Collections.ObjectModel;
@@ -51,22 +51,43 @@ namespace Gotcha.Maui.ViewModels
                 IsBusy = true;
                 ErrorMessage = string.Empty;
 
+                var (pending, pendingError) = await _gameService.GetPendingGamesAsync();
+                if (pending == null)
+                {
+                    ErrorMessage = pendingError ?? "Something went wrong loading your games.";
+                    IsBusy = false;
+                    return;
+                }
+
+                var (active, activeError) = await _gameService.GetActiveGamesAsync();
+                if (active == null)
+                {
+                    ErrorMessage = activeError ?? "Something went wrong loading your games.";
+                    IsBusy = false;
+                    return;
+                }
+
+                var (ended, endedError) = await _gameService.GetEndedGamesAsync();
+                if (ended == null)
+                {
+                    ErrorMessage = endedError ?? "Something went wrong loading your games.";
+                    IsBusy = false;
+                    return;
+                }
+
                 PendingGames.Clear();
-                var pending = await _gameService.GetPendingGamesAsync();
                 foreach (var game in pending)
                 {
                     PendingGames.Add(game);
                 }
 
                 ActiveGames.Clear();
-                var active = await _gameService.GetActiveGamesAsync();
                 foreach (var game in active)
                 {
                     ActiveGames.Add(game);
                 }
 
                 EndedGames.Clear();
-                var ended = await _gameService.GetEndedGamesAsync();
                 foreach (var game in ended)
                 {
                     EndedGames.Add(game);

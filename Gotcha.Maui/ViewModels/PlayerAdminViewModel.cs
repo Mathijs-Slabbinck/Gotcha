@@ -1,4 +1,6 @@
-using Gotcha.Maui.Models;
+using Gotcha.Maui.Enums;
+using Gotcha.Maui.Models.Items;
+using Gotcha.Maui.Models.Payloads;
 using Gotcha.Maui.Services;
 using Gotcha.Maui.ViewModels.BaseViewModels;
 using System.Collections.ObjectModel;
@@ -9,7 +11,10 @@ namespace Gotcha.Maui.ViewModels
     public class PlayerAdminViewModel : PageBaseViewModel
     {
         private readonly IPlayerService _playerService;
+        private readonly IGameService _gameService;
         private readonly SessionService _sessionService;
+
+        private Guid gameId;
 
         // Game info
         private bool hasStarted;
@@ -229,12 +234,13 @@ namespace Gotcha.Maui.ViewModels
         public ICommand StartGameCommand { get; }
         public ICommand EndGameCommand { get; }
 
-        public PlayerAdminViewModel(IPlayerService playerService, SessionService sessionService)
+        public PlayerAdminViewModel(IPlayerService playerService, IGameService gameService, SessionService sessionService)
         {
             _playerService = playerService;
+            _gameService = gameService;
             _sessionService = sessionService;
 
-            PlayerActionCommand = new Command<string>(ExecutePlayerActionCommand);
+            PlayerActionCommand = new Command<AdminPlayerItem>(ExecutePlayerActionCommand);
             CopyLinkCommand = new Command(ExecuteCopyLinkCommand);
             CancelKillCommand = new Command<Guid>(ExecuteCancelKillCommand);
             SaveSettingsCommand = new Command(ExecuteSaveSettingsCommand);
@@ -244,13 +250,26 @@ namespace Gotcha.Maui.ViewModels
 
         public async void LoadData()
         {
+            await LoadDataAsync();
+        }
+
+        private async Task LoadDataAsync()
+        {
             try
             {
                 IsBusy = true;
                 ErrorMessage = string.Empty;
 
-                var data = await _playerService.GetAdminDataAsync(_sessionService.CurrentPlayerId);
+                var (data, error) = await _playerService.GetAdminDataAsync(_sessionService.CurrentPlayerId);
 
+                if (data == null)
+                {
+                    ErrorMessage = error ?? "Something went wrong loading admin data.";
+                    IsBusy = false;
+                    return;
+                }
+
+                gameId = data.GameId;
                 HasStarted = data.HasStarted;
                 GameName = data.GameName;
                 InviteLink = data.InviteLink;
@@ -298,14 +317,58 @@ namespace Gotcha.Maui.ViewModels
             IsBusy = false;
         }
 
-        private async void ExecutePlayerActionCommand(string action)
+        private async void ExecutePlayerActionCommand(AdminPlayerItem player)
         {
+            if (player == null)
+            {
+                return;
+            }
+
             try
             {
-                await Shell.Current.DisplayAlertAsync(
-                    "Player Action",
-                    $"Action: {action}",
-                    "OK");
+                string kickLabel = "Kick player";
+                string adminLabel = player.IsAdmin ? "Remove admin" : "Make admin";
+                string spectatorLabel = player.IsSpectator ? "Remove spectator" : "Make spectator";
+
+                Dictionary<string, AdminPlayerCommandActions> labelToAction = new Dictionary<string, AdminPlayerCommandActions>
+                {
+                    { kickLabel, AdminPlayerCommandActions.Kick },
+                    { adminLabel, AdminPlayerCommandActions.ToggleAdmin },
+                    { spectatorLabel, AdminPlayerCommandActions.ToggleSpectator }
+                };
+
+                string cancelLabel = "Cancel";
+                string choice = await Shell.Current.DisplayActionSheetAsync(
+                    $"Manage {player.Name}",
+                    cancelLabel,
+                    null,
+                    labelToAction.Keys.ToArray());
+
+                if (string.IsNullOrEmpty(choice) || choice == cancelLabel || !labelToAction.TryGetValue(choice, out AdminPlayerCommandActions action))
+                {
+                    return;
+                }
+
+                // For toggles, flip the current state; for kick, NewValue is unused.
+                bool newValue = false;
+                if (action == AdminPlayerCommandActions.ToggleAdmin)
+                {
+                    newValue = !player.IsAdmin;
+                }
+                else if (action == AdminPlayerCommandActions.ToggleSpectator)
+                {
+                    newValue = !player.IsSpectator;
+                }
+
+                await RunAdminActionAsync(
+                    () => _playerService.PerformPlayerActionAsync(new PlayerActionCommand
+                    {
+                        PlayerId = player.PlayerId,
+                        Action = action,
+                        NewValue = newValue
+                    }),
+                    "Done",
+                    $"{player.Name}: {choice.ToLower()}.");
             }
             catch
             {
@@ -332,62 +395,86 @@ namespace Gotcha.Maui.ViewModels
 
         private async void ExecuteCancelKillCommand(Guid killId)
         {
-            try
-            {
-                await Shell.Current.DisplayAlertAsync(
-                    "Not yet implemented",
-                    "Kill cancellation is not yet available.",
-                    "OK");
-            }
-            catch
-            {
-                ErrorMessage = "Something went wrong. Please try again.";
-            }
+            await RunAdminActionAsync(
+                () => _playerService.CancelKillAsync(killId, _sessionService.CurrentPlayerId),
+                "Kill cancelled",
+                "The pending kill has been rejected.");
         }
 
         private async void ExecuteSaveSettingsCommand()
         {
-            try
+            var payload = new UpdateGameSettingsCommand
             {
-                await Shell.Current.DisplayAlertAsync(
-                    "Not yet implemented",
-                    "Saving game settings is not yet available.",
-                    "OK");
-            }
-            catch
-            {
-                ErrorMessage = "Something went wrong. Please try again.";
-            }
+                GameId = gameId,
+                AdminPlayerId = _sessionService.CurrentPlayerId,
+                GameName = GameName,
+                ShowPlayerImages = ShowPlayerImages,
+                ShowGender = ShowGender,
+                EnforcePlayerImages = EnforcePlayerImages,
+                ShowRealNames = ShowRealNames,
+                ShowUsernames = ShowUsernames,
+                ShowLivingPlayerCount = ShowLivingPlayerCount,
+                ShowLivingPlayerNames = ShowLivingPlayerNames,
+                ShowLivingPlayerNamesToDeath = ShowLivingPlayerNamesToDeath,
+                IsAssassin = IsAssassin,
+                ShowHunter = ShowHunter,
+                IsChaos = IsChaos,
+                IsTimed = IsTimed,
+                CustomKillMethods = CustomKillMethods,
+                KillMethods = KillMethods,
+                ChaosTimerMinHours = ChaosTimerMinHours,
+                ChaosTimerMaxHours = ChaosTimerMaxHours,
+                TargetTimeOutHours = TargetTimeOutHours,
+                CustomRulesText = CustomRulesText
+            };
+
+            await RunAdminActionAsync(
+                () => _gameService.UpdateGameSettingsAsync(payload),
+                "Settings saved",
+                "Game settings have been updated.");
         }
 
         private async void ExecuteStartGameCommand()
         {
-            try
-            {
-                await Shell.Current.DisplayAlertAsync(
-                    "Not yet implemented",
-                    "Starting the game is not yet available.",
-                    "OK");
-            }
-            catch
-            {
-                ErrorMessage = "Something went wrong. Please try again.";
-            }
+            await RunAdminActionAsync(
+                () => _gameService.StartGameAsync(gameId, _sessionService.CurrentPlayerId),
+                "Game started",
+                "The hunt is on!");
         }
 
         private async void ExecuteEndGameCommand()
         {
+            await RunAdminActionAsync(
+                () => _gameService.EndGameAsync(gameId, _sessionService.CurrentPlayerId),
+                "Game ended",
+                "The game has been ended.");
+        }
+
+        private async Task RunAdminActionAsync(Func<Task<(bool Success, string? ErrorMessage)>> serviceCall, string successTitle, string successMessage)
+        {
             try
             {
-                await Shell.Current.DisplayAlertAsync(
-                    "Not yet implemented",
-                    "Ending the game is not yet available.",
-                    "OK");
+                ErrorMessage = string.Empty;
+                IsBusy = true;
+
+                (bool success, string? error) = await serviceCall();
+
+                if (success)
+                {
+                    await Shell.Current.DisplayAlertAsync(successTitle, successMessage, "OK");
+                    await LoadDataAsync();
+                }
+                else
+                {
+                    ErrorMessage = error ?? "Something went wrong. Please try again.";
+                }
             }
             catch
             {
                 ErrorMessage = "Something went wrong. Please try again.";
             }
+
+            IsBusy = false;
         }
     }
 }

@@ -1,7 +1,10 @@
-namespace Gotcha.Maui.Models
+using Gotcha.Maui.Models.Items;
+
+namespace Gotcha.Maui.Models.PageData
 {
     public class AdminData
     {
+        public Guid GameId { get; init; }
         public bool HasStarted { get; set; }
         public string GameName { get; set; } = string.Empty;
         public string InviteLink { get; set; } = string.Empty;

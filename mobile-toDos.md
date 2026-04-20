@@ -27,11 +27,11 @@
 
 ## Player Admin Page
 
-- [ ] **PlayerActionCommand** — Replace the placeholder alert with real logic (kick → `DELETE api/players/{id}`, toggle admin/spectator → `PATCH api/players/{id}` with `IsAdmin`/`IsSpectator`). API endpoints are ready.
-- [ ] **CancelKillCommand** — Call `POST api/kills/{killId}/reject` (with `AdminPlayerId` in body) to cancel a pending kill.
-- [ ] **SaveSettingsCommand** — Call `PATCH api/games/{gameId}/settings` (with `AdminPlayerId` + all settings fields in body).
-- [ ] **StartGameCommand** — Call `POST api/games/{gameId}/start` (with `AdminPlayerId` in body).
-- [ ] **EndGameCommand** — Call `POST api/games/{gameId}/end` (with `AdminPlayerId` in body).
+- [x] **PlayerActionCommand** — `Manage` tap shows an action sheet (Kick / toggle admin / toggle spectator), builds a `PlayerActionCommand` payload, and calls `IPlayerService.PerformPlayerActionAsync`. Kick → `DELETE api/players/{id}`; toggle → `GET api/players/{id}` to read current state, then `PATCH` with flipped value.
+- [x] **CancelKillCommand** — Calls `IPlayerService.CancelKillAsync(killId, adminPlayerId)` which POSTs to `api/kills/{id}/reject`. (Parked on `IPlayerService` for now — see `todoNOTES.md` for future move to `IKillService`.)
+- [x] **SaveSettingsCommand** — Builds `UpdateGameSettingsCommand` from bound VM properties and calls `IGameService.UpdateGameSettingsAsync` → `PATCH api/games/{gameId}/settings`.
+- [x] **StartGameCommand** — Calls `IGameService.StartGameAsync(gameId, adminPlayerId)` → `POST api/games/{gameId}/start`.
+- [x] **EndGameCommand** — Calls `IGameService.EndGameAsync(gameId, adminPlayerId)` → `POST api/games/{gameId}/end`.
 - [x] **API endpoints** — `POST api/games/{id}/start`, `POST api/games/{id}/end`, `PATCH api/games/{id}/settings`, `POST api/kills/{id}/validate`, `POST api/kills/{id}/reject`, `DELETE api/players/{id}` all added and building clean.
 
 ---

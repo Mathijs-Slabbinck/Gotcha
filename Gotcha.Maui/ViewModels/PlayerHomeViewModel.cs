@@ -1,4 +1,4 @@
-using Gotcha.Maui.Models;
+using Gotcha.Maui.Models.Items;
 using Gotcha.Maui.Services;
 using Gotcha.Maui.ViewModels.BaseViewModels;
 using System.Collections.ObjectModel;
@@ -275,7 +275,14 @@ namespace Gotcha.Maui.ViewModels
             {
                 IsBusy = true;
                 ErrorMessage = string.Empty;
-                var data = await _playerService.GetPlayerHomeDataAsync(_sessionService.CurrentPlayerId);
+                var (data, error) = await _playerService.GetPlayerHomeDataAsync(_sessionService.CurrentPlayerId);
+
+                if (data == null)
+                {
+                    ErrorMessage = error ?? "Something went wrong loading game data.";
+                    IsBusy = false;
+                    return;
+                }
 
                 IsAlive = data.IsAlive;
                 IsSpectator = data.IsSpectator;

@@ -49,7 +49,16 @@ namespace Gotcha.Maui.ViewModels
                 IsBusy = true;
                 ErrorMessage = string.Empty;
 
-                Username = await _playerService.GetPlayerUsernameAsync(_sessionService.CurrentPlayerId);
+                (string? fetchedUsername, string? error) = await _playerService.GetPlayerUsernameAsync(_sessionService.CurrentPlayerId);
+
+                if (fetchedUsername == null)
+                {
+                    ErrorMessage = error ?? "Something went wrong loading your profile.";
+                    IsBusy = false;
+                    return;
+                }
+
+                Username = fetchedUsername;
             }
             catch
             {
@@ -74,8 +83,16 @@ namespace Gotcha.Maui.ViewModels
 
                 IsBusy = true;
 
-                await _playerService.UpdatePlayerUsernameAsync(_sessionService.CurrentPlayerId, Username);
-                SuccessMessage = "Your changes have been saved.";
+                (bool success, string? error) = await _playerService.UpdatePlayerUsernameAsync(_sessionService.CurrentPlayerId, Username);
+
+                if (success)
+                {
+                    SuccessMessage = "Your changes have been saved.";
+                }
+                else
+                {
+                    ErrorMessage = error ?? "Something went wrong. Please try again.";
+                }
             }
             catch
             {

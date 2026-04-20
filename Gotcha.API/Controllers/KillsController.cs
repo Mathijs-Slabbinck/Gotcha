@@ -60,21 +60,21 @@ namespace Gotcha.API.Controllers
 
             if (game == null)
             {
-                return NotFound();
+                return NotFound("Kill not found.");
             }
 
             var adminPlayer = game.Players.FirstOrDefault(p => p.Id == dto.AdminPlayerId);
 
             if (adminPlayer == null || !game.AdminIds.Contains(adminPlayer.Id))
             {
-                return Forbid();
+                return StatusCode(StatusCodes.Status403Forbidden, "You don't have permission to perform this action on the game.");
             }
 
             var kill = game.Kills.FirstOrDefault(k => k.Id == id);
 
             if (kill == null)
             {
-                return NotFound();
+                return NotFound("Kill not found.");
             }
 
             var killer = game.Players.FirstOrDefault(p => p.Id == kill.KillerId);
@@ -105,21 +105,21 @@ namespace Gotcha.API.Controllers
 
             if (game == null)
             {
-                return NotFound();
+                return NotFound("Kill not found.");
             }
 
             var adminPlayer = game.Players.FirstOrDefault(p => p.Id == dto.AdminPlayerId);
 
             if (adminPlayer == null || !game.AdminIds.Contains(adminPlayer.Id))
             {
-                return Forbid();
+                return StatusCode(StatusCodes.Status403Forbidden, "You don't have permission to perform this action on the game.");
             }
 
             var kill = game.Kills.FirstOrDefault(k => k.Id == id);
 
             if (kill == null)
             {
-                return NotFound();
+                return NotFound("Kill not found.");
             }
 
             var killer = game.Players.FirstOrDefault(p => p.Id == kill.KillerId);

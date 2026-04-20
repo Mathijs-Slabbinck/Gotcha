@@ -378,3 +378,4 @@ info/reports/wireframes/images/
 secrets.json
 *.pem
 *.key
+.playwright-mcp/

@@ -245,7 +245,8 @@ Use `FontFamily="Alias"` in XAML (e.g., `FontFamily="RobotoSlab"`, not `Roboto_S
 - Services: `Services/` (interfaces: IUserService, IGameService, IPlayerService, IStoreService, IContactService)
 - API Services: `Services/Api/` (ApiUserService, ApiGameService, ApiPlayerService, ApiStoreService, ApiContactService)
 - Mock Services: `Services/Mock/` (MockUserService, MockGameService, MockPlayerService, MockStoreService, MockContactService)
-- Models: `Models/` (UserProfile, GameItem, PlayerHomeData, ConfirmKillData, AdminData, StoreState, KillItem, PlayerItem, AdminPlayerItem, AdminKillItem)
+- Models: `Models/` organised by role — `PageData/` (AdminData, ConfirmKillData, PlayerHomeData, StoreState, UserProfile), `Items/` (GameItem, KillItem, PlayerItem, AdminPlayerItem, AdminKillItem), `Forms/` (SignUpData), `Payloads/` (PlayerActionCommand, UpdateGameSettingsCommand — outgoing API request bodies)
+- Enums: `Enums/` (AdminPlayerCommandActions — picks Kick/ToggleAdmin/ToggleSpectator for the player-admin action sheet)
 - Shared Enums: use `Gotcha.Shared.Enums` (e.g., `Plan`) — MAUI references `Gotcha.Shared` for cross-boundary types
 - Routes: `Routes.cs` (all Shell route constants — use `Routes.SignIn`, not `"//SignIn"`)
 - Constants: `Constants/DevConstants.cs`

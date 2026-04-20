@@ -1,6 +1,9 @@
 using System.Net.Http.Json;
+using Gotcha.Maui.Enums;
 using Gotcha.Maui.Extensions;
-using Gotcha.Maui.Models;
+using Gotcha.Maui.Models.Items;
+using Gotcha.Maui.Models.PageData;
+using Gotcha.Maui.Models.Payloads;
 
 namespace Gotcha.Maui.Services.Api
 {
@@ -13,19 +16,27 @@ namespace Gotcha.Maui.Services.Api
             _httpClient = httpClientFactory.CreateClient("GotchaApi");
         }
 
-        public async Task<PlayerHomeData> GetPlayerHomeDataAsync(Guid playerId)
+        public async Task<(PlayerHomeData? Data, string? ErrorMessage)> GetPlayerHomeDataAsync(Guid playerId)
         {
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<PlayerHomeResponse>(
+                HttpResponseMessage httpResponse = await _httpClient.GetAsync(
                     $"api/players/{playerId}/home");
+
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    string? serverMessage = await httpResponse.Content.ReadJsonStringAsync();
+                    return (null, serverMessage ?? "Something went wrong. Please try again.");
+                }
+
+                PlayerHomeResponse? response = await httpResponse.Content.ReadFromJsonAsync<PlayerHomeResponse>();
 
                 if (response == null)
                 {
-                    return new PlayerHomeData();
+                    return (null, "No response from server.");
                 }
 
-                return new PlayerHomeData
+                PlayerHomeData data = new PlayerHomeData
                 {
                     IsAlive = response.IsAlive,
                     IsSpectator = response.IsSpectator,
@@ -66,27 +77,37 @@ namespace Gotcha.Maui.Services.Api
                         IsAlive = p.IsAlive
                     }).ToList()
                 };
+
+                return (data, null);
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"ApiPlayerService.GetPlayerHomeDataAsync failed: {ex.Message}");
-                return new PlayerHomeData();
+                return (null, "Could not reach the server. Please check your connection.");
             }
         }
 
-        public async Task<ConfirmKillData> GetConfirmKillDataAsync(Guid playerId)
+        public async Task<(ConfirmKillData? Data, string? ErrorMessage)> GetConfirmKillDataAsync(Guid playerId)
         {
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<ConfirmKillResponse>(
+                HttpResponseMessage httpResponse = await _httpClient.GetAsync(
                     $"api/players/{playerId}/confirmkill");
+
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    string? serverMessage = await httpResponse.Content.ReadJsonStringAsync();
+                    return (null, serverMessage ?? "Something went wrong. Please try again.");
+                }
+
+                ConfirmKillResponse? response = await httpResponse.Content.ReadFromJsonAsync<ConfirmKillResponse>();
 
                 if (response == null)
                 {
-                    return new ConfirmKillData();
+                    return (null, "No response from server.");
                 }
 
-                return new ConfirmKillData
+                ConfirmKillData data = new ConfirmKillData
                 {
                     TargetName = response.TargetName,
                     TargetUsername = response.TargetUsername,
@@ -96,44 +117,68 @@ namespace Gotcha.Maui.Services.Api
                     IsAssassinMode = response.IsAssassinMode,
                     ShowHunter = response.ShowHunter
                 };
+
+                return (data, null);
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"ApiPlayerService.GetConfirmKillDataAsync failed: {ex.Message}");
-                return new ConfirmKillData();
+                return (null, "Could not reach the server. Please check your connection.");
             }
         }
 
-        public async Task<string> GetPlayerUsernameAsync(Guid playerId)
+        public async Task<(string? Data, string? ErrorMessage)> GetPlayerUsernameAsync(Guid playerId)
         {
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<PlayerResponse>(
+                HttpResponseMessage httpResponse = await _httpClient.GetAsync(
                     $"api/players/{playerId}");
 
-                return response?.UserName ?? string.Empty;
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    string? serverMessage = await httpResponse.Content.ReadJsonStringAsync();
+                    return (null, serverMessage ?? "Something went wrong. Please try again.");
+                }
+
+                PlayerResponse? response = await httpResponse.Content.ReadFromJsonAsync<PlayerResponse>();
+
+                if (response == null)
+                {
+                    return (null, "No response from server.");
+                }
+
+                return (response.UserName ?? string.Empty, null);
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"ApiPlayerService.GetPlayerUsernameAsync failed: {ex.Message}");
-                return string.Empty;
+                return (null, "Could not reach the server. Please check your connection.");
             }
         }
 
-        public async Task<AdminData> GetAdminDataAsync(Guid playerId)
+        public async Task<(AdminData? Data, string? ErrorMessage)> GetAdminDataAsync(Guid playerId)
         {
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<AdminDataResponse>(
+                HttpResponseMessage httpResponse = await _httpClient.GetAsync(
                     $"api/players/{playerId}/admin");
+
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    string? serverMessage = await httpResponse.Content.ReadJsonStringAsync();
+                    return (null, serverMessage ?? "Something went wrong. Please try again.");
+                }
+
+                AdminDataResponse? response = await httpResponse.Content.ReadFromJsonAsync<AdminDataResponse>();
 
                 if (response == null)
                 {
-                    return new AdminData();
+                    return (null, "No response from server.");
                 }
 
-                return new AdminData
+                AdminData data = new AdminData
                 {
+                    GameId = response.GameId,
                     HasStarted = response.HasStarted,
                     GameName = response.GameName,
                     InviteLink = response.InviteLink,
@@ -178,11 +223,13 @@ namespace Gotcha.Maui.Services.Api
                         Moment = k.Moment
                     }).ToList()
                 };
+
+                return (data, null);
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"ApiPlayerService.GetAdminDataAsync failed: {ex.Message}");
-                return new AdminData();
+                return (null, "Could not reach the server. Please check your connection.");
             }
         }
 
@@ -222,20 +269,90 @@ namespace Gotcha.Maui.Services.Api
             }
         }
 
-        public async Task<bool> UpdatePlayerUsernameAsync(Guid playerId, string username)
+        public async Task<(bool Success, string? ErrorMessage)> PerformPlayerActionAsync(PlayerActionCommand command)
+        {
+            try
+            {
+                HttpResponseMessage response;
+
+                if (command.Action == AdminPlayerCommandActions.Kick)
+                {
+                    response = await _httpClient.DeleteAsync($"api/players/{command.PlayerId}");
+                }
+                else
+                {
+                    object patchDto;
+                    if (command.Action == AdminPlayerCommandActions.ToggleAdmin)
+                    {
+                        patchDto = new { IsAdmin = command.NewValue };
+                    }
+                    else
+                    {
+                        patchDto = new { IsSpectator = command.NewValue };
+                    }
+
+                    response = await _httpClient.PatchAsJsonAsync(
+                        $"api/players/{command.PlayerId}", patchDto);
+                }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return (true, null);
+                }
+
+                string? serverMessage = await response.Content.ReadJsonStringAsync();
+                return (false, serverMessage ?? "Something went wrong. Please try again.");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ApiPlayerService.PerformPlayerActionAsync failed: {ex.Message}");
+                return (false, "Could not reach the server. Please check your connection.");
+            }
+        }
+
+        public async Task<(bool Success, string? ErrorMessage)> CancelKillAsync(Guid killId, Guid adminPlayerId)
+        {
+            try
+            {
+                var dto = new { AdminPlayerId = adminPlayerId };
+                HttpResponseMessage response = await _httpClient.PostAsJsonAsync(
+                    $"api/kills/{killId}/reject", dto);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return (true, null);
+                }
+
+                string? serverMessage = await response.Content.ReadJsonStringAsync();
+                return (false, serverMessage ?? "Something went wrong. Please try again.");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ApiPlayerService.CancelKillAsync failed: {ex.Message}");
+                return (false, "Could not reach the server. Please check your connection.");
+            }
+        }
+
+        public async Task<(bool Success, string? ErrorMessage)> UpdatePlayerUsernameAsync(Guid playerId, string username)
         {
             try
             {
                 var dto = new { UserName = username };
-                var response = await _httpClient.PatchAsJsonAsync(
+                HttpResponseMessage response = await _httpClient.PatchAsJsonAsync(
                     $"api/players/{playerId}", dto);
 
-                return response.IsSuccessStatusCode;
+                if (response.IsSuccessStatusCode)
+                {
+                    return (true, null);
+                }
+
+                string? serverMessage = await response.Content.ReadJsonStringAsync();
+                return (false, serverMessage ?? "Something went wrong. Please try again.");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"ApiPlayerService.UpdatePlayerUsernameAsync failed: {ex.Message}");
-                return false;
+                return (false, "Could not reach the server. Please check your connection.");
             }
         }
 
@@ -245,6 +362,8 @@ namespace Gotcha.Maui.Services.Api
         {
             public Guid Id { get; set; }
             public string? UserName { get; set; }
+            public bool IsAdmin { get; set; }
+            public bool IsSpectator { get; set; }
         }
 
         private class PlayerHomeResponse
@@ -306,6 +425,7 @@ namespace Gotcha.Maui.Services.Api
 
         private class AdminDataResponse
         {
+            public Guid GameId { get; set; }
             public bool HasStarted { get; set; }
             public string GameName { get; set; } = string.Empty;
             public string InviteLink { get; set; } = string.Empty;

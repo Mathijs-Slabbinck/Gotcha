@@ -1,5 +1,5 @@
 using System.Net.Http.Json;
-using Gotcha.Maui.Models;
+using Gotcha.Maui.Models.PageData;
 using Gotcha.Shared.Constants;
 using Gotcha.Shared.Enums;
 

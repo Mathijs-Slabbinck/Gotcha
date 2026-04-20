@@ -11,8 +11,8 @@ namespace Gotcha.Maui.ViewModels
 
         private string usernameOrEmail = string.Empty;
         private string password = string.Empty;
-        private bool rememberMe = false;
-        private bool isPasswordVisible = false;
+        private bool rememberMe; // = false
+        private bool isPasswordVisible; // = false
 
 
         public string UsernameOrEmail

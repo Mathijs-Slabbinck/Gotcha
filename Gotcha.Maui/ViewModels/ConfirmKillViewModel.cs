@@ -14,8 +14,8 @@ namespace Gotcha.Maui.ViewModels
         private string weapon = string.Empty;
         private string hunterName = string.Empty;
         private string hunterUsername = string.Empty;
-        private bool isAssassinMode = false;
-        private bool showHunter = false;
+        private bool isAssassinMode; // = false
+        private bool showHunter; // = false
 
 
         public string TargetName
@@ -92,7 +92,14 @@ namespace Gotcha.Maui.ViewModels
                 IsBusy = true;
                 ErrorMessage = string.Empty;
 
-                var data = await _playerService.GetConfirmKillDataAsync(_sessionService.CurrentPlayerId);
+                var (data, error) = await _playerService.GetConfirmKillDataAsync(_sessionService.CurrentPlayerId);
+
+                if (data == null)
+                {
+                    ErrorMessage = error ?? "Something went wrong loading kill data.";
+                    IsBusy = false;
+                    return;
+                }
 
                 TargetName = data.TargetName;
                 TargetUsername = data.TargetUsername;

@@ -1,10 +1,11 @@
-using Gotcha.Maui.Models;
+using Gotcha.Maui.Models.Items;
+using Gotcha.Maui.Models.Payloads;
 
 namespace Gotcha.Maui.Services.Mock
 {
     public class MockGameService : IGameService
     {
-        public Task<IEnumerable<GameItem>> GetPendingGamesAsync()
+        public Task<(IEnumerable<GameItem>? Data, string? ErrorMessage)> GetPendingGamesAsync()
         {
             var games = new List<GameItem>
             {
@@ -26,10 +27,10 @@ namespace Gotcha.Maui.Services.Mock
                 }
             };
 
-            return Task.FromResult<IEnumerable<GameItem>>(games);
+            return Task.FromResult<(IEnumerable<GameItem>?, string?)>((games, null));
         }
 
-        public Task<IEnumerable<GameItem>> GetActiveGamesAsync()
+        public Task<(IEnumerable<GameItem>? Data, string? ErrorMessage)> GetActiveGamesAsync()
         {
             var games = new List<GameItem>
             {
@@ -45,10 +46,10 @@ namespace Gotcha.Maui.Services.Mock
                 }
             };
 
-            return Task.FromResult<IEnumerable<GameItem>>(games);
+            return Task.FromResult<(IEnumerable<GameItem>?, string?)>((games, null));
         }
 
-        public Task<IEnumerable<GameItem>> GetEndedGamesAsync()
+        public Task<(IEnumerable<GameItem>? Data, string? ErrorMessage)> GetEndedGamesAsync()
         {
             var games = new List<GameItem>
             {
@@ -66,12 +67,27 @@ namespace Gotcha.Maui.Services.Mock
                 }
             };
 
-            return Task.FromResult<IEnumerable<GameItem>>(games);
+            return Task.FromResult<(IEnumerable<GameItem>?, string?)>((games, null));
         }
 
-        public Task<bool> CreateGameAsync(string gameName)
+        public Task<(bool Success, string? ErrorMessage)> CreateGameAsync(string gameName)
         {
-            return Task.FromResult(true);
+            return Task.FromResult<(bool, string?)>((true, null));
+        }
+
+        public Task<(bool Success, string? ErrorMessage)> StartGameAsync(Guid gameId, Guid adminPlayerId)
+        {
+            return Task.FromResult<(bool, string?)>((true, null));
+        }
+
+        public Task<(bool Success, string? ErrorMessage)> EndGameAsync(Guid gameId, Guid adminPlayerId)
+        {
+            return Task.FromResult<(bool, string?)>((true, null));
+        }
+
+        public Task<(bool Success, string? ErrorMessage)> UpdateGameSettingsAsync(UpdateGameSettingsCommand command)
+        {
+            return Task.FromResult<(bool, string?)>((true, null));
         }
     }
 }

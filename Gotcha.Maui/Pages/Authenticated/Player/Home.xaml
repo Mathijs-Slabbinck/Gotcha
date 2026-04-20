@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:Gotcha.Maui.ViewModels"
-             xmlns:models="clr-namespace:Gotcha.Maui.Models"
+             xmlns:items="clr-namespace:Gotcha.Maui.Models.Items"
              x:DataType="viewmodels:PlayerHomeViewModel"
              x:Class="Gotcha.Maui.Pages.Authenticated.Player.Home"
              Title="Home"
@@ -21,6 +21,20 @@
                    FontFamily="Bungee"
                    Margin="0,0,0,25"
                    SemanticProperties.HeadingLevel="Level1" />
+
+            <!-- Error message -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    StrokeShape="RoundRectangle 8"
+                    StrokeThickness="0"
+                    Margin="20,0,20,15"
+                    Padding="10"
+                    IsVisible="{Binding ErrorMessage, Converter={StaticResource IsStringNotNullOrEmptyConverter}}">
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="{StaticResource Danger}"
+                       FontSize="14"
+                       HorizontalTextAlignment="Center"
+                       AutomationId="ErrorMessageLabel" />
+            </Border>
 
             <!-- Current Target card -->
             <Border BackgroundColor="{StaticResource CardBackground}"
@@ -327,7 +341,7 @@
 
                         <VerticalStackLayout BindableLayout.ItemsSource="{Binding Kills}" Spacing="0">
                             <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="models:KillItem">
+                                <DataTemplate x:DataType="items:KillItem">
                                     <Grid ColumnDefinitions="*,Auto,Auto" Padding="5,8" ColumnSpacing="10">
                                         <Label Grid.Column="0" Text="{Binding VictimName}" TextColor="{StaticResource Gray900}" FontSize="13" LineBreakMode="TailTruncation" />
                                         <Label Grid.Column="1" Text="{Binding Weapon}" TextColor="{StaticResource Gray600}" FontSize="12" WidthRequest="70" />
@@ -387,7 +401,7 @@
 
                         <VerticalStackLayout BindableLayout.ItemsSource="{Binding Players}" Spacing="0">
                             <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="models:PlayerItem">
+                                <DataTemplate x:DataType="items:PlayerItem">
                                     <Grid ColumnDefinitions="*,*,Auto" Padding="5,8" ColumnSpacing="10">
                                         <Label Grid.Column="0" Text="{Binding Name}" TextColor="{StaticResource Gray900}" FontSize="13" LineBreakMode="TailTruncation" />
                                         <Label Grid.Column="1" Text="{Binding OtherName}" TextColor="{StaticResource Gray600}" FontSize="13" LineBreakMode="TailTruncation" />

@@ -1,10 +1,12 @@
-using Gotcha.Maui.Models;
+using Gotcha.Maui.Models.Items;
+using Gotcha.Maui.Models.PageData;
+using Gotcha.Maui.Models.Payloads;
 
 namespace Gotcha.Maui.Services.Mock
 {
     public class MockPlayerService : IPlayerService
     {
-        public Task<PlayerHomeData> GetPlayerHomeDataAsync(Guid playerId)
+        public Task<(PlayerHomeData? Data, string? ErrorMessage)> GetPlayerHomeDataAsync(Guid playerId)
         {
             var data = new PlayerHomeData
             {
@@ -57,10 +59,10 @@ namespace Gotcha.Maui.Services.Mock
                 }
             };
 
-            return Task.FromResult(data);
+            return Task.FromResult<(PlayerHomeData?, string?)>((data, null));
         }
 
-        public Task<ConfirmKillData> GetConfirmKillDataAsync(Guid playerId)
+        public Task<(ConfirmKillData? Data, string? ErrorMessage)> GetConfirmKillDataAsync(Guid playerId)
         {
             var data = new ConfirmKillData
             {
@@ -73,18 +75,19 @@ namespace Gotcha.Maui.Services.Mock
                 ShowHunter = true
             };
 
-            return Task.FromResult(data);
+            return Task.FromResult<(ConfirmKillData?, string?)>((data, null));
         }
 
-        public Task<string> GetPlayerUsernameAsync(Guid playerId)
+        public Task<(string? Data, string? ErrorMessage)> GetPlayerUsernameAsync(Guid playerId)
         {
-            return Task.FromResult("AlphaWolf");
+            return Task.FromResult<(string?, string?)>(("AlphaWolf", null));
         }
 
-        public Task<AdminData> GetAdminDataAsync(Guid playerId)
+        public Task<(AdminData? Data, string? ErrorMessage)> GetAdminDataAsync(Guid playerId)
         {
             var data = new AdminData
             {
+                GameId = Guid.NewGuid(),
                 HasStarted = false,
                 GameName = "Friday Night Gotcha",
                 InviteLink = "https://gotcha.app/join/abc123",
@@ -136,7 +139,7 @@ namespace Gotcha.Maui.Services.Mock
                 }
             };
 
-            return Task.FromResult(data);
+            return Task.FromResult<(AdminData?, string?)>((data, null));
         }
 
         public Task<(bool Success, string? ErrorMessage)> ConfirmKillAsync(Guid playerId)
@@ -154,9 +157,19 @@ namespace Gotcha.Maui.Services.Mock
             return Task.FromResult<(bool, string?)>((true, null));
         }
 
-        public Task<bool> UpdatePlayerUsernameAsync(Guid playerId, string username)
+        public Task<(bool Success, string? ErrorMessage)> PerformPlayerActionAsync(PlayerActionCommand command)
         {
-            return Task.FromResult(true);
+            return Task.FromResult<(bool, string?)>((true, null));
+        }
+
+        public Task<(bool Success, string? ErrorMessage)> CancelKillAsync(Guid killId, Guid adminPlayerId)
+        {
+            return Task.FromResult<(bool, string?)>((true, null));
+        }
+
+        public Task<(bool Success, string? ErrorMessage)> UpdatePlayerUsernameAsync(Guid playerId, string username)
+        {
+            return Task.FromResult<(bool, string?)>((true, null));
         }
     }
 }

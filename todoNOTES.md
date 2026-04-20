@@ -4,6 +4,22 @@ Things that came up during work but were too fuzzy or out-of-scope to fix on the
 
 ---
 
+## `CancelKillAsync` lives on `IPlayerService` — should move to a future `IKillService`
+
+**Current state:**
+Wiring up the Player Admin page required a way to reject a pending kill (`POST api/kills/{id}/reject`). Rather than introduce a new service for a single method, `CancelKillAsync(Guid killId, Guid adminPlayerId)` was parked on `IPlayerService` / `ApiPlayerService` / `MockPlayerService`.
+
+**Why this is a to-do:**
+Kills are their own aggregate (`KillsController` on the API side), and other kill-related calls may appear later (e.g. validating a kill from an admin view, undoing a confirmed kill, listing historic kills). When a second kill-only method shows up, split them into a dedicated `IKillService` + `ApiKillService` + `MockKillService` and move `CancelKillAsync` there. Until then, leaving it on the player service is the cheaper option.
+
+**Files to revisit:**
+- `Gotcha.Maui/Services/IPlayerService.cs`
+- `Gotcha.Maui/Services/Api/ApiPlayerService.cs`
+- `Gotcha.Maui/Services/Mock/MockPlayerService.cs`
+- `Gotcha.Maui/ViewModels/PlayerAdminViewModel.cs` (caller — rebind to the new service when it's created)
+
+---
+
 ## Shell tab-switch staleness in Player ViewModels
 
 **Symptom (theoretical — needs on-device verification):**
