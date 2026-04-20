@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.3">
       <PrivateAssets>all</PrivateAssets>
@@ -22,10 +23,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gotcha.Core\Gotcha.Core.csproj" />
+    <ProjectReference Include="..\Gotcha.Shared\Gotcha.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\User\ViewModels\" />
     <Folder Include="ViewModels\BaseViewModels\" />
   </ItemGroup>
 

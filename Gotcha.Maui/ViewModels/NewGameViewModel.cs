@@ -1,9 +1,9 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+using Gotcha.Maui.ViewModels.BaseViewModels;
 using System.Windows.Input;
 
 namespace Gotcha.Maui.ViewModels
 {
-    public class NewGameViewModel : ObservableObject
+    public class NewGameViewModel : PageBaseViewModel
     {
         private string gameName = string.Empty;
         public string GameName
@@ -167,20 +167,6 @@ namespace Gotcha.Maui.ViewModels
         {
             get { return timedKillsUnlocked; }
             set { SetProperty(ref timedKillsUnlocked, value); }
-        }
-
-        private string errorMessage = string.Empty;
-        public string ErrorMessage
-        {
-            get { return errorMessage; }
-            set { SetProperty(ref errorMessage, value); }
-        }
-
-        private bool isBusy;
-        public bool IsBusy
-        {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
         }
 
         public ICommand CreateGameCommand { get; }

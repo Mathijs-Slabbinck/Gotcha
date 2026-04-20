@@ -1,61 +1,42 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+using Gotcha.Maui.Services;
+using Gotcha.Maui.ViewModels.BaseViewModels;
 using System.Windows.Input;
 
 namespace Gotcha.Maui.ViewModels
 {
-    public class SignInViewModel : ObservableObject
+    public class SignInViewModel : PageBaseViewModel
     {
+        private readonly IAuthService _authService;
+        private readonly SessionService _sessionService;
+
         private string usernameOrEmail = string.Empty;
+        private string password = string.Empty;
+        private bool rememberMe = false;
+        private bool isPasswordVisible = false;
+
+
         public string UsernameOrEmail
         {
             get { return usernameOrEmail; }
             set { SetProperty(ref usernameOrEmail, value); }
         }
 
-        private string password = string.Empty;
         public string Password
         {
             get { return password; }
             set { SetProperty(ref password, value); }
         }
 
-        private bool rememberMe;
         public bool RememberMe
         {
             get { return rememberMe; }
             set { SetProperty(ref rememberMe, value); }
         }
 
-        private bool isPasswordVisible;
         public bool IsPasswordVisible
         {
             get { return isPasswordVisible; }
-            set
-            {
-                if (SetProperty(ref isPasswordVisible, value))
-                {
-                    OnPropertyChanged(nameof(EyeIconSource));
-                }
-            }
-        }
-
-        public string EyeIconSource
-        {
-            get { return IsPasswordVisible ? "eye_open.svg" : "eye_closed.svg"; }
-        }
-
-        private string errorMessage = string.Empty;
-        public string ErrorMessage
-        {
-            get { return errorMessage; }
-            set { SetProperty(ref errorMessage, value); }
-        }
-
-        private bool isBusy;
-        public bool IsBusy
-        {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
+            set { SetProperty(ref isPasswordVisible, value); }
         }
 
         public ICommand SignInCommand { get; }
@@ -63,8 +44,11 @@ namespace Gotcha.Maui.ViewModels
         public ICommand ForgotPasswordCommand { get; }
         public ICommand SignUpCommand { get; }
 
-        public SignInViewModel()
+        public SignInViewModel(IAuthService authService, SessionService sessionService)
         {
+            _authService = authService;
+            _sessionService = sessionService;
+
             SignInCommand = new Command(ExecuteSignInCommand);
             TogglePasswordVisibilityCommand = new Command(ExecuteTogglePasswordVisibility);
             ForgotPasswordCommand = new Command(ExecuteForgotPasswordCommand);
@@ -85,22 +69,30 @@ namespace Gotcha.Maui.ViewModels
 
                 IsBusy = true;
 
-                try
+                (Guid? userId, string? error) = await _authService.SignInAsync(UsernameOrEmail, Password);
+
+                if (error != null)
                 {
-                    await Shell.Current.DisplayAlertAsync(
-                        "Not yet implemented",
-                        "Sign-in functionality is not yet available.",
-                        "OK");
+                    ErrorMessage = error;
                 }
-                finally
+                else if (userId != null)
                 {
-                    IsBusy = false;
+                    _sessionService.SetUser(userId.Value);
+
+                    if (RememberMe)
+                    {
+                        await SecureStorage.SetAsync("userId", userId.Value.ToString());
+                    }
+
+                    ((AppShell)Shell.Current).SwitchToUserTabBar();
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = "Something went wrong. Please try again.";
             }
+
+            IsBusy = false;
         }
 
         private void ExecuteTogglePasswordVisibility()
@@ -112,11 +104,11 @@ namespace Gotcha.Maui.ViewModels
         {
             try
             {
-                await Shell.Current.GoToAsync("ResetPassword");
+                await Shell.Current.GoToAsync(Routes.ResetPassword);
             }
-            catch (Exception ex)
+            catch
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = "Something went wrong. Please try again.";
             }
         }
 
@@ -124,11 +116,11 @@ namespace Gotcha.Maui.ViewModels
         {
             try
             {
-                await Shell.Current.GoToAsync("//SignUp");
+                await Shell.Current.GoToAsync(Routes.SignUp);
             }
-            catch (Exception ex)
+            catch
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = "Something went wrong. Please try again.";
             }
         }
     }

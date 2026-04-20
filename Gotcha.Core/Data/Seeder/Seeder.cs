@@ -1,19 +1,16 @@
 using Gotcha.Core.Entities.Models;
 using Gotcha.Core.Enums;
+using Gotcha.Shared.Constants;
+using Gotcha.Shared.Enums;
 
 namespace Gotcha.Core.Data.Seeder
 {
     public class Seeder
     {
-        // Fixed GUIDs so the API and MAUI can reference known test users/players
-        public static readonly Guid TestUserId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
-        public static readonly Guid TestUser2Id = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb");
-        public static readonly Guid TestUser3Id = Guid.Parse("cccccccc-cccc-cccc-cccc-cccccccccccc");
-
         public static async Task SeedAsync(GotchaDbContext context)
         {
             // Don't seed if data already exists
-            if (context.GotchaUsers.Any()) return;
+            if (context.Users.Any()) return;
 
             #region Users
 
@@ -23,8 +20,8 @@ namespace Gotcha.Core.Data.Seeder
             string[] emails =       { "john.doe@example.com", "jane.dane@example.com", "alice.vandenbosche@example.com", "tom.aat@example.com", "tamara.smith@example.com", "johnny.kartonnie@example.com", "jeremy.devries@example.com", "hakim.sharifi@example.com", "jiminy.jaxon@example.com", "jefried.samson@example.com" };
             DateTime[] birthDates = { new(1990, 1, 1), new(1992, 2, 2), new(1994, 1, 3), new(1996, 2, 5), new(1998, 6, 7), new(1969, 6, 9), new(1978, 7, 1), new(2000, 1, 3), new(1998, 3, 7), new(2001, 2, 9) };
 
-            // Fixed GUIDs for the first 3 users so they can be referenced by DevConstants
-            Guid[] fixedIds = { TestUserId, TestUser2Id, TestUser3Id };
+            // Fixed GUIDs for the first 3 users (defined in DevConstants so API and MAUI can reference them)
+            Guid[] fixedIds = { DevConstants.TestUserId, DevConstants.TestUser2Id, DevConstants.TestUser3Id };
 
             if (!(firstNames.Length == lastNames.Length &&
                  lastNames.Length == userNames.Length &&
@@ -56,7 +53,7 @@ namespace Gotcha.Core.Data.Seeder
                 users.Add(user);
             }
 
-            context.GotchaUsers.AddRange(users);
+            context.Users.AddRange(users);
             await context.SaveChangesAsync();
 
             #endregion

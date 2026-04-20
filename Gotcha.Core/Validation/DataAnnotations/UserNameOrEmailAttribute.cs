@@ -1,3 +1,6 @@
+// Currently unused — login was changed to email-only (usernames are no longer unique for users).
+// Kept in case a future feature needs combined username/email validation.
+
 using System.ComponentModel.DataAnnotations;
 using Gotcha.Core.Services.ValidationServices;
 

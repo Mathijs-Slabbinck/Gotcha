@@ -1,8 +1,8 @@
 "use strict";
 
-var ALLOWED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp"];
-var MAX_FILE_SIZE_MB = 5;
-var MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+const ALLOWED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp"];
+const MAX_FILE_SIZE_MB = 5;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
 function validateImageFile(file) {
     if (!file) {
@@ -10,10 +10,10 @@ function validateImageFile(file) {
     }
 
     // Check file extension
-    var fileName = file.name.toLowerCase();
-    var hasValidExtension = false;
+    const fileName = file.name.toLowerCase();
+    let hasValidExtension = false;
 
-    for (var i = 0; i < ALLOWED_EXTENSIONS.length; i++) {
+    for (let i = 0; i < ALLOWED_EXTENSIONS.length; i++) {
         if (fileName.endsWith(ALLOWED_EXTENSIONS[i])) {
             hasValidExtension = true;
             break;
@@ -29,7 +29,7 @@ function validateImageFile(file) {
 
     // Check file size
     if (file.size > MAX_FILE_SIZE_BYTES) {
-        var fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
+        const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
         return {
             isValid: false,
             errorMessage: `This image is too large (${fileSizeMB} MB). The maximum file size is ${MAX_FILE_SIZE_MB} MB.`

@@ -1,9 +1,9 @@
-using CommunityToolkit.Mvvm.ComponentModel;
 using Gotcha.Maui.Services;
+using Gotcha.Maui.ViewModels.BaseViewModels;
 
 namespace Gotcha.Maui.ViewModels
 {
-    public class HomeViewModel : ObservableObject
+    public class HomeViewModel : PageBaseViewModel
     {
         private readonly IUserService userService;
 
@@ -47,20 +47,6 @@ namespace Gotcha.Maui.ViewModels
         {
             get { return accountCreated; }
             set { SetProperty(ref accountCreated, value); }
-        }
-
-        private bool isBusy;
-        public bool IsBusy
-        {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
-        }
-
-        private string errorMessage = string.Empty;
-        public string ErrorMessage
-        {
-            get { return errorMessage; }
-            set { SetProperty(ref errorMessage, value); }
         }
 
         public HomeViewModel(IUserService userService)

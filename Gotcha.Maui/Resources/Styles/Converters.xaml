@@ -17,5 +17,8 @@
     <toolkit:BoolToObjectConverter x:Key="YesNoTextConverter"
         TrueObject="Yes"
         FalseObject="No" />
+    <toolkit:BoolToObjectConverter x:Key="PasswordVisibilityIconConverter"
+        TrueObject="eye_open.svg"
+        FalseObject="eye_closed.svg" />
 
 </ResourceDictionary>

@@ -354,5 +354,12 @@ namespace Gotcha.Core.Services.Repository
 
             return resultModel;
         }
+
+        public async Task<bool> DoesItExist(Guid id)
+        {
+            bool doesItExist = await _gotchaDbContext.Logs.AnyAsync(l => l.Id == id);
+
+            return doesItExist;
+        }
     }
 }

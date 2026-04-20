@@ -1,4 +1,5 @@
 using Gotcha.Core.Enums;
+using Gotcha.Shared.Enums;
 
 namespace Gotcha.Web.Areas.User.ViewModels
 {
@@ -15,5 +16,8 @@ namespace Gotcha.Web.Areas.User.ViewModels
 
         // Current subscription plan
         public Plan CurrentPlan { get; set; }
+
+        // PayPal client ID (for JS SDK)
+        public string PayPalClientId { get; set; } = string.Empty;
     }
 }

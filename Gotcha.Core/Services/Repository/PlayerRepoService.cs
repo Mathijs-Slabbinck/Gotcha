@@ -231,5 +231,12 @@ namespace Gotcha.Core.Services.Repository
             await _logRepoService.HandleAddingResultModelToLoggerAsync(resultModel, Guid.NewGuid());
             return resultModel;
         }
+
+        public async Task<bool> DoesItExist(Guid id)
+        {
+            bool doesItExist = await _gotchaDbContext.Players.AnyAsync(p => p.Id == id);
+
+            return doesItExist;
+        }
     }
 }

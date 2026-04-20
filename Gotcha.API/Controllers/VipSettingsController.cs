@@ -1,6 +1,7 @@
 using Gotcha.API.Dtos.VipSettings;
 using Gotcha.Core.Data;
 using Gotcha.Core.Enums;
+using Gotcha.Shared.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +22,7 @@ namespace Gotcha.API.Controllers
         [HttpGet("{userId:guid}")]
         public async Task<IActionResult> GetByUserId(Guid userId)
         {
-            var user = await _context.GotchaUsers
+            var user = await _context.Users
                 .Include(u => u.VipSettings)
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
@@ -56,7 +57,7 @@ namespace Gotcha.API.Controllers
         [HttpPatch("{userId:guid}")]
         public async Task<IActionResult> Patch(Guid userId, [FromBody] UpdateVipSettingsDto dto)
         {
-            var user = await _context.GotchaUsers
+            var user = await _context.Users
                 .Include(u => u.VipSettings)
                 .FirstOrDefaultAsync(u => u.Id == userId);
 

@@ -1,5 +1,6 @@
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Processing;
 
 namespace Gotcha.Core.Services.ValidationServices
 {
@@ -38,7 +39,12 @@ namespace Gotcha.Core.Services.ValidationServices
         // --- Profile Image File Validation ---
 
         // 8 MB max file size
-        internal const long MaxImageSizeInBytes = 8 * 1024 * 1024;
+        public const long MaxImageSizeInBytes = 8 * 1024 * 1024;
+
+        // Dimension limits for uploaded images
+        public const int MinImageDimension = 200;
+        public const int MaxImageDimension = 5000;
+        public const int ProfileImageSize = 1500;
 
         private static readonly HashSet<string> AllowedImageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
@@ -58,7 +64,7 @@ namespace Gotcha.Core.Services.ValidationServices
         /// <summary>
         /// Checks if the file extension is one of the allowed image types (.jpg, .jpeg, .png, .webp).
         /// </summary>
-        internal static bool IsAllowedFileExtension(string fileName)
+        public static bool IsAllowedFileExtension(string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName))
                 return false;
@@ -70,7 +76,7 @@ namespace Gotcha.Core.Services.ValidationServices
         /// <summary>
         /// Checks if the MIME type is one of the allowed image types (image/jpeg, image/png, image/webp).
         /// </summary>
-        internal static bool IsAllowedMimeType(string contentType)
+        public static bool IsAllowedMimeType(string contentType)
         {
             if (string.IsNullOrWhiteSpace(contentType))
                 return false;
@@ -81,7 +87,7 @@ namespace Gotcha.Core.Services.ValidationServices
         /// <summary>
         /// Checks if the file size is within the allowed limit (5 MB).
         /// </summary>
-        internal static bool IsAllowedFileSize(long fileSize)
+        public static bool IsAllowedFileSize(long fileSize)
         {
             return fileSize > 0 && fileSize <= MaxImageSizeInBytes;
         }
@@ -95,7 +101,7 @@ namespace Gotcha.Core.Services.ValidationServices
         ///   PNG:  starts with 89 50 4E 47
         ///   WEBP: starts with 52 49 46 46 (RIFF), then bytes 8-11 are 57 45 42 50 (WEBP)
         /// </summary>
-        internal static bool HasValidImageSignature(byte[] fileHeader, string fileName)
+        public static bool HasValidImageSignature(byte[] fileHeader, string fileName)
         {
             if (fileHeader == null || fileHeader.Length < 12)
                 return false;
@@ -142,6 +148,29 @@ namespace Gotcha.Core.Services.ValidationServices
         }
 
         /// <summary>
+        /// Checks if the image dimensions are within the allowed range.
+        /// Returns (isValid, width, height) so the caller can use the dimensions without loading the image again.
+        /// </summary>
+        public static (bool IsValid, int Width, int Height) ValidateImageDimensions(Stream inputStream)
+        {
+            // Identify reads only the image header — much cheaper than loading the full image
+            ImageInfo? imageInfo = Image.Identify(inputStream);
+
+            if (imageInfo == null)
+            {
+                return (false, 0, 0);
+            }
+
+            int width = imageInfo.Width;
+            int height = imageInfo.Height;
+
+            bool isTooSmall = width < MinImageDimension || height < MinImageDimension;
+            bool isTooLarge = width > MaxImageDimension || height > MaxImageDimension;
+
+            return (!isTooSmall && !isTooLarge, width, height);
+        }
+
+        /// <summary>
         /// Re-encodes the uploaded image as JPEG using ImageSharp.
         /// This is the final safety net: it strips all EXIF/GPS metadata and proves
         /// the file is a real image (ImageSharp will throw if it can't decode it).
@@ -164,6 +193,32 @@ namespace Gotcha.Core.Services.ValidationServices
             }
 
             // Reset position so the caller can read from the start
+            outputStream.Position = 0;
+            return outputStream;
+        }
+
+        /// <summary>
+        /// Resizes the image to 1500x1500 and re-encodes as JPEG.
+        /// The image should already be cropped to a square by the frontend.
+        /// If not perfectly square, it resizes to fit 1500x1500 (may stretch slightly).
+        /// Strips all metadata (EXIF, GPS, etc.) as a side effect of re-encoding.
+        /// </summary>
+        public static MemoryStream ResizeAndReEncodeImage(Stream inputStream)
+        {
+            var outputStream = new MemoryStream();
+
+            using (Image image = Image.Load(inputStream))
+            {
+                image.Mutate(x => x.Resize(ProfileImageSize, ProfileImageSize));
+
+                var encoder = new JpegEncoder
+                {
+                    Quality = 85
+                };
+
+                image.Save(outputStream, encoder);
+            }
+
             outputStream.Position = 0;
             return outputStream;
         }

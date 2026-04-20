@@ -1,4 +1,4 @@
-﻿@{
+@{
 	ViewData["Title"] = "Home";
 }
 
@@ -6,21 +6,21 @@
 
 <h1 class="fw-bold font-bungee text-center mb-5 typeWriter">Welcome</h1>
 
-<p class="d-none" id="username">Welcome TheLegend27</p>
+<p class="d-none" id="username">Welcome @ViewBag.UserName</p>
 
 	<div class="row justify-content-center">
 		<div class="col-10 glowingCard formBg">
 			<div class="row justify-content-between">
 				<div class="col-11 col-lg-3 justify-content-center d-flex mx-auto">
-					<img class="card-img img-fluid glowingCard rounded-circle playerImage my-5" src="~/images/male-placeholder.png" alt="Male image placeholder" />
+					<img class="card-img img-fluid glowingCard rounded-circle playerImage my-5" src="@ViewBag.ProfileImageSource" alt="Profile image" />
 				</div>
 				<div class="col-12 col-lg-8 border-start d-flex align-items-center playerStats">
 					<ul class="row">
-						<li class="col-12 my-1">Games Played:</li>
-						<li class="col-12 my-1">Games Won:</li>
-						<li class="col-12 my-1">Total Kills:</li>
-						<li class="col-12 my-1">Biggest Kill Streak:</li>
-						<li class="col-12 my-1">Account Created:</li>
+						<li class="col-12 my-1">Games Played: @ViewBag.GamesPlayed</li>
+						<li class="col-12 my-1">Games Won: @ViewBag.GamesWon</li>
+						<li class="col-12 my-1">Total Kills: @ViewBag.TotalKills</li>
+						<li class="col-12 my-1">Biggest Kill Streak: @ViewBag.BiggestKillStreak</li>
+						<li class="col-12 my-1">Account Created: @ViewBag.AccountCreated</li>
 					</ul>
 				</div>
 			</div>

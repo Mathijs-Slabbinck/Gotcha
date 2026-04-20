@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using Gotcha.Maui.Extensions;
 using Gotcha.Maui.Models;
 
 namespace Gotcha.Maui.Services.Api
@@ -185,19 +186,40 @@ namespace Gotcha.Maui.Services.Api
             }
         }
 
-        public Task<bool> ConfirmKillAsync(Guid playerId)
+        public Task<(bool Success, string? ErrorMessage)> ConfirmKillAsync(Guid playerId)
         {
-            throw new NotImplementedException("Kill confirmation endpoint not yet wired up.");
+            return PostBodylessAsync($"api/players/{playerId}/confirmkill");
         }
 
-        public Task<bool> ConfirmDeathAsync(Guid playerId)
+        public Task<(bool Success, string? ErrorMessage)> ConfirmDeathAsync(Guid playerId)
         {
-            throw new NotImplementedException("Death confirmation endpoint not yet wired up.");
+            return PostBodylessAsync($"api/players/{playerId}/confirmdeath");
         }
 
-        public Task<bool> ConfirmHunterKillAsync(Guid playerId)
+        public Task<(bool Success, string? ErrorMessage)> ConfirmHunterKillAsync(Guid playerId)
         {
-            throw new NotImplementedException("Hunter kill confirmation endpoint not yet wired up.");
+            return PostBodylessAsync($"api/players/{playerId}/confirmhunterkill");
+        }
+
+        private async Task<(bool Success, string? ErrorMessage)> PostBodylessAsync(string endpoint)
+        {
+            try
+            {
+                HttpResponseMessage response = await _httpClient.PostAsync(endpoint, null);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return (true, null);
+                }
+
+                string? serverMessage = await response.Content.ReadJsonStringAsync();
+                return (false, serverMessage ?? "Something went wrong. Please try again.");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ApiPlayerService POST {endpoint} failed: {ex.Message}");
+                return (false, "Could not reach the server. Please check your connection.");
+            }
         }
 
         public async Task<bool> UpdatePlayerUsernameAsync(Guid playerId, string username)

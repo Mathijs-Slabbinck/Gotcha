@@ -1,6 +1,65 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
+@{
+	ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<h1 class="fw-bold font-bungee text-center mb-5">Privacy Policy</h1>
+
+<div class="row justify-content-center">
+	<div class="col-11">
+		<div class="text-center row justify-content-center glowingCard">
+			<div class="col-11 text-white font-roboto">
+				<h2 class="font-robotoSlab fw-bold mt-4 mb-3 color-2">Our Promise</h2>
+				<p>Your privacy matters to us. We only collect what we truly need, we never share your data with third parties, and when you delete something, it is actually deleted. No tricks, no fine print.</p>
+
+				<h2 class="font-robotoSlab fw-bold mt-5 mb-3 color-2">What We Collect and Why</h2>
+
+				<h3 class="font-robotoSlab fw-bold mt-3 mb-2 fs-5 color-2">First and Last Name</h3>
+				<p>Used to display your name in game (unless disabled by the game admin). Never shared outside the app.</p>
+
+				<h3 class="font-robotoSlab fw-bold mt-3 mb-2 fs-5 color-2">Username</h3>
+				<p>Shown in game when real names are disabled. This is your public identity within the app.</p>
+
+				<h3 class="font-robotoSlab fw-bold mt-3 mb-2 fs-5 color-2">Email Address</h3>
+				<p>Used for account verification and password resets. We will not send you marketing emails or newsletters.</p>
+
+				<h3 class="font-robotoSlab fw-bold mt-3 mb-2 fs-5 color-2">Password</h3>
+				<p>Your password is encrypted (hashed) before being stored. We never see or store your actual password. We recommend using a unique password for extra safety.</p>
+
+				<h3 class="font-robotoSlab fw-bold mt-3 mb-2 fs-5 color-2">Birthday</h3>
+				<p>If the game admin enables it, your age may be shown in game so players have a better idea of their target. Also used to determine if guardian consent is required.</p>
+
+				<h3 class="font-robotoSlab fw-bold mt-3 mb-2 fs-5 color-2">Gender</h3>
+				<p>Used for a default profile template when images are disabled, and optionally shown in game so players can identify their target.</p>
+
+				<h3 class="font-robotoSlab fw-bold mt-3 mb-2 fs-5 color-2">Profile Picture</h3>
+				<p>Optional. If enabled (on by default), your photo is shown in game so players know what their target looks like. You can remove it at any time.</p>
+
+				<h3 class="font-robotoSlab fw-bold mt-3 mb-2 fs-5 color-2">Parent/Guardian Email</h3>
+				<p>Only collected if you are under 16. Required by law (GDPR) to protect younger users. We contact your parent or guardian to confirm your account.</p>
+
+				<h2 class="font-robotoSlab fw-bold mt-5 mb-3 color-2">Cookies and Sessions</h2>
+				<p>We use a single session cookie to keep you logged in. This cookie is essential for the app to work and does not track you. We do not use advertising or analytics cookies.</p>
+
+				<h2 class="font-robotoSlab fw-bold mt-5 mb-3 color-2">Security Logging</h2>
+				<p>To protect our users, we log certain security-related data when suspicious activity is detected (such as unauthorized access attempts). This may include IP address, browser info, and the page visited. This data is only used for security purposes and is never shared.</p>
+
+				<h2 class="font-robotoSlab fw-bold mt-5 mb-3 color-2">Data Sharing</h2>
+				<p>We do not sell, rent, or share your personal data with any third party. Your data stays within the app, period.</p>
+
+				<h2 class="font-robotoSlab fw-bold mt-5 mb-3 color-2">Your Rights</h2>
+				<p>Under GDPR, you have the right to:</p>
+				<ul class="text-start d-inline-block mb-3">
+					<li>Access the personal data we have about you</li>
+					<li>Correct any inaccurate data</li>
+					<li>Request deletion of your account and all associated data</li>
+					<li>Download a copy of your data</li>
+					<li>Object to how your data is used</li>
+				</ul>
+				<p>To exercise any of these rights, reach out via our <a asp-controller="Contact" asp-action="Index">contact page</a>.</p>
+
+				<h2 class="font-robotoSlab fw-bold mt-5 mb-3 color-2">Data Deletion</h2>
+				<p class="mb-4">When you delete your account, your data is permanently removed from our systems. We do not keep hidden backups of deleted accounts. Deleted means deleted.</p>
+			</div>
+		</div>
+	</div>
+</div>

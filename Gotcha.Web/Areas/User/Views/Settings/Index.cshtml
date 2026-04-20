@@ -1,3 +1,6 @@
+@using Gotcha.Web.Areas.User.ViewModels
+@model UserSettingsViewModel
+
 @{
 	ViewData["Title"] = "User Settings";
 }
@@ -10,7 +13,13 @@
 		<p class="infoIcon settingsInfoIcon" data-title="User Settings" data-info="These are your account-wide settings. Changes here will apply to your profile across all games.">&#9432;</p>
 	</div>
 
-	<form class="card glowingCard col-11 mx-auto formBg mb-5">
+	@if (TempData["SuccessMessage"] != null)
+	{
+		<div class="alert alert-success text-center col-8 mx-auto mb-4">@TempData["SuccessMessage"]</div>
+	}
+
+	<form asp-action="Index" method="post" class="card glowingCard col-11 mx-auto formBg mb-5">
+		@Html.AntiForgeryToken()
 		<div class="card-header row">
 			<div class="col-12 d-flex justify-content-center">
 				<h2 class="text-center font-robotoSlab fw-bold mt-2 color-2 pt-2 pd-1">EDIT PROFILE</h2>
@@ -19,36 +28,41 @@
 		<div class="card-body row mt-5 py-2">
 			<div class="col-12 col-lg-6">
 				<div class="row justify-content-center form-group">
-					<label class="col-9 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="settingsFirstNameInput">First Name:</label>
-					<input class="col-9" id="settingsFirstNameInput" type="text" placeholder="John" required />
+					<label class="col-9 fw-bold color-2 mb-2 fs-6 font-roboto p-0" asp-for="FirstName">First Name:</label>
+					<input class="col-9" asp-for="FirstName" type="text" placeholder="John" required />
+					<span asp-validation-for="FirstName" class="text-danger col-9 p-0"></span>
 				</div>
 			</div>
 			<div class="col-12 col-lg-6 mt-lg-0 mt-2">
 				<div class="row justify-content-center form-group">
-					<label class="col-9 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="settingsLastNameInput">Last Name:</label>
-					<input class="col-9" id="settingsLastNameInput" type="text" placeholder="Doe" required />
+					<label class="col-9 fw-bold color-2 mb-2 fs-6 font-roboto p-0" asp-for="LastName">Last Name:</label>
+					<input class="col-9" asp-for="LastName" type="text" placeholder="Doe" required />
+					<span asp-validation-for="LastName" class="text-danger col-9 p-0"></span>
 				</div>
 			</div>
 		</div>
 		<div class="card-body row py-2">
 			<div class="col-12 col-lg-6">
 				<div class="row justify-content-center form-group">
-					<label class="col-9 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="settingsUsernameInput">Username:</label>
-					<input class="col-9" id="settingsUsernameInput" type="text" placeholder="TheLegend27" required />
+					<label class="col-9 fw-bold color-2 mb-2 fs-6 font-roboto p-0" asp-for="UserName">Username:</label>
+					<input class="col-9" asp-for="UserName" type="text" placeholder="TheLegend27" required />
+					<span asp-validation-for="UserName" class="text-danger col-9 p-0"></span>
 				</div>
 			</div>
 			<div class="col-12 col-lg-6">
 				<div class="row justify-content-center form-group">
-					<label class="col-9 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="settingsEmailInput">Email Address:</label>
-					<input class="col-9" id="settingsEmailInput" type="text" placeholder="john.doe@example.com" required />
+					<label class="col-9 fw-bold color-2 mb-2 fs-6 font-roboto p-0" asp-for="Email">Email Address:</label>
+					<input class="col-9" asp-for="Email" type="text" placeholder="john.doe@example.com" required />
+					<span asp-validation-for="Email" class="text-danger col-9 p-0"></span>
 				</div>
 			</div>
 		</div>
 		<div class="card-body row py-2">
 			<div class="col-12 col-lg-6">
 				<div class="row justify-content-center form-group">
-					<label class="col-9 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="settingsBirthDayInput">Birthday:</label>
-					<input class="col-9" id="settingsBirthDayInput" type="date" required />
+					<label class="col-9 fw-bold color-2 mb-2 fs-6 font-roboto p-0" asp-for="BirthDate">Birthday:</label>
+					<input class="col-9" asp-for="BirthDate" type="date" required />
+					<span asp-validation-for="BirthDate" class="text-danger col-9 p-0"></span>
 				</div>
 			</div>
 			<div class="col-12 col-lg-6">
@@ -62,6 +76,9 @@
 				</div>
 			</div>
 		</div>
+
+		<div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
+
 		<div class="row justify-content-center mt-5">
 			<input type="submit" class="btn-1 col-4 col-lg-2 mb-2" value="Save Changes" />
 		</div>

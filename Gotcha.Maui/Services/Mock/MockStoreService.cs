@@ -1,4 +1,4 @@
-using Gotcha.Maui.Enums;
+using Gotcha.Shared.Enums;
 using Gotcha.Maui.Models;
 
 namespace Gotcha.Maui.Services.Mock

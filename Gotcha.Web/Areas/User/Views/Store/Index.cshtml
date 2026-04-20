@@ -1,4 +1,5 @@
 @using Gotcha.Core.Enums;
+@using Gotcha.Shared.Enums;
 @using Gotcha.Web.Areas.User.ViewModels;
 
 @{
@@ -7,6 +8,7 @@
 
 @model StoreViewModel
 
+<script src="https://www.paypal.com/sdk/js?client-id=@Model.PayPalClientId&currency=USD" data-sdk-integration-source="button-factory"></script>
 <script src="~/js/storePage.js"></script>
 
 <div class="row mb-3">
@@ -36,7 +38,7 @@
 					}
 					else
 					{
-						<button class="btn btn-1 buyBtn">Buy</button>
+						<div id="paypal-btn-AssassinMode"></div>
 					}
 				</div>
 			</div>
@@ -52,7 +54,7 @@
 					}
 					else
 					{
-						<button class="btn btn-1 buyBtn">Buy</button>
+						<div id="paypal-btn-ChaosMode"></div>
 					}
 				</div>
 			</div>
@@ -68,7 +70,7 @@
 					}
 					else
 					{
-						<button class="btn btn-1 buyBtn">Buy</button>
+						<div id="paypal-btn-TimedKills"></div>
 					}
 				</div>
 			</div>
@@ -84,7 +86,7 @@
 					}
 					else
 					{
-						<button class="btn btn-1 buyBtn">Buy</button>
+						<div id="paypal-btn-CustomKillMethods"></div>
 					}
 				</div>
 			</div>
@@ -116,7 +118,7 @@
 					}
 					else
 					{
-						<button class="btn btn-1 buyBtn">Buy</button>
+						<div id="paypal-btn-Lobby100"></div>
 					}
 				</div>
 			</div>
@@ -132,7 +134,7 @@
 					}
 					else
 					{
-						<button class="btn btn-1 buyBtn">Buy</button>
+						<div id="paypal-btn-Lobby150"></div>
 					}
 				</div>
 			</div>
@@ -148,7 +150,7 @@
 					}
 					else
 					{
-						<button class="btn btn-1 buyBtn">Buy</button>
+						<div id="paypal-btn-Lobby500"></div>
 					}
 				</div>
 			</div>
@@ -164,7 +166,7 @@
 					}
 					else
 					{
-						<button class="btn btn-1 buyBtn">Buy</button>
+						<div id="paypal-btn-Lobby10000"></div>
 					}
 				</div>
 			</div>

@@ -25,7 +25,7 @@ Each area has its own `_Layout.cshtml`. The Player area uses partials for alive/
 
 ## Frontend Stack
 
-- Razor views with Bootstrap 5, jQuery, jQuery Validation
+- Razor views with Bootstrap 5, jQuery, jQuery Validation, Cropper.js (image crop)
 - Google Fonts: Nosifer, Bungee, Roboto Slab, Roboto
 - CSS variables defined in `wwwroot/css/Variables.css`
 - Page-specific JS and CSS files live alongside the shared `Site.css`
@@ -47,5 +47,8 @@ Each area has its own `_Layout.cshtml`. The Player area uses partials for alive/
 
 ## Key Paths
 
-- CSS/JS: `wwwroot/css/` (Site.css, Layout.css, Variables.css) and `wwwroot/js/`
+- CSS/JS: `wwwroot/css/` (Site.css, Layout.css, Variables.css) and `wwwroot/js/` (signUpPage.js, signUpValidation.js, shared/imageValidation.js, shared/site.js)
+- Libs: `wwwroot/lib/` (bootstrap, jquery, jquery-validation, jquery-validation-unobtrusive, cropperjs)
 - Player ViewModels: `Areas/Player/ViewModels/` (HomeViewModel + BaseViewModels/)
+- Account Views: `Views/Accounts/` (EmailConfirmed, EmailConfirmationFailed, GuardianConsentConfirmed, GuardianConsentFailed)
+- Privacy Dashboard: `Areas/User/Controllers/PrivacyDashboardController.cs` + `Areas/User/Views/PrivacyDashboard/`

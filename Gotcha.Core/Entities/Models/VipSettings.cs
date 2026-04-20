@@ -1,4 +1,5 @@
 ﻿using Gotcha.Core.Enums;
+using Gotcha.Shared.Enums;
 
 namespace Gotcha.Core.Entities.Models
 {

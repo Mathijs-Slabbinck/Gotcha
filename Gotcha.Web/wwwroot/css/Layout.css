@@ -43,11 +43,29 @@ button.accept-policy {
 }
 
 .footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
+    left: 0;
     width: 100%;
-    white-space: nowrap;
-    line-height: 60px;
+    padding: 0.3rem 0;
+    padding-left: 2.5vh;
+    font-size: 0.8rem;
+    font-family: "Roboto", sans-serif;
+    color: #555;
+    letter-spacing: 0.03rem;
+    z-index: 1;
+    pointer-events: none;
+    border-top: 1px solid #ffffff10;
+}
+
+.footer a {
+    color: #B2BEB5;
+    text-decoration: none;
+    pointer-events: auto;
+}
+
+.footer a:hover {
+    color: var(--primary-color-blue);
 }
 
 /* #endregion */

@@ -39,7 +39,7 @@ Pages mirror the Web areas:
   - `Services/Api/` — real API implementations (currently active)
   - `Services/Mock/` — mock implementations for offline dev
 - Swap between them in `MauiProgram.cs` DI registrations
-- `Constants/DevConstants.cs` has `TestUserId` (fixed GUID matching Seeder) — used until auth is wired up
+- `Gotcha.Shared/Constants/DevConstants.cs` has `TestUserId` (fixed GUID matching Seeder) — used until auth is wired up. `Gotcha.Maui/Constants/DevConstants.cs` keeps only the `UseMockServices` toggle.
 
 ### Service → API Endpoint Mapping
 
@@ -241,16 +241,16 @@ Use `FontFamily="Alias"` in XAML (e.g., `FontFamily="RobotoSlab"`, not `Roboto_S
 ## Key Paths
 
 - Pages: `Pages/Unauthenticated/` and `Pages/Authenticated/` (User/ + Player/)
-- ViewModels: `ViewModels/` (SignInViewModel, SignUpViewModel, InfoViewModel, ContactViewModel, HomeViewModel, GamesViewModel, NewGameViewModel, SettingsViewModel, StoreViewModel, PlayerHomeViewModel, ConfirmKillViewModel, PlayerSettingsViewModel, PlayerAdminViewModel)
+- ViewModels: `ViewModels/` (SignInViewModel, SignUpViewModel, InfoViewModel, ContactViewModel, HomeViewModel, GamesViewModel, NewGameViewModel, SettingsViewModel, StoreViewModel, PlayerHomeViewModel, ConfirmKillViewModel, PlayerSettingsViewModel, PlayerAdminViewModel); `BaseViewModels/PageBaseViewModel.cs` holds the common `IsBusy` + `ErrorMessage` pair — all VMs with network calls extend it
 - Services: `Services/` (interfaces: IUserService, IGameService, IPlayerService, IStoreService, IContactService)
 - API Services: `Services/Api/` (ApiUserService, ApiGameService, ApiPlayerService, ApiStoreService, ApiContactService)
 - Mock Services: `Services/Mock/` (MockUserService, MockGameService, MockPlayerService, MockStoreService, MockContactService)
 - Models: `Models/` (UserProfile, GameItem, PlayerHomeData, ConfirmKillData, AdminData, StoreState, KillItem, PlayerItem, AdminPlayerItem, AdminKillItem)
-- Enums: `Enums/` (Plan)
+- Shared Enums: use `Gotcha.Shared.Enums` (e.g., `Plan`) — MAUI references `Gotcha.Shared` for cross-boundary types
 - Routes: `Routes.cs` (all Shell route constants — use `Routes.SignIn`, not `"//SignIn"`)
 - Constants: `Constants/DevConstants.cs`
 - Converters: `Converters/` (custom classes) + `Resources/Styles/Converters.xaml` (declarations)
-- Extensions: `Extensions/` (currently empty)
+- Extensions: `Extensions/` (HttpContentExtensions — `ReadJsonStringAsync` unwraps ASP.NET's JSON-encoded `BadRequest(string)` bodies)
 - Styles: `Resources/Styles/Colors.xaml`, `Resources/Styles/Styles.xaml`, and `Resources/Styles/Converters.xaml`
 - Images: `Resources/Images/`
 - Fonts: `Resources/Fonts/`

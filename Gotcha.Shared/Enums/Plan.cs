@@ -1,4 +1,4 @@
-﻿namespace Gotcha.Core.Enums
+﻿namespace Gotcha.Shared.Enums
 {
     public enum Plan
     {

@@ -1,11 +1,11 @@
-using CommunityToolkit.Mvvm.ComponentModel;
 using Gotcha.Maui.Services;
+using Gotcha.Maui.ViewModels.BaseViewModels;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Gotcha.Maui.ViewModels
 {
-    public class ContactViewModel : ObservableObject
+    public class ContactViewModel : PageBaseViewModel
     {
         private readonly IContactService contactService;
 
@@ -37,25 +37,11 @@ namespace Gotcha.Maui.ViewModels
             set { SetProperty(ref message, value); }
         }
 
-        private string errorMessage = string.Empty;
-        public string ErrorMessage
-        {
-            get { return errorMessage; }
-            set { SetProperty(ref errorMessage, value); }
-        }
-
         private string successMessage = string.Empty;
         public string SuccessMessage
         {
             get { return successMessage; }
             set { SetProperty(ref successMessage, value); }
-        }
-
-        private bool isBusy;
-        public bool IsBusy
-        {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
         }
 
         public ICommand SubmitCommand { get; }

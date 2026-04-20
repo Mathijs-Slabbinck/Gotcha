@@ -41,16 +41,15 @@ namespace Gotcha.Web.ViewModels
         [Required(ErrorMessage = "Please enter your birthday!")]
         [BirthDay(ErrorMessage = "Please enter a valid birthday!")]
         [Display(Name = "Birthday")]
-        public required DateTime BirthDay { get; set; }
+        public DateTime? BirthDay { get; set; }
 
         [Required(ErrorMessage = "Please enter your gender!")]
         //[Gender(ErrorMessage = "Please enter a valid gender!")]
         [Display(Name = "Gender")]
-        public required Genders Gender { get; set; }
+        public Genders? Gender { get; set; }
 
-        [Picture(ErrorMessage = "Please submit a valid Profile Image!")]
-        [Display(Name = "Picture")]
-        public string? ProfileImgSource { get; set; }
+        [Display(Name = "Profile Image")]
+        public IFormFile? ProfileImage { get; set; }
 
         [GuardianRequired("BirthDay", ErrorMessage = "Please enter a guardian email address!")] // if age (years) < 16, guardian email is required (COPPA/GDPR)
         [EmailAddress(ErrorMessage = "Please enter a valid email address!")]

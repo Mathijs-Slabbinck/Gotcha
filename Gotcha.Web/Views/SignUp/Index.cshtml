@@ -1,14 +1,18 @@
+@model Gotcha.Web.ViewModels.SignUpViewModel
 @{
-
 	ViewData["Title"] = "Sign Up";
 }
 
-<script src="~/js/shared/imageValidation.js"></script>
-<script src="~/js/signUpPage.js"></script>
+<link rel="stylesheet" href="~/lib/cropperjs/dist/cropper.min.css" asp-append-version="true" />
+<script src="~/lib/cropperjs/dist/cropper.min.js" asp-append-version="true"></script>
+<script src="~/js/shared/imageValidation.js" asp-append-version="true"></script>
+<script src="~/js/signUpValidation.js" asp-append-version="true"></script>
+<script src="~/js/signUpPage.js" asp-append-version="true"></script>
 
 <h1 class="fw-bold font-bungee text-center">Welcome to GOTCHA!</h1>
 
-<form class="card glowingCard col-11 mx-auto formBg mb-5">
+<form id="signUpForm" asp-controller="SignUp" asp-action="SignUp" method="post" enctype="multipart/form-data" class="card glowingCard col-11 mx-auto formBg mb-5">
+		<div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
 		<div class="card-header row">
 			<div class="col-12 d-flex justify-content-center">
 				<h2 class="text-center font-robotoSlab fw-bold mt-2 color-2 pt-2 pd-1">SIGN UP</h2>
@@ -24,7 +28,9 @@
 							<p class="text-end col-2 infoIcon" data-title="First Name" data-info="We ask for your first name because, unless disabled, your name will be shown in game.">&#9432;</p>
 						</div>
 					</div>
-					<input class="col-9" id="signUpFirstNameInput" type="text" placeholder="John" required />
+					<input asp-for="FirstName" class="col-9" id="signUpFirstNameInput" type="text" placeholder="John" />
+					<span asp-validation-for="FirstName" class="text-danger"></span>
+					<span id="signUpFirstNameError" class="text-danger client-error"></span>
 				</div>
 			</div>
 			<div class="col-12 col-lg-6 mt-lg-0 mt-2 justify-content-center">
@@ -35,7 +41,9 @@
 							<p class="text-end col-2 infoIcon" data-title="Last Name" data-info="We ask for your last name because, unless disabled, your name will be shown in game.">&#9432;</p>
 						</div>
 					</div>
-					<input class="col-9" id="signUpLastNameInput" type="text" placeholder="Doe" required />
+					<input asp-for="LastName" class="col-9" id="signUpLastNameInput" type="text" placeholder="Doe" />
+					<span asp-validation-for="LastName" class="text-danger"></span>
+					<span id="signUpLastNameError" class="text-danger client-error"></span>
 				</div>
 			</div>
 		</div>
@@ -48,7 +56,9 @@
 							<p class="text-end col-2 infoIcon" data-title="Username" data-info="We ask for your username because if real names are disabled, this username will be shown by default (can be changed per game).">&#9432;</p>
 						</div>
 					</div>
-					<input class="col-9" id="signUpUsernameInput" type="text" placeholder="TheLegend27" required />
+					<input asp-for="UserName" class="col-9" id="signUpUsernameInput" type="text" placeholder="TheLegend27" />
+					<span asp-validation-for="UserName" class="text-danger"></span>
+					<span id="signUpUsernameError" class="text-danger client-error"></span>
 				</div>
 			</div>
 			<div class="col-12 col-lg-6">
@@ -56,10 +66,12 @@
 					<div class="col-9">
 						<div class="row align-items-end">
 							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpEmailInput">Email Address: *</label>
-							<p class="text-end col-2 infoIcon" data-title="Email Address" data-info="We ask for your email address for account verification. We will not be sending you any emails.">&#9432;</p>
+							<p class="text-end col-2 infoIcon" data-title="Email Address" data-info="We use your email address to verify your account. We will send you a confirmation email to activate your account, but we will never send marketing emails.">&#9432;</p>
 						</div>
 					</div>
-					<input class="col-9" id="signUpEmailInput" type="text" placeholder="john.doe@example.com" required />
+					<input asp-for="Email" class="col-9" id="signUpEmailInput" type="text" placeholder="john.doe@example.com" />
+					<span asp-validation-for="Email" class="text-danger"></span>
+					<span id="signUpEmailError" class="text-danger client-error"></span>
 				</div>
 			</div>
 		</div>
@@ -74,9 +86,11 @@
 					</div>
 					<div class="col-9">
 						<div class="row">
-							<input class="col-12" id="signUpPasswordInput" type="password" placeholder="password" required />
+							<input asp-for="Password" class="col-12" id="signUpPasswordInput" type="password" placeholder="password" />
 							<p class="col-1 clickAble eye eye1" id="eye-signUp-1">&#x1F441;</p>
 						</div>
+						<span asp-validation-for="Password" class="text-danger"></span>
+						<span id="signUpPasswordError" class="text-danger client-error"></span>
 					</div>
 				</div>
 			</div>
@@ -90,9 +104,11 @@
 					</div>
 					<div class="col-9">
 						<div class="row">
-							<input class="col-12" id="signUpRepeatPasswordInput" type="password" placeholder="password" required />
+							<input asp-for="RepeatPassword" class="col-12" id="signUpRepeatPasswordInput" type="password" placeholder="password" />
 							<p class="col-1 clickAble eye eye2" id="eye-signUp-2">&#x1F441;</p>
 						</div>
+						<span asp-validation-for="RepeatPassword" class="text-danger"></span>
+						<span id="signUpRepeatPasswordError" class="text-danger client-error"></span>
 					</div>
 				</div>
 			</div>
@@ -106,7 +122,9 @@
 							<p class="text-end col-2 infoIcon" data-title="Birthday" data-info="If this in game setting is enabled, players will be able to see your age to get a better idea of their target.">&#9432;</p>
 						</div>
 					</div>
-					<input class="col-9" id="signUpBirthDayInput" type="date" required />
+					<input asp-for="BirthDay" class="col-9" id="signUpBirthDayInput" type="date" />
+					<span asp-validation-for="BirthDay" class="text-danger"></span>
+					<span id="signUpBirthDayError" class="text-danger client-error"></span>
 				</div>
 			</div>
 			<div class="col-12 col-lg-6 mt-lg-0 mt-2">
@@ -117,12 +135,11 @@
 							<p class="text-end col-2 infoIcon" data-title="Gender" data-info="If images are disabled we will show a template (different for each gender). If enabled, we will also show your gender in game to give players a better idea of their target.">&#9432;</p>
 						</div>
 					</div>
-					<select class="col-9" id="signUpGenderInput" required>
-						<option disabled selected>Select a Gender</option>
-						<option>Male</option>
-						<option>Female</option>
-						<option>Other</option>
+					<select asp-for="Gender" asp-items="Html.GetEnumSelectList<Gotcha.Core.Enums.Genders>()" class="col-9" id="signUpGenderInput">
+						<option disabled selected value="">Select a Gender</option>
 					</select>
+					<span asp-validation-for="Gender" class="text-danger"></span>
+					<span id="signUpGenderError" class="text-danger client-error"></span>
 				</div>
 			</div>
 		</div>
@@ -136,27 +153,34 @@
 							<p class="text-end col-2 infoIcon" data-title="Parent/Guardian Email" data-info="Since you are under 16, we need a parent or guardian email address. This is required by law to protect younger users. We will contact your parent or guardian to confirm your account.">&#9432;</p>
 						</div>
 					</div>
-					<input class="col-9" id="signUpGuardianEmailInput" type="email" placeholder="parent@example.com" />
+					<input asp-for="GuardianEmail" class="col-9" id="signUpGuardianEmailInput" type="email" placeholder="parent@example.com" />
+					<span asp-validation-for="GuardianEmail" class="text-danger"></span>
+					<span id="signUpGuardianEmailError" class="text-danger client-error"></span>
 				</div>
 			</div>
 			<div class="col-12 col-lg-6">
 				<div class="row justify-content-center">
 					<div class="col-9">
 						<div class="row align-items-end">
-							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0" for="signUpImageInput">Picture:</label>
+							<label class="col-10 fw-bold color-2 mb-2 fs-6 font-roboto p-0">Picture:</label>
 							<p class="text-end col-2 infoIcon" data-title="Picture" data-info="If enabled (enabled by default) we will show player images in game to give players an idea of what their target looks like." >&#9432;</p>
 						</div>
 					</div>
 					<div class="row justify-content-center">
 						<div class="col-10 align-items-end">
-							<input id="signUpImageInput" type="file" accept="image/*" class="form-control">
+							<input id="signUpImageInput" type="file" accept=".jpg,.jpeg,.png,.webp" class="form-control">
+							<span asp-validation-for="ProfileImage" class="text-danger"></span>
 						</div>
+					</div>
+					<div id="imagePreviewContainer" class="d-none mt-2 text-center">
+						<img id="imagePreview" src="" alt="Preview" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;" />
+						<button type="button" id="removeImageBtn" class="btn-close ms-2" aria-label="Remove image"></button>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row justify-content-center my-3">
-			<input type="submit" class="btn-1 col-4 col-lg-2 mb-2" value="Sign Up" />
+			<button type="submit" class="btn-1 col-4 col-lg-2 mb-2">Sign Up</button>
 			<span class="col-12 text-center text-white mt-3">Already have an account?<a asp-controller="Home" asp-action="Index" class="mx-3">Log In</a></span>
 		</div>
 	</form>
@@ -170,6 +194,26 @@
 			</div>
 			<div class="modal-body text-center">
 				<p class="infoModalText">Modal body text goes here.</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header justify-content-center">
+				<h5 class="modal-title font-robotoSlab fw-bold" id="cropModalLabel">Crop Your Photo</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div style="max-height: 400px; overflow: hidden;">
+					<img id="cropImage" src="" alt="Crop preview" style="max-width: 100%; display: block;" />
+				</div>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn-2 px-4 py-2" data-bs-dismiss="modal">Cancel</button>
+				<button type="button" id="cropConfirmBtn" class="btn-1 px-4 py-2">Confirm</button>
 			</div>
 		</div>
 	</div>

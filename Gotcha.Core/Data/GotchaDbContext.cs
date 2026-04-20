@@ -32,12 +32,29 @@ namespace Gotcha.Core.Data
                 entity.Property(u => u.GuardianEmail).HasMaxLength(200);
 
                 // User has one VipSettings (one-to-one, shadow FK on VipSettings)
-                entity.HasOne(u => u.VipSettings)
-                      .WithOne()
+                entity.HasOne(u => u.VipSettings) // GotchaUser has one VipSettings
+                      .WithOne() // VipSettings has one GotchaUser (back)
                       .HasForeignKey<VipSettings>("UserId")
                       .OnDelete(DeleteBehavior.Cascade);
 
+                // User has one ProfileImage (one-to-one, shadow FK on ProfileImage)
+                entity.HasOne(u => u.ProfileImage)
+                      .WithOne()
+                      .HasForeignKey<ProfileImage>("UserId")
+                      .IsRequired(false)
+                      .OnDelete(DeleteBehavior.Restrict);
+
                 // User has many PlayerAccounts (configured from Player side)
+            });
+
+            // ==================== PROFILE IMAGE ====================
+
+            modelBuilder.Entity<ProfileImage>(entity =>
+            {
+                entity.HasKey(pi => pi.Id);
+
+                entity.Property(pi => pi.ImageData).IsRequired();
+                entity.Property(pi => pi.MimeType).HasMaxLength(50).IsRequired();
             });
 
             // ==================== VIPSETTINGS ====================
@@ -228,13 +245,14 @@ namespace Gotcha.Core.Data
         //Define Dbsets => Tables
 
         // Gotcha (game) Entities
-        public DbSet<GotchaUser> GotchaUsers { get; set; }
+        // public DbSet<GotchaUser> Users { get; set; } ( => Unshadowed: (class extends IdentityDbContext<GotchaUser, IdentityRole<Guid>, Guid> which already creates a table for Users, Roles, UserRoles, UserClaims, UserLogins, UserTokens and RoleClaims
         public DbSet<Player> Players { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<Rules> Rules { get; set; }
         public DbSet<TargetAssignment> TargetAssignments { get; set; }
         public DbSet<Kill> Kills { get; set; }
         public DbSet<VipSettings> VipSettings { get; set; }
+        public DbSet<ProfileImage> ProfileImages { get; set; }
 
         // Logging Entities
         public DbSet<Attacker> Attackers { get; set; }

@@ -1,14 +1,15 @@
-using CommunityToolkit.Mvvm.ComponentModel;
 using Gotcha.Maui.Models;
 using Gotcha.Maui.Services;
+using Gotcha.Maui.ViewModels.BaseViewModels;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Gotcha.Maui.ViewModels
 {
-    public class GamesViewModel : ObservableObject
+    public class GamesViewModel : PageBaseViewModel
     {
         private readonly IGameService _gameService;
+        private readonly SessionService _sessionService;
 
         private ObservableCollection<GameItem> pendingGames = new ObservableCollection<GameItem>();
         public ObservableCollection<GameItem> PendingGames
@@ -31,26 +32,13 @@ namespace Gotcha.Maui.ViewModels
             set { SetProperty(ref endedGames, value); }
         }
 
-        private bool isBusy;
-        public bool IsBusy
-        {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
-        }
-
-        private string errorMessage = string.Empty;
-        public string ErrorMessage
-        {
-            get { return errorMessage; }
-            set { SetProperty(ref errorMessage, value); }
-        }
-
         public ICommand GameTappedCommand { get; }
         public ICommand NewGameCommand { get; }
 
-        public GamesViewModel(IGameService gameService)
+        public GamesViewModel(IGameService gameService, SessionService sessionService)
         {
             _gameService = gameService;
+            _sessionService = sessionService;
 
             GameTappedCommand = new Command<GameItem>(ExecuteGameTappedCommand);
             NewGameCommand = new Command(ExecuteNewGameCommand);
@@ -96,10 +84,8 @@ namespace Gotcha.Maui.ViewModels
         {
             try
             {
-                await Shell.Current.DisplayAlertAsync(
-                    game.Name,
-                    $"Players: {game.PlayerCount}",
-                    "OK");
+                _sessionService.SetPlayer(game.PlayerId);
+                await Shell.Current.GoToAsync(Routes.PlayerHome);
             }
             catch
             {
