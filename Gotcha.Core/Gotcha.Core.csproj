@@ -30,4 +30,8 @@
     <InternalsVisibleTo Include="Gotcha.Core.Tests" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Gotcha.Shared\Gotcha.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

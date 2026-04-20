@@ -1,43 +1,29 @@
-﻿@{
-
-	ViewData["Title"] = "Reset Password";
+@model Gotcha.Web.ViewModels.ForgotPasswordViewModel
+@{
+	ViewData["Title"] = "Forgot Password";
 }
 
-<script src="~/js/resetPasswordPage.js"></script>
-
-<h1 class="fw-bold font-bungee text-center mb-5">Welcome Back!</h1>
+<h1 class="fw-bold font-bungee text-center mb-5">Forgot Password</h1>
 
 <div class="row my-5">
-		<form class="card mt-3 col-10 mx-auto flex-row justify-content-center glowingCard formBg">
-			<div class="row justify-content-center">
-				<h2 class="col-12 text-center font-robotoSlab fw-bold card-header mb-4 fs-3 py-3 color-2">Reset Password</h2>
-				<div class="col-6">
-					<div class="row">
-						<div class="col-12">
-							<div class="row form-group">
-								<label for="resetPassword" class="col-12 fw-bold font-roboto color-2 fs-6 mt-4 mb-1 p-0">Enter new password:</label>
-								<div class="col-12">
-									<div class="row">
-										<input id="resetPassword" type="password" placeholder="password" class="col-12 mt-1" />
-										<p class="col-1 clickAble eye" id="eye-reset-1">&#x1F441;</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-12">
-							<div class="row form-group">
-								<label for="repeatResetPassword" class="col-12 fw-bold font-roboto color-2 fs-6 mt-5 mb-1 p-0">Repeat new password:</label>
-								<div class="col-12">
-									<div class="row">
-										<input id="repeatResetPassword" type="password" placeholder="password" class="col-12 mt-1 mb-5" />
-										<p class="col-1 clickAble eye" id="eye-reset-2">&#x1F441;</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<input id="confirmResetPassword" class="btn-1 col-6 mx-auto mb-5" type="submit" />
-					</div>
+	<form asp-controller="ResetPassword" asp-action="SendResetLink" method="post" class="card mt-3 col-10 col-lg-6 mx-auto glowingCard formBg">
+		<div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
+		<div class="row justify-content-center">
+			<h2 class="col-12 text-center font-robotoSlab fw-bold card-header mb-4 fs-3 py-3 color-2">Reset Password</h2>
+			<div class="col-8">
+				<p class="text-white font-roboto mb-4 text-center">Enter your email address and we will send you a link to reset your password.</p>
+				<div class="row form-group">
+					<label class="col-12 fw-bold font-roboto color-2 fs-6 mb-1 p-0" asp-for="Email">Email Address:</label>
+					<input asp-for="Email" class="col-12 mt-1" type="email" placeholder="john.doe@example.com" />
+					<span asp-validation-for="Email" class="text-danger"></span>
 				</div>
+				<div class="row justify-content-center my-4">
+					<button type="submit" class="btn-1 col-6 mb-2">Send Reset Link</button>
+				</div>
+				<p class="text-center text-white mb-4">
+					<a asp-controller="Home" asp-action="Index">Back to Login</a>
+				</p>
 			</div>
-		</form>
-	</div>
+		</div>
+	</form>
+</div>

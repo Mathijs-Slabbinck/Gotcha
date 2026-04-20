@@ -1,10 +1,15 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+using Gotcha.Maui.Models;
+using Gotcha.Maui.Services;
+using Gotcha.Maui.ViewModels.BaseViewModels;
+using Gotcha.Shared.Helpers;
 using System.Windows.Input;
 
 namespace Gotcha.Maui.ViewModels
 {
-    public class SignUpViewModel : ObservableObject
+    public class SignUpViewModel : PageBaseViewModel
     {
+        private readonly IAuthService _authService;
+
         private string firstName = string.Empty;
         public string FirstName
         {
@@ -62,15 +67,7 @@ namespace Gotcha.Maui.ViewModels
 
         public bool IsUnder16
         {
-            get
-            {
-                var age = DateTime.Today.Year - Birthday.Year;
-                if (Birthday > DateTime.Today.AddYears(-age))
-                {
-                    age--;
-                }
-                return age < 16;
-            }
+            get { return AgeHelper.IsUnder16(Birthday); }
         }
 
         private string selectedGender = string.Empty;
@@ -91,50 +88,21 @@ namespace Gotcha.Maui.ViewModels
         public bool IsPasswordVisible
         {
             get { return isPasswordVisible; }
-            set
-            {
-                if (SetProperty(ref isPasswordVisible, value))
-                {
-                    OnPropertyChanged(nameof(PasswordEyeIconSource));
-                }
-            }
+            set { SetProperty(ref isPasswordVisible, value); }
         }
 
         private bool isRepeatPasswordVisible;
         public bool IsRepeatPasswordVisible
         {
             get { return isRepeatPasswordVisible; }
-            set
-            {
-                if (SetProperty(ref isRepeatPasswordVisible, value))
-                {
-                    OnPropertyChanged(nameof(RepeatPasswordEyeIconSource));
-                }
-            }
+            set { SetProperty(ref isRepeatPasswordVisible, value); }
         }
 
-        public string PasswordEyeIconSource
+        private string successMessage = string.Empty;
+        public string SuccessMessage
         {
-            get { return IsPasswordVisible ? "eye_open.svg" : "eye_closed.svg"; }
-        }
-
-        public string RepeatPasswordEyeIconSource
-        {
-            get { return IsRepeatPasswordVisible ? "eye_open.svg" : "eye_closed.svg"; }
-        }
-
-        private string errorMessage = string.Empty;
-        public string ErrorMessage
-        {
-            get { return errorMessage; }
-            set { SetProperty(ref errorMessage, value); }
-        }
-
-        private bool isBusy;
-        public bool IsBusy
-        {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
+            get { return successMessage; }
+            set { SetProperty(ref successMessage, value); }
         }
 
         public List<string> GenderOptions { get; } = new List<string> { "Male", "Female", "Other" };
@@ -144,8 +112,10 @@ namespace Gotcha.Maui.ViewModels
         public ICommand ToggleRepeatPasswordVisibilityCommand { get; }
         public ICommand SignInCommand { get; }
 
-        public SignUpViewModel()
+        public SignUpViewModel(IAuthService authService)
         {
+            _authService = authService;
+
             SignUpCommand = new Command(ExecuteSignUpCommand);
             TogglePasswordVisibilityCommand = new Command(ExecuteTogglePasswordVisibility);
             ToggleRepeatPasswordVisibilityCommand = new Command(ExecuteToggleRepeatPasswordVisibility);
@@ -157,6 +127,7 @@ namespace Gotcha.Maui.ViewModels
             try
             {
                 ErrorMessage = string.Empty;
+                SuccessMessage = string.Empty;
 
                 if (string.IsNullOrWhiteSpace(FirstName)
                     || string.IsNullOrWhiteSpace(LastName)
@@ -184,22 +155,49 @@ namespace Gotcha.Maui.ViewModels
 
                 IsBusy = true;
 
-                try
+                SignUpData data = new SignUpData
                 {
-                    await Shell.Current.DisplayAlertAsync(
-                        "Not yet implemented",
-                        "Sign-up functionality is not yet available.",
-                        "OK");
+                    FirstName = FirstName,
+                    LastName = LastName,
+                    Username = Username,
+                    Email = Email,
+                    Password = Password,
+                    Gender = SelectedGender,
+                    Birthday = Birthday,
+                    GuardianEmail = string.IsNullOrWhiteSpace(GuardianEmail) ? null : GuardianEmail,
+                };
+
+                (bool success, string? error) = await _authService.SignUpAsync(data);
+
+                if (success)
+                {
+                    ClearFormFields();
+                    SuccessMessage = "Account created! Check your email to confirm your account before signing in.";
                 }
-                finally
+                else
                 {
-                    IsBusy = false;
+                    ErrorMessage = error ?? "Sign-up failed. Please check your details and try again.";
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = "Something went wrong. Please try again.";
             }
+
+            IsBusy = false;
+        }
+
+        private void ClearFormFields()
+        {
+            FirstName = string.Empty;
+            LastName = string.Empty;
+            Username = string.Empty;
+            Email = string.Empty;
+            Password = string.Empty;
+            RepeatPassword = string.Empty;
+            SelectedGender = string.Empty;
+            GuardianEmail = string.Empty;
+            Birthday = DateTime.Today;
         }
 
         private void ExecuteTogglePasswordVisibility()
@@ -216,11 +214,11 @@ namespace Gotcha.Maui.ViewModels
         {
             try
             {
-                await Shell.Current.GoToAsync("//SignIn");
+                await Shell.Current.GoToAsync(Routes.SignIn);
             }
-            catch (Exception ex)
+            catch
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = "Something went wrong. Please try again.";
             }
         }
     }

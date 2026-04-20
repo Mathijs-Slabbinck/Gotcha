@@ -191,7 +191,7 @@
 
                                 <ImageButton Grid.Column="1"
                                              Command="{Binding TogglePasswordVisibilityCommand}"
-                                             Source="{Binding PasswordEyeIconSource}"
+                                             Source="{Binding IsPasswordVisible, Converter={StaticResource PasswordVisibilityIconConverter}}"
                                              WidthRequest="44"
                                              HeightRequest="44"
                                              BackgroundColor="Transparent"
@@ -230,7 +230,7 @@
 
                                 <ImageButton Grid.Column="1"
                                              Command="{Binding ToggleRepeatPasswordVisibilityCommand}"
-                                             Source="{Binding RepeatPasswordEyeIconSource}"
+                                             Source="{Binding IsRepeatPasswordVisible, Converter={StaticResource PasswordVisibilityIconConverter}}"
                                              WidthRequest="44"
                                              HeightRequest="44"
                                              BackgroundColor="Transparent"
@@ -323,6 +323,14 @@
                                Margin="0,10,0,0"
                                IsVisible="{Binding ErrorMessage, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"
                                AutomationId="ErrorMessageLabel" />
+
+                        <!-- Success message -->
+                        <Label Text="{Binding SuccessMessage}"
+                               TextColor="{StaticResource Primary}"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,10,0,0"
+                               IsVisible="{Binding SuccessMessage, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"
+                               AutomationId="SuccessMessageLabel" />
 
                         <!-- Sign Up button -->
                         <Button Text="Sign Up"

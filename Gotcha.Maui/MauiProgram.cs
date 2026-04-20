@@ -86,9 +86,13 @@ namespace Gotcha.Maui
                 client.BaseAddress = new Uri(baseUrl);
             });
 
+            // Session — singleton that holds the current user ID across the app
+            builder.Services.AddSingleton<SessionService>();
+
             // Services — toggle between mock and API implementations
             if (DevConstants.UseMockServices)
             {
+                builder.Services.AddTransient<IAuthService, MockAuthService>();
                 builder.Services.AddTransient<IUserService, MockUserService>();
                 builder.Services.AddTransient<IGameService, MockGameService>();
                 builder.Services.AddTransient<IPlayerService, MockPlayerService>();
@@ -97,12 +101,16 @@ namespace Gotcha.Maui
             }
             else
             {
+                builder.Services.AddTransient<IAuthService, ApiAuthService>();
                 builder.Services.AddTransient<IUserService, ApiUserService>();
                 builder.Services.AddTransient<IGameService, ApiGameService>();
                 builder.Services.AddTransient<IPlayerService, ApiPlayerService>();
                 builder.Services.AddTransient<IStoreService, ApiStoreService>();
                 builder.Services.AddTransient<IContactService, ApiContactService>();
             }
+
+            // AppShell — singleton so DI can inject SessionService into it
+            builder.Services.AddSingleton<AppShell>();
 
             // Unauthenticated ViewModels
             builder.Services.AddTransient<SignInViewModel>();

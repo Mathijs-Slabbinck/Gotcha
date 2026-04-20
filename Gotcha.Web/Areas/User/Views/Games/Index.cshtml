@@ -34,7 +34,7 @@
 
 				@foreach (GameItemViewModel game in Model.PendingGames)
 				{
-					<a class="gameRowLink" asp-area="Player" asp-controller="Home" asp-action="Index">
+					<a class="gameRowLink" asp-area="Player" asp-controller="Home" asp-action="Index" asp-route-id="@game.GameId">
 						<div class="gameInfoBlock row justify-content-around align-items-center">
 							<p class="col-4 my-2 text-nowrap text-center gameInfo">@game.Name</p>
 							<p class="col-4 my-2 text-nowrap text-center gameInfo gameTimeInfo">@game.CreatedDate.ToLocalTime().ToString("dd-MM-yyyy - HH:mm")</p>
@@ -72,7 +72,7 @@
 
 				@foreach (GameItemViewModel game in Model.ActiveGames)
 				{
-					<a class="gameRowLink" asp-area="Player" asp-controller="Home" asp-action="Index">
+					<a class="gameRowLink" asp-area="Player" asp-controller="Home" asp-action="Index" asp-route-id="@game.GameId">
 						<div class="gameInfoBlock row justify-content-around align-items-center">
 							<p class="col-3 my-2 text-nowrap text-center gameInfo">@game.Name</p>
 							<p class="col-3 my-2 text-nowrap text-center gameInfo gameTimeInfo">@game.StartDate.ToLocalTime().ToString("dd-MM-yyyy - HH:mm")</p>
@@ -126,7 +126,7 @@
 				{
 					DateTime endDate = game.EndDate.GetValueOrDefault();
 
-					<a class="gameRowLink" asp-area="Player" asp-controller="Home" asp-action="Index">
+					<a class="gameRowLink" asp-area="Player" asp-controller="Home" asp-action="Index" asp-route-id="@game.GameId">
 						<div class="gameInfoBlock row justify-content-around align-items-center">
 							<p class="col my-2 text-nowrap text-center gameInfo">@game.Name</p>
 							<p class="col my-2 text-nowrap text-center gameInfo gameTimeInfo">@game.StartDate.ToLocalTime().ToString("dd-MM-yyyy - HH:mm")</p>

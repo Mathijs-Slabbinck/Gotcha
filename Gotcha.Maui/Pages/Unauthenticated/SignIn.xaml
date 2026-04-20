@@ -112,7 +112,7 @@
 
                                 <ImageButton Grid.Column="1"
                                              Command="{Binding TogglePasswordVisibilityCommand}"
-                                             Source="{Binding EyeIconSource}"
+                                             Source="{Binding IsPasswordVisible, Converter={StaticResource PasswordVisibilityIconConverter}}"
                                              WidthRequest="44"
                                              HeightRequest="44"
                                              BackgroundColor="Transparent"

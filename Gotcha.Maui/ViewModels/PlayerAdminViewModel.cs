@@ -1,14 +1,15 @@
-using CommunityToolkit.Mvvm.ComponentModel;
 using Gotcha.Maui.Models;
 using Gotcha.Maui.Services;
+using Gotcha.Maui.ViewModels.BaseViewModels;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Gotcha.Maui.ViewModels
 {
-    public class PlayerAdminViewModel : ObservableObject
+    public class PlayerAdminViewModel : PageBaseViewModel
     {
-        private readonly IPlayerService playerService;
+        private readonly IPlayerService _playerService;
+        private readonly SessionService _sessionService;
 
         // Game info
         private bool hasStarted;
@@ -220,20 +221,6 @@ namespace Gotcha.Maui.ViewModels
             set { SetProperty(ref timedKillsUnlocked, value); }
         }
 
-        private bool isBusy;
-        public bool IsBusy
-        {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
-        }
-
-        private string errorMessage = string.Empty;
-        public string ErrorMessage
-        {
-            get { return errorMessage; }
-            set { SetProperty(ref errorMessage, value); }
-        }
-
         // Commands
         public ICommand PlayerActionCommand { get; }
         public ICommand CopyLinkCommand { get; }
@@ -242,9 +229,10 @@ namespace Gotcha.Maui.ViewModels
         public ICommand StartGameCommand { get; }
         public ICommand EndGameCommand { get; }
 
-        public PlayerAdminViewModel(IPlayerService playerService)
+        public PlayerAdminViewModel(IPlayerService playerService, SessionService sessionService)
         {
-            this.playerService = playerService;
+            _playerService = playerService;
+            _sessionService = sessionService;
 
             PlayerActionCommand = new Command<string>(ExecutePlayerActionCommand);
             CopyLinkCommand = new Command(ExecuteCopyLinkCommand);
@@ -261,7 +249,7 @@ namespace Gotcha.Maui.ViewModels
                 IsBusy = true;
                 ErrorMessage = string.Empty;
 
-                var data = await playerService.GetAdminDataAsync(Guid.Empty);
+                var data = await _playerService.GetAdminDataAsync(_sessionService.CurrentPlayerId);
 
                 HasStarted = data.HasStarted;
                 GameName = data.GameName;

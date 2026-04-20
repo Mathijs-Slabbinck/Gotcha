@@ -370,3 +370,11 @@ FodyWeavers.xsd
 
 # Wireframe images
 info/reports/wireframes/images/
+
+# Claude Code setup (auto-generated)
+.env
+.env.*
+!.env.example
+secrets.json
+*.pem
+*.key

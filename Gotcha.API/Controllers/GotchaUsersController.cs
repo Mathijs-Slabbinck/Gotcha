@@ -113,7 +113,7 @@ namespace Gotcha.API.Controllers
         [HttpGet("{id:guid}/profile")]
         public async Task<IActionResult> GetProfile(Guid id)
         {
-            var user = await _context.GotchaUsers
+            var user = await _context.Users
                 .Include(u => u.PlayerAccounts)
                     .ThenInclude(p => p.Game)
                         .ThenInclude(g => g.Kills)

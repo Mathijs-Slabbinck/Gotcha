@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Gotcha.Core.Entities.Logging.Models;
 using Gotcha.Core.Enums;
 using Gotcha.Core.Services.Repository;
@@ -33,8 +34,17 @@ public class GotchaController : Controller
             UserAgent = HttpContext.Request.Headers.UserAgent.ToString(),
             Referer = HttpContext.Request.Headers.Referer.ToString(),
             Path = isDirectNavigation ? "/Gotcha" : originalPath!,
-            InvalidInput = invalidInput
+            InvalidInput = invalidInput,
+            SessionId = HttpContext.Session.Id,
         };
+
+        // If the user is logged in, store their ID
+        string? userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (Guid.TryParse(userIdClaim, out Guid userId))
+        {
+            attacker.UserId = userId;
+        }
 
         // Save the attacker — silent failure, the page always renders
         ResultModel<Attacker> attackerResult = await _attackerRepoService.AddAsync(attacker);

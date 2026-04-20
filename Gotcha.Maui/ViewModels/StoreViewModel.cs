@@ -1,11 +1,11 @@
-using CommunityToolkit.Mvvm.ComponentModel;
-using Gotcha.Maui.Enums;
 using Gotcha.Maui.Services;
+using Gotcha.Maui.ViewModels.BaseViewModels;
+using Gotcha.Shared.Enums;
 using System.Windows.Input;
 
 namespace Gotcha.Maui.ViewModels
 {
-    public class StoreViewModel : ObservableObject
+    public class StoreViewModel : PageBaseViewModel
     {
         private readonly IStoreService storeService;
 
@@ -96,20 +96,6 @@ namespace Gotcha.Maui.ViewModels
         public bool IsDeluxePlan
         {
             get { return CurrentPlan == Plan.Deluxe; }
-        }
-
-        private bool isBusy;
-        public bool IsBusy
-        {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
-        }
-
-        private string errorMessage = string.Empty;
-        public string ErrorMessage
-        {
-            get { return errorMessage; }
-            set { SetProperty(ref errorMessage, value); }
         }
 
         public ICommand BuyFeatureCommand { get; }

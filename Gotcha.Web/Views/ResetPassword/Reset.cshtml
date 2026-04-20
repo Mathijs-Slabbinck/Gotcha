@@ -1,0 +1,44 @@
+@model Gotcha.Web.ViewModels.ResetPasswordViewModel
+@{
+	ViewData["Title"] = "Reset Password";
+}
+
+<script src="~/js/resetPasswordPage.js" asp-append-version="true"></script>
+
+<h1 class="fw-bold font-bungee text-center mb-5">Welcome Back!</h1>
+
+<div class="row my-5">
+	<form asp-controller="ResetPassword" asp-action="Reset" method="post" class="card mt-3 col-10 col-lg-6 mx-auto glowingCard formBg">
+		<div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
+		<input type="hidden" asp-for="UserId" />
+		<input type="hidden" asp-for="Token" />
+		<div class="row justify-content-center">
+			<h2 class="col-12 text-center font-robotoSlab fw-bold card-header mb-4 fs-3 py-3 color-2">Reset Password</h2>
+			<div class="col-8">
+				<div class="row form-group">
+					<label class="col-12 fw-bold font-roboto color-2 fs-6 mt-4 mb-1 p-0" asp-for="Password">Enter new password:</label>
+					<div class="col-12">
+						<div class="row">
+							<input asp-for="Password" id="resetPassword" type="password" placeholder="password" class="col-12 mt-1" />
+							<p class="col-1 clickAble eye" id="eye-reset-1">&#x1F441;</p>
+						</div>
+						<span asp-validation-for="Password" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<label class="col-12 fw-bold font-roboto color-2 fs-6 mt-5 mb-1 p-0" asp-for="RepeatPassword">Repeat new password:</label>
+					<div class="col-12">
+						<div class="row">
+							<input asp-for="RepeatPassword" id="repeatResetPassword" type="password" placeholder="password" class="col-12 mt-1 mb-5" />
+							<p class="col-1 clickAble eye" id="eye-reset-2">&#x1F441;</p>
+						</div>
+						<span asp-validation-for="RepeatPassword" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="row justify-content-center mb-5">
+					<button type="submit" class="btn-1 col-6">Reset Password</button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>

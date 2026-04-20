@@ -25,7 +25,7 @@ namespace Gotcha.Core.Services.Repository
 
             try
             {
-                List<GotchaUser>? users = await _gotchaDbContext.GotchaUsers
+                List<GotchaUser>? users = await _gotchaDbContext.Users
                                                             .ToListAsync();
 
                 if(users == null)
@@ -67,7 +67,7 @@ namespace Gotcha.Core.Services.Repository
 
             try
             {
-                GotchaUser? user = await _gotchaDbContext.GotchaUsers
+                GotchaUser? user = await _gotchaDbContext.Users
                                                         .FirstOrDefaultAsync(a => a.Id == id);
                 if(user == null)
                 {
@@ -100,6 +100,45 @@ namespace Gotcha.Core.Services.Repository
             return resultModel;
         }
 
+        public async Task<ResultModel<GotchaUser>> GetByEmailAsync(string email)
+        {
+            ResultModel<GotchaUser> resultModel = new ResultModel<GotchaUser>();
+
+            try
+            {
+                string normalizedEmail = email.Trim().ToUpper();
+                GotchaUser? user = await _gotchaDbContext.Users
+                                                        .FirstOrDefaultAsync(u => u.Email.ToUpper() == normalizedEmail);
+                if (user == null)
+                {
+                    Error error = new Error(LogSubTypes.Error_DbGet_Null,
+                        "Couldn't find a user with that email address.",
+                        $"Error in GetByEmailAsync() in UserRepoService. Email: {email}.");
+                    resultModel.Errors.Add(error);
+                }
+
+                resultModel.Data = user;
+            }
+            catch (TimeoutException ex)
+            {
+                Error error = new Error(ex,
+                                        LogSubTypes.Error_DbGet_TimeOut_Exception,
+                                        "Server timed out trying to fetch user from the server. Please try again later!",
+                                        $"Error in GetByEmailAsync() in UserRepoService. Email: {email}.");
+                resultModel.Errors.Add(error);
+            }
+            catch (Exception ex)
+            {
+                Error error = new Error(ex,
+                                        LogSubTypes.Error_DbGet_Exception,
+                                        "Something went wrong while trying to fetch user. Please try again later!",
+                                        $"Error in GetByEmailAsync() in UserRepoService. Email: {email}.");
+                resultModel.Errors.Add(error);
+            }
+
+            await _logRepoService.HandleAddingResultModelToLoggerAsync(resultModel, Guid.NewGuid());
+            return resultModel;
+        }
 
         public async Task<ResultModel<GotchaUser>> AddAsync(GotchaUser user)
         {
@@ -107,7 +146,7 @@ namespace Gotcha.Core.Services.Repository
 
             try
             {
-                await _gotchaDbContext.GotchaUsers.AddAsync(user);
+                await _gotchaDbContext.Users.AddAsync(user);
                 await _gotchaDbContext.SaveChangesAsync();
                 resultModel.Data = user;
             }
@@ -146,7 +185,7 @@ namespace Gotcha.Core.Services.Repository
 
             try
             {
-                _gotchaDbContext.GotchaUsers.Update(user);
+                _gotchaDbContext.Users.Update(user);
                 await _gotchaDbContext.SaveChangesAsync();
                 resultModel.Data = user;
             }
@@ -185,7 +224,7 @@ namespace Gotcha.Core.Services.Repository
 
             try
             {
-                GotchaUser? user = await _gotchaDbContext.GotchaUsers
+                GotchaUser? user = await _gotchaDbContext.Users
                                                     .FirstOrDefaultAsync(l => l.Id == id);
 
                 if (user == null)
@@ -199,7 +238,7 @@ namespace Gotcha.Core.Services.Repository
 
                 resultModel.Data = user;
 
-                _gotchaDbContext.GotchaUsers.Remove(user);
+                _gotchaDbContext.Users.Remove(user);
                 await _gotchaDbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex)
@@ -229,6 +268,13 @@ namespace Gotcha.Core.Services.Repository
 
             await _logRepoService.HandleAddingResultModelToLoggerAsync(resultModel, Guid.NewGuid());
             return resultModel;
+        }
+
+        public async Task<bool> DoesItExist(Guid id)
+        {
+            bool doesItExist = await _gotchaDbContext.Users.AnyAsync(u => u.Id == id);
+
+            return doesItExist;
         }
     }
 }

@@ -9,5 +9,6 @@ namespace Gotcha.Core.Interfaces
         public Task<ResultModel<T>> AddAsync(T entity);
         public Task<ResultModel<T>> UpdateAsync(T entity);
         public Task<ResultModel<T>> DeleteAsync(Guid id);
+        public Task<bool> DoesItExist(Guid id);
     }
 }

@@ -45,7 +45,7 @@ namespace Gotcha.Core.Services.ValidationServices
             }
         }
 
-        internal static bool IsReservedUsername(string username)
+        public static bool IsReservedUsername(string username)
         {
             if (string.IsNullOrWhiteSpace(username))
                 return false;
@@ -53,7 +53,7 @@ namespace Gotcha.Core.Services.ValidationServices
             return ReservedUsernames.Contains(username.Trim());
         }
 
-        internal static bool IsReservedName(string name)
+        public static bool IsReservedName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
                 return false;

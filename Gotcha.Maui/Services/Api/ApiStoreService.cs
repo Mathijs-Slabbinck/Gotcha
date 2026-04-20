@@ -1,7 +1,7 @@
 using System.Net.Http.Json;
-using Gotcha.Maui.Constants;
-using Gotcha.Maui.Enums;
 using Gotcha.Maui.Models;
+using Gotcha.Shared.Constants;
+using Gotcha.Shared.Enums;
 
 namespace Gotcha.Maui.Services.Api
 {

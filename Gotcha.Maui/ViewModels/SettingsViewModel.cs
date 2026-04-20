@@ -1,11 +1,11 @@
-using CommunityToolkit.Mvvm.ComponentModel;
 using Gotcha.Maui.Models;
 using Gotcha.Maui.Services;
+using Gotcha.Maui.ViewModels.BaseViewModels;
 using System.Windows.Input;
 
 namespace Gotcha.Maui.ViewModels
 {
-    public class SettingsViewModel : ObservableObject
+    public class SettingsViewModel : PageBaseViewModel
     {
         private readonly IUserService userService;
 
@@ -44,25 +44,11 @@ namespace Gotcha.Maui.ViewModels
             set { SetProperty(ref birthday, value); }
         }
 
-        private string errorMessage = string.Empty;
-        public string ErrorMessage
-        {
-            get { return errorMessage; }
-            set { SetProperty(ref errorMessage, value); }
-        }
-
         private string successMessage = string.Empty;
         public string SuccessMessage
         {
             get { return successMessage; }
             set { SetProperty(ref successMessage, value); }
-        }
-
-        private bool isBusy;
-        public bool IsBusy
-        {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
         }
 
         public ICommand SaveChangesCommand { get; }

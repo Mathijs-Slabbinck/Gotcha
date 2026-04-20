@@ -45,4 +45,7 @@ The app also offers custom game modes that aren't possible with traditional pape
 **Possible expansions (possible for future, not in by default):**
 - Make use of location to give hunter a ping with distance to target every x amount of time
 - Make use of location to show a minimap of the player and it's target
-- Have a panel where living in game players can digitally submit that they witnessed a kill to void it. (linked to a notification for the killer and target who's kill was voided). Comes with a setting "AllowDeathWitnesses".
+- Have a panel where living in game players can digitally submit that they witnessed a kill to void it. (linked to a notification for the killer and target who's kill was voided). Comes with a setting "AllowDeathWitnesses".  
+
+### PE1 video:
+https://youtu.be/2fCk1CR2FRo

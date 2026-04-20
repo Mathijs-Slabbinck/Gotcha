@@ -100,6 +100,9 @@
 	  <MauiXaml Update="Pages\Authenticated\User\Home.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Authenticated\User\PrivacyDashboard.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Authenticated\User\Settings.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -131,6 +134,10 @@
 	  <Folder Include="Extensions\" />
 	  <Folder Include="Views\" />
 	  <Folder Include="ViewModels\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Gotcha.Shared\Gotcha.Shared.csproj" />
 	</ItemGroup>
 
 </Project>

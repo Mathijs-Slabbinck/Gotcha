@@ -1,12 +1,13 @@
-using CommunityToolkit.Mvvm.ComponentModel;
 using Gotcha.Maui.Services;
+using Gotcha.Maui.ViewModels.BaseViewModels;
 using System.Windows.Input;
 
 namespace Gotcha.Maui.ViewModels
 {
-    public class PlayerSettingsViewModel : ObservableObject
+    public class PlayerSettingsViewModel : PageBaseViewModel
     {
-        private readonly IPlayerService playerService;
+        private readonly IPlayerService _playerService;
+        private readonly SessionService _sessionService;
 
         private string username = string.Empty;
         public string Username
@@ -22,13 +23,6 @@ namespace Gotcha.Maui.ViewModels
             set { SetProperty(ref profileImageSource, value); }
         }
 
-        private string errorMessage = string.Empty;
-        public string ErrorMessage
-        {
-            get { return errorMessage; }
-            set { SetProperty(ref errorMessage, value); }
-        }
-
         private string successMessage = string.Empty;
         public string SuccessMessage
         {
@@ -36,19 +30,13 @@ namespace Gotcha.Maui.ViewModels
             set { SetProperty(ref successMessage, value); }
         }
 
-        private bool isBusy;
-        public bool IsBusy
-        {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
-        }
-
         public ICommand SaveChangesCommand { get; }
         public ICommand LogoutCommand { get; }
 
-        public PlayerSettingsViewModel(IPlayerService playerService)
+        public PlayerSettingsViewModel(IPlayerService playerService, SessionService sessionService)
         {
-            this.playerService = playerService;
+            _playerService = playerService;
+            _sessionService = sessionService;
 
             SaveChangesCommand = new Command(ExecuteSaveChangesCommand);
             LogoutCommand = new Command(ExecuteLogoutCommand);
@@ -58,12 +46,17 @@ namespace Gotcha.Maui.ViewModels
         {
             try
             {
-                Username = await playerService.GetPlayerUsernameAsync(Guid.Empty);
+                IsBusy = true;
+                ErrorMessage = string.Empty;
+
+                Username = await _playerService.GetPlayerUsernameAsync(_sessionService.CurrentPlayerId);
             }
             catch
             {
                 ErrorMessage = "Something went wrong loading your profile.";
             }
+
+            IsBusy = false;
         }
 
         private async void ExecuteSaveChangesCommand()
@@ -81,7 +74,7 @@ namespace Gotcha.Maui.ViewModels
 
                 IsBusy = true;
 
-                await playerService.UpdatePlayerUsernameAsync(Guid.Empty, Username);
+                await _playerService.UpdatePlayerUsernameAsync(_sessionService.CurrentPlayerId, Username);
                 SuccessMessage = "Your changes have been saved.";
             }
             catch
@@ -96,6 +89,9 @@ namespace Gotcha.Maui.ViewModels
         {
             try
             {
+                _sessionService.Clear();
+                SecureStorage.Remove("userId");
+
                 await Shell.Current.GoToAsync(Routes.SignIn);
             }
             catch

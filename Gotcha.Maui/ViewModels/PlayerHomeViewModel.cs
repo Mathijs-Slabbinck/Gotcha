@@ -1,13 +1,14 @@
-using CommunityToolkit.Mvvm.ComponentModel;
 using Gotcha.Maui.Models;
 using Gotcha.Maui.Services;
+using Gotcha.Maui.ViewModels.BaseViewModels;
 using System.Collections.ObjectModel;
 
 namespace Gotcha.Maui.ViewModels
 {
-    public class PlayerHomeViewModel : ObservableObject
+    public class PlayerHomeViewModel : PageBaseViewModel
     {
-        private readonly IPlayerService playerService;
+        private readonly IPlayerService _playerService;
+        private readonly SessionService _sessionService;
 
         // Status
         private bool isAlive;
@@ -262,23 +263,10 @@ namespace Gotcha.Maui.ViewModels
             get { return Players.Count(p => p.IsAlive); }
         }
 
-        private bool isBusy;
-        public bool IsBusy
+        public PlayerHomeViewModel(IPlayerService playerService, SessionService sessionService)
         {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
-        }
-
-        private string errorMessage = string.Empty;
-        public string ErrorMessage
-        {
-            get { return errorMessage; }
-            set { SetProperty(ref errorMessage, value); }
-        }
-
-        public PlayerHomeViewModel(IPlayerService playerService)
-        {
-            this.playerService = playerService;
+            _playerService = playerService;
+            _sessionService = sessionService;
         }
 
         public async void LoadData()
@@ -287,7 +275,7 @@ namespace Gotcha.Maui.ViewModels
             {
                 IsBusy = true;
                 ErrorMessage = string.Empty;
-                var data = await playerService.GetPlayerHomeDataAsync(Guid.Empty);
+                var data = await _playerService.GetPlayerHomeDataAsync(_sessionService.CurrentPlayerId);
 
                 IsAlive = data.IsAlive;
                 IsSpectator = data.IsSpectator;

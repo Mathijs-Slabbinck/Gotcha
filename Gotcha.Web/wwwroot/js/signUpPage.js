@@ -1,7 +1,8 @@
 "use strict";
 
-
 let isBlocked = false;
+let cropper = null;
+let croppedBlob = null;
 
 window.addEventListener("load", initialize);
 
@@ -29,8 +30,14 @@ function initialize() {
         showPassword(inpSignUpRepeatPasswordInput);
     });
 
-    // Image file validation
+    // Image file input — opens the crop modal
     const inpSignUpImageInput = document.getElementById("signUpImageInput");
+    const cropImage = document.getElementById("cropImage");
+    const cropConfirmBtn = document.getElementById("cropConfirmBtn");
+    const cropModal = document.getElementById("cropModal");
+    const imagePreviewContainer = document.getElementById("imagePreviewContainer");
+    const imagePreview = document.getElementById("imagePreview");
+    const removeImageBtn = document.getElementById("removeImageBtn");
 
     inpSignUpImageInput.addEventListener("change", function () {
         var file = inpSignUpImageInput.files[0];
@@ -39,12 +46,127 @@ function initialize() {
             return;
         }
 
+        // Client-side pre-validation (extension + size)
         var result = validateImageFile(file);
 
         if (!result.isValid) {
             inpSignUpImageInput.value = "";
             showInfoModal("Invalid Image", result.errorMessage);
+            return;
         }
+
+        // Load the image into the crop modal
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            cropImage.src = e.target.result;
+
+            var modal = new bootstrap.Modal(cropModal);
+            modal.show();
+        };
+
+        reader.readAsDataURL(file);
+    });
+
+    // Initialize Cropper.js when the crop modal opens
+    cropModal.addEventListener("shown.bs.modal", function () {
+        // Destroy previous cropper instance if it exists
+        if (cropper) {
+            cropper.destroy();
+        }
+
+        cropper = new Cropper(cropImage, {
+            aspectRatio: 1,         // square crop (1:1)
+            viewMode: 1,            // restrict crop box to canvas
+            dragMode: "move",       // move the image, not the crop box
+            cropBoxResizable: true,
+            cropBoxMovable: true,
+            autoCropArea: 0.8,      // initial crop area = 80% of the image
+            responsive: true,
+            background: false,
+        });
+    });
+
+    // Clean up cropper when modal closes
+    cropModal.addEventListener("hidden.bs.modal", function () {
+        if (cropper) {
+            cropper.destroy();
+            cropper = null;
+        }
+
+        // Reset file input so the user can pick the same file again
+        inpSignUpImageInput.value = "";
+    });
+
+    // Confirm crop — get the cropped canvas as a Blob
+    cropConfirmBtn.addEventListener("click", function () {
+        if (!cropper) {
+            return;
+        }
+
+        var canvas = cropper.getCroppedCanvas({
+            width: 1500,
+            height: 1500,
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: "high",
+        });
+
+        canvas.toBlob(function (blob) {
+            croppedBlob = blob;
+
+            // Show the preview
+            imagePreview.src = URL.createObjectURL(blob);
+            imagePreviewContainer.classList.remove("d-none");
+
+            // Close the modal
+            var modal = bootstrap.Modal.getInstance(cropModal);
+            modal.hide();
+        }, "image/jpeg", 0.9);
+    });
+
+    // Remove image button
+    removeImageBtn.addEventListener("click", function () {
+        croppedBlob = null;
+        imagePreviewContainer.classList.add("d-none");
+        imagePreview.src = "";
+        inpSignUpImageInput.value = "";
+    });
+
+    // Intercept form submission — validate client-side, then attach cropped image
+    var form = document.getElementById("signUpForm");
+
+    form.addEventListener("submit", function (e) {
+        // Run client-side validation first
+        if (!validateSignUpForm(form)) {
+            e.preventDefault();
+            return;
+        }
+
+        if (!croppedBlob) {
+            // No image selected — let the form submit normally
+            return;
+        }
+
+        e.preventDefault();
+
+        var formData = new FormData(form);
+
+        // Remove the original file input (it's empty after cropping)
+        formData.delete("ProfileImage");
+
+        // Append the cropped blob as a file
+        formData.append("ProfileImage", croppedBlob, "profile.jpg");
+
+        // Submit via fetch, then follow the response location
+        fetch(form.action, {
+            method: "POST",
+            body: formData,
+            redirect: "follow",
+        }).then(function (response) {
+            // Whether success (redirect to CheckEmail) or error (re-rendered form),
+            // navigate to the response URL so the browser renders it normally
+            window.location.href = response.url;
+        });
     });
 
     // Info icons — show shared modal with data from clicked icon
@@ -84,7 +206,6 @@ function handleChangedSelection(select) {
 
     select.remove(0);
     select.classList.remove("text-secondary");
-    select.style.color = "white";
     isBlocked = true;
 }
 

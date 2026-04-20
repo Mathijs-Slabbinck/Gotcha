@@ -1,86 +1,113 @@
+using Gotcha.Core.Data;
+using Gotcha.Core.Entities.Models;
+using Gotcha.Core.Services;
 using Gotcha.Web.Areas.User.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gotcha.Web.Areas.User.Controllers
 {
     [Area("User")]
+    [Authorize]
     public class GamesController : Controller
     {
-        public IActionResult Index()
+        private readonly UserManager<GotchaUser> _userManager;
+        private readonly GotchaDbContext _context;
+        private readonly GameService _gameService;
+
+        public GamesController(UserManager<GotchaUser> userManager, GotchaDbContext context, GameService gameService)
         {
-            List<GameItemViewModel> pendingGames = new List<GameItemViewModel>()
-            {
-                new GameItemViewModel
-                {
-                    GameId = Guid.NewGuid(),
-                    Name = "Campus Clash",
-                    CreatedDate = DateTime.UtcNow.AddDays(-2),
-                    PlayerCount = 5
-                },
-                new GameItemViewModel
-                {
-                    GameId = Guid.NewGuid(),
-                    Name = "Neighborhood Nerf War",
-                    CreatedDate = DateTime.UtcNow.AddDays(-7),
-                    PlayerCount = 3
-                }
-            };
+            _userManager = userManager;
+            _context = context;
+            _gameService = gameService;
+        }
 
-            List<GameItemViewModel> activeGames = new List<GameItemViewModel>()
+        public async Task<IActionResult> Index()
+        {
+            GotchaUser? user = await _userManager.GetUserAsync(User);
+            if (user == null)
             {
-                new GameItemViewModel
-                {
-                    GameId = Guid.NewGuid(),
-                    Name = "Summer Showdown",
-                    StartDate = DateTime.UtcNow.AddDays(-10),
-                    PlayerCount = 12,
-                    IsAlive = true
-                },
-                new GameItemViewModel
-                {
-                    GameId = Guid.NewGuid(),
-                    Name = "Office Battle Royale",
-                    StartDate = DateTime.UtcNow.AddDays(-3),
-                    PlayerCount = 8,
-                    IsAlive = false
-                }
-            };
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
 
-            List<GameItemViewModel> endedGames = new List<GameItemViewModel>()
+            var players = await _context.Players
+                .Include(p => p.Game)
+                    .ThenInclude(g => g.Players)
+                        .ThenInclude(p2 => p2.User)
+                .Include(p => p.Game)
+                    .ThenInclude(g => g.Kills)
+                .Where(p => p.UserId == user.Id)
+                .ToListAsync();
+
+            var pendingGames = new List<GameItemViewModel>();
+            var activeGames = new List<GameItemViewModel>();
+            var endedGames = new List<GameItemViewModel>();
+
+            foreach (var player in players)
             {
-                new GameItemViewModel
-                {
-                    GameId = Guid.NewGuid(),
-                    Name = "Spring Frenzy",
-                    StartDate = DateTime.UtcNow.AddDays(-45),
-                    EndDate = DateTime.UtcNow.AddDays(-20),
-                    PlayerCount = 15,
-                    WinnerName = "TheLegend27"
-                },
-                new GameItemViewModel
-                {
-                    GameId = Guid.NewGuid(),
-                    Name = "Winter Wars",
-                    StartDate = DateTime.UtcNow.AddDays(-90),
-                    EndDate = DateTime.UtcNow.AddDays(-60),
-                    PlayerCount = 20,
-                    WinnerName = "John Doe"
-                }
-            };
+                var game = player.Game;
 
-            GamesViewModel gamesViewModel = new GamesViewModel
+                // Find winner name if game is finished
+                string? winnerName = null;
+                if (game.IsFinished && game.WinnerId.HasValue)
+                {
+                    var winner = game.Players.FirstOrDefault(p => p.Id == game.WinnerId.Value);
+                    if (winner != null)
+                    {
+                        winnerName = $"{winner.User.FirstName} {winner.User.LastName}";
+                    }
+                }
+
+                var item = new GameItemViewModel
+                {
+                    GameId = game.Id,
+                    Name = game.Name,
+                    CreatedDate = game.CreationDate,
+                    StartDate = game.StartDate ?? DateTime.MinValue,
+                    EndDate = game.EndDate,
+                    PlayerCount = game.Players.Count,
+                    WinnerName = winnerName,
+                    IsAlive = player.IsAlive
+                };
+
+                if (!game.HasStarted && !game.IsFinished)
+                {
+                    pendingGames.Add(item);
+                }
+                else if (game.HasStarted && !game.IsFinished)
+                {
+                    activeGames.Add(item);
+                }
+                else if (game.IsFinished)
+                {
+                    endedGames.Add(item);
+                }
+            }
+
+            var model = new GamesViewModel
             {
                 PendingGames = pendingGames,
                 ActiveGames = activeGames,
                 EndedGames = endedGames
             };
 
-            return View(gamesViewModel);
+            return View(model);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            NewGameViewModel viewModel = new NewGameViewModel
+            GotchaUser? user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
+
+            VipSettings? vip = await _context.VipSettings
+                .FirstOrDefaultAsync(v => EF.Property<Guid>(v, "UserId") == user.Id);
+
+            var viewModel = new NewGameViewModel
             {
                 Name = "",
                 CustomRules = null,
@@ -101,13 +128,77 @@ namespace Gotcha.Web.Areas.User.Controllers
                 TargetTimeOutHours = 24,
                 CustomKillMethods = false,
                 KillMethods = null,
-                AssassinModeUnlocked = true,
-                ChaosModeUnlocked = true,
-                TimedKillsUnlocked = true,
-                InviteLink = "https://gotcha.app/join/abc123-mock-link"
+                AssassinModeUnlocked = vip?.AssassinModeUnlocked ?? false,
+                ChaosModeUnlocked = vip?.ChaosModeUnlocked ?? false,
+                TimedKillsUnlocked = vip?.TimedKillsUnlocked ?? false,
+                InviteLink = ""
             };
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(NewGameViewModel model)
+        {
+            GotchaUser? user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
+
+            // Load VipSettings for JoinPlayer (needs it for MaxLobbySize)
+            var fullUser = await _context.Users
+                .Include(u => u.VipSettings)
+                .FirstOrDefaultAsync(u => u.Id == user.Id);
+
+            if (fullUser == null)
+            {
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
+
+            var rules = new Rules
+            {
+                ShowPlayerImages = model.ShowPlayerImages,
+                ShowGender = model.ShowGender,
+                EnforcePlayerImages = model.EnforcePlayerImages,
+                ShowRealNames = model.ShowRealNames,
+                ShowUsernames = model.ShowUsernames,
+                ShowLivingPlayerCount = model.ShowLivingPlayerCount,
+                ShowLivingPlayerNames = model.ShowLivingPlayerNames,
+                ShowLivingPlayerNamesToDeath = model.ShowLivingPlayerNamesToDeath,
+                IsAssassin = model.IsAssassin,
+                ShowHunter = model.ShowHunter,
+                IsChaos = model.IsChaos,
+                ChaosTimerMin = TimeSpan.FromHours(model.ChaosTimerMinHours),
+                ChaosTimerMax = TimeSpan.FromHours(model.ChaosTimerMaxHours),
+                IsTimed = model.IsTimed,
+                TargetTimeOut = TimeSpan.FromHours(model.TargetTimeOutHours),
+                CustomKillMethods = model.CustomKillMethods,
+                CustomRules = model.CustomRules,
+                KillMethods = model.KillMethods
+            };
+
+            var game = new Game
+            {
+                Name = string.IsNullOrWhiteSpace(model.Name) ? "New game" : model.Name,
+                Rules = rules
+            };
+
+            var player = new Gotcha.Core.Entities.Models.Player
+            {
+                UserId = fullUser.Id,
+                User = fullUser,
+                GameId = game.Id,
+                Game = game
+            };
+
+            _gameService.JoinPlayer(game, player);
+
+            _context.Games.Add(game);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
     }
 }

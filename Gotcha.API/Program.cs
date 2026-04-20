@@ -1,9 +1,18 @@
 using System.Text.Json.Serialization;
+using DotNetEnv;
 using Gotcha.Core.Data;
 using Gotcha.Core.Data.Seeder;
+using Gotcha.Core.Entities.Models;
+using Gotcha.Core.Interfaces;
 using Gotcha.Core.Services;
+using Gotcha.Core.Services.Email;
 using Gotcha.Core.Services.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
+// Load secrets from a .env file — see Gotcha.Web/Program.cs for the full explanation.
+// No-op when .env is absent (e.g. in production where real env vars are injected).
+Env.TraversePath().Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +31,11 @@ builder.Services.AddDbContext<GotchaDbContext>(
     .UseSqlServer(builder.Configuration.GetConnectionString("GotchaDbContext"))
 );
 
+// Identity (needed for UserManager in AuthController)
+builder.Services.AddIdentity<GotchaUser, IdentityRole<Guid>>()
+    .AddEntityFrameworkStores<GotchaDbContext>()
+    .AddDefaultTokenProviders();
+
 // Repository Services
 builder.Services.AddScoped<AttackerRepoService>();
 builder.Services.AddScoped<GameRepoService>();
@@ -33,6 +47,7 @@ builder.Services.AddScoped<UserRepoService>();
 
 // Business Logic Services
 builder.Services.AddScoped<GameService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 // CORS — allow all for development
 builder.Services.AddCors(options =>
@@ -62,6 +77,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowAll");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -1,6 +1,9 @@
 using Gotcha.API.Dtos.Players;
 using Gotcha.Core.Data;
+using Gotcha.Core.Entities.Models;
 using Gotcha.Core.Enums;
+using Gotcha.Core.Exceptions;
+using Gotcha.Core.Services;
 using Gotcha.Core.Services.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +16,13 @@ namespace Gotcha.API.Controllers
     {
         private readonly PlayerRepoService _playerRepo;
         private readonly GotchaDbContext _context;
+        private readonly GameService _gameService;
 
-        public PlayersController(PlayerRepoService playerRepo, GotchaDbContext context)
+        public PlayersController(PlayerRepoService playerRepo, GotchaDbContext context, GameService gameService)
         {
             _playerRepo = playerRepo;
             _context = context;
+            _gameService = gameService;
         }
 
         // GET api/players
@@ -274,6 +279,180 @@ namespace Gotcha.API.Controllers
             return Ok(dto);
         }
 
+        // POST api/players/{id}/confirmkill
+        [HttpPost("{id:guid}/confirmkill")]
+        public async Task<IActionResult> ConfirmKill(Guid id)
+        {
+            var player = await LoadFullPlayer(id);
+
+            if (player == null)
+            {
+                return NotFound();
+            }
+
+            var game = player.Game;
+            var currentAssignment = player.TargetAssignments
+                .FirstOrDefault(ta => ta.AssignmentStatus == AssignmentStatus.Ongoing);
+
+            if (currentAssignment == null)
+            {
+                return BadRequest("No ongoing target assignment found.");
+            }
+
+            var victim = game.Players.FirstOrDefault(p => p.Id == currentAssignment.TargetId);
+
+            if (victim == null)
+            {
+                return BadRequest("Target player not found in game.");
+            }
+
+            try
+            {
+                _gameService.HandleValidKill(game, player, victim, currentAssignment.Weapon);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (GotchaException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // POST api/players/{id}/rejectkill
+        [HttpPost("{id:guid}/rejectkill")]
+        public async Task<IActionResult> RejectKill(Guid id)
+        {
+            var player = await LoadFullPlayer(id);
+
+            if (player == null)
+            {
+                return NotFound();
+            }
+
+            var game = player.Game;
+            var currentAssignment = player.TargetAssignments
+                .FirstOrDefault(ta => ta.AssignmentStatus == AssignmentStatus.Ongoing);
+
+            if (currentAssignment == null)
+            {
+                return BadRequest("No ongoing target assignment found.");
+            }
+
+            var victim = game.Players.FirstOrDefault(p => p.Id == currentAssignment.TargetId);
+
+            if (victim == null)
+            {
+                return BadRequest("Target player not found in game.");
+            }
+
+            try
+            {
+                _gameService.HandleInValidKill(game, player, victim, weapon: currentAssignment.Weapon);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (GotchaException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // POST api/players/{id}/confirmdeath
+        [HttpPost("{id:guid}/confirmdeath")]
+        public async Task<IActionResult> ConfirmDeath(Guid id)
+        {
+            var player = await LoadFullPlayer(id);
+
+            if (player == null)
+            {
+                return NotFound();
+            }
+
+            var game = player.Game;
+
+            // Find the hunter who is targeting this player — already loaded via LoadFullPlayer
+            (TargetAssignment? hunterAssignment, Player? hunter) = FindHunterForPlayer(game, id);
+
+            if (hunterAssignment == null)
+            {
+                return BadRequest("No ongoing hunter assignment found for this player.");
+            }
+
+            if (hunter == null)
+            {
+                return BadRequest("Hunter not found in game.");
+            }
+
+            try
+            {
+                // The victim accepts their death — equivalent to the hunter's kill being confirmed
+                _gameService.HandleValidKill(game, hunter, player, hunterAssignment.Weapon);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (GotchaException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // POST api/players/{id}/confirmhunterkill
+        [HttpPost("{id:guid}/confirmhunterkill")]
+        public async Task<IActionResult> ConfirmHunterKill(Guid id)
+        {
+            var player = await LoadFullPlayer(id);
+
+            if (player == null)
+            {
+                return NotFound();
+            }
+
+            var game = player.Game;
+
+            // Find the player's hunter (in Assassin mode, the player kills their hunter)
+            (TargetAssignment? hunterAssignment, Player? hunter) = FindHunterForPlayer(game, id);
+
+            if (hunterAssignment == null)
+            {
+                return BadRequest("No ongoing hunter assignment found.");
+            }
+
+            if (hunter == null)
+            {
+                return BadRequest("Hunter not found in game.");
+            }
+
+            try
+            {
+                _gameService.HandleValidKill(game, player, hunter, hunterAssignment.Weapon);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (GotchaException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // DELETE api/players/{id}
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _playerRepo.GetByIdAsync(id);
+
+            if (!result.Success)
+            {
+                return NotFound();
+            }
+
+            var player = result.Data!;
+
+            _context.Players.Remove(player);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
         // GET api/players/{id}/admin
         [HttpGet("{id:guid}/admin")]
         public async Task<IActionResult> GetAdmin(Guid id)
@@ -364,5 +543,48 @@ namespace Gotcha.API.Controllers
 
             return Ok(dto);
         }
+
+        #region Private Helpers
+
+        private (TargetAssignment? Assignment, Player? Hunter) FindHunterForPlayer(Game game, Guid playerId)
+        {
+            TargetAssignment? assignment = game.Players
+                .SelectMany(p => p.TargetAssignments)
+                .FirstOrDefault(ta => ta.TargetId == playerId && ta.AssignmentStatus == AssignmentStatus.Ongoing);
+
+            Player? hunter = null;
+            if (assignment != null)
+            {
+                hunter = game.Players.FirstOrDefault(p => p.Id == assignment.HunterId);
+            }
+
+            return (assignment, hunter);
+        }
+
+        private async Task<Player?> LoadFullPlayer(Guid playerId)
+        {
+            return await _context.Players
+                .Include(p => p.User)
+                .Include(p => p.Game)
+                    .ThenInclude(g => g.Rules)
+                .Include(p => p.Game)
+                    .ThenInclude(g => g.Players)
+                        .ThenInclude(p2 => p2.User)
+                .Include(p => p.Game)
+                    .ThenInclude(g => g.Players)
+                        .ThenInclude(p2 => p2.TargetAssignments)
+                            .ThenInclude(ta => ta.Target)
+                .Include(p => p.Game)
+                    .ThenInclude(g => g.Players)
+                        .ThenInclude(p2 => p2.TargetAssignments)
+                            .ThenInclude(ta => ta.Kill)
+                .Include(p => p.Game)
+                    .ThenInclude(g => g.Kills)
+                .Include(p => p.TargetAssignments)
+                    .ThenInclude(ta => ta.Target)
+                .FirstOrDefaultAsync(p => p.Id == playerId);
+        }
+
+        #endregion
     }
 }

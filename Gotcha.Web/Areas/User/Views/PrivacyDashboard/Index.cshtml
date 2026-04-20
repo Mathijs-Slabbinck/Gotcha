@@ -1,0 +1,48 @@
+@{
+	ViewData["Title"] = "Privacy Dashboard";
+}
+
+<h1 class="fw-bold font-bungee text-center">Privacy Dashboard</h1>
+
+<div class="card glowingCard col-11 col-lg-8 mx-auto mt-4">
+	<div class="card-header">
+		<h2 class="text-center font-robotoSlab fw-bold color-2 pt-2">Your Data</h2>
+	</div>
+	<div class="card-body py-4">
+		<div class="row justify-content-center">
+			<div class="col-10">
+				<h3 class="font-robotoSlab fw-bold color-2 mb-3">Delete Account</h3>
+				<p class="text-white font-roboto mb-2">
+					This will deactivate your account and hide your personal information (name, email, profile image) from other users.
+					Your game history (kills, scores, results) will be kept under the name "Deleted User" so other players' records stay intact.
+				</p>
+				<p class="text-white font-roboto mb-4">
+					If you also want your game history fully removed, you can request this via the <a asp-area="" asp-controller="Contact" asp-action="Index">contact form</a> after deleting your account.
+				</p>
+
+				<button type="button" class="btn-1 px-4 py-2" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Delete My Account</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header justify-content-center">
+				<h5 class="modal-title font-robotoSlab fw-bold" id="deleteAccountModalLabel">Are you sure?</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body text-center font-roboto">
+				<p>This action cannot be undone. Your account will be deactivated and your personal data anonymized.</p>
+				<p>Game records will remain visible as "Deleted User".</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn-2 px-4 py-2" data-bs-dismiss="modal">Cancel</button>
+				<form asp-controller="PrivacyDashboard" asp-action="DeleteAccount" method="post">
+					<button type="submit" class="btn-1 px-4 py-2">Yes, Delete My Account</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

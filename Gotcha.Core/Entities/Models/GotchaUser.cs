@@ -19,14 +19,21 @@ namespace Gotcha.Core.Entities.Models
         public DateTime AccountCreationDate { get; init; } = DateTime.UtcNow;
         public ICollection<Player> PlayerAccounts { get; set; } = new List<Player>();
         public VipSettings VipSettings { get; set; } = new VipSettings();
+        public ProfileImage? ProfileImage { get; set; }
 
         // Guardian consent fields (COPPA/GDPR — required for users under 16)
         public string? GuardianEmail { get; set; }
         public bool HasGuardianConsent { get; set; }
         public DateTime? GuardianConsentDate { get; set; }
+        public string? GuardianConsentToken { get; set; }
+
+        // Account deletion (soft delete + anonymize, full deletion on request)
+        public bool IsDeleted { get; set; }
         #endregion
 
         #region Query Methods
+        public bool NeedsGuardianConsent() => GuardianEmail != null && !HasGuardianConsent;
+
         public IEnumerable<Game> GetAllGamesPlayed()
         {
             return PlayerAccounts

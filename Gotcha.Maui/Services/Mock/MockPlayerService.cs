@@ -139,19 +139,19 @@ namespace Gotcha.Maui.Services.Mock
             return Task.FromResult(data);
         }
 
-        public Task<bool> ConfirmKillAsync(Guid playerId)
+        public Task<(bool Success, string? ErrorMessage)> ConfirmKillAsync(Guid playerId)
         {
-            return Task.FromResult(true);
+            return Task.FromResult<(bool, string?)>((true, null));
         }
 
-        public Task<bool> ConfirmDeathAsync(Guid playerId)
+        public Task<(bool Success, string? ErrorMessage)> ConfirmDeathAsync(Guid playerId)
         {
-            return Task.FromResult(true);
+            return Task.FromResult<(bool, string?)>((true, null));
         }
 
-        public Task<bool> ConfirmHunterKillAsync(Guid playerId)
+        public Task<(bool Success, string? ErrorMessage)> ConfirmHunterKillAsync(Guid playerId)
         {
-            return Task.FromResult(true);
+            return Task.FromResult<(bool, string?)>((true, null));
         }
 
         public Task<bool> UpdatePlayerUsernameAsync(Guid playerId, string username)

@@ -91,11 +91,11 @@ These use `GotchaDbContext` directly for eager loading (intentional — avoids m
 
 ## Dev Constants
 
-`Constants/DevConstants.cs` — references `Seeder.TestUserId` (fixed GUID `aaaaaaaa-...`) for development/testing without auth.
+Use `Gotcha.Shared.Constants.DevConstants.TestUserId` (fixed GUID `aaaaaaaa-...`) for development/testing without auth. The Seeder creates a user with this exact ID.
 
 ## Key Paths
 
 - Controllers: `Controllers/`
 - DTOs: `Dtos/` (subfolders per entity)
-- Constants: `Constants/DevConstants.cs`
+- Shared Constants: `Gotcha.Shared/Constants/DevConstants.cs` (TestUserId)
 - Config: `Program.cs` (DI, CORS, JSON, DB, seeder)

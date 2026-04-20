@@ -1,4 +1,4 @@
-using Gotcha.Maui.Enums;
+using Gotcha.Shared.Enums;
 
 namespace Gotcha.Maui.Models
 {

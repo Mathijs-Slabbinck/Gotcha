@@ -1,0 +1,49 @@
+# Gotcha - Robots Exclusion Protocol
+# Public pages (login, signup, info, contact, privacy) are allowed.
+# All authenticated areas and user data are blocked.
+
+# --- Standard search engine crawlers ---
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: DuckDuckBot
+User-agent: Yandex
+User-agent: Baiduspider
+Disallow: /User/
+Disallow: /Player/
+Disallow: /Gotcha/
+Disallow: /Accounts/
+Allow: /
+
+# --- AI crawlers / scrapers ---
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: Google-Extended
+User-agent: Claude-Web
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: Bytespider
+User-agent: CCBot
+User-agent: FacebookBot
+User-agent: Applebot-Extended
+User-agent: PerplexityBot
+User-agent: Cohere-ai
+Disallow: /User/
+Disallow: /Player/
+Disallow: /Gotcha/
+Disallow: /Accounts/
+Disallow: /SignUp/
+Disallow: /ResetPassword/
+Allow: /Home/
+Allow: /Info/
+Allow: /Contact/
+Allow: /Home/Privacy
+
+# --- Catch-all for any other bot ---
+User-agent: *
+Disallow: /User/
+Disallow: /Player/
+Disallow: /Gotcha/
+Disallow: /Accounts/
+Allow: /
+
+Sitemap: https://gotcha.example.com/sitemap.xml

@@ -1,10 +1,20 @@
+using DotNetEnv;
 using Gotcha.Core.Data;
 using Gotcha.Core.Entities.Models;
+using Gotcha.Core.Interfaces;
 using Gotcha.Core.Services;
+using Gotcha.Core.Services.Email;
+using Gotcha.Core.Services.Payment;
 using Gotcha.Core.Services.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+
+// Load secrets from a .env file (walks up the directory tree from the working dir).
+// Values land in Environment.GetEnvironmentVariables() and are picked up by the default
+// AddEnvironmentVariables() that WebApplication.CreateBuilder registers — so they flow
+// into IConfiguration the same way appsettings values do.
+// Nested config keys use double underscore in env var names: PayPal__Secret → PayPal:Secret.
+Env.TraversePath().Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +49,13 @@ builder.Services.AddScoped<UserRepoService>();
 // Business Logic Services
 builder.Services.AddScoped<GameService>();
 
+// Email Service
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+// PayPal
+builder.Services.Configure<PayPalSettings>(builder.Configuration.GetSection("PayPal"));
+builder.Services.AddHttpClient<IPayPalService, PayPalService>();
+
 // Registreer Identity services in de DI-container.
 // AddIdentity<TUser, TRole> configureert:
 // - UserManager: gebruikersbeheer (aanmaken, zoeken, verwijderen)
@@ -53,6 +70,8 @@ builder.Services.AddIdentity<GotchaUser, IdentityRole<Guid>>(options =>
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredUniqueChars = 4;
+
+    options.User.RequireUniqueEmail = true;
 })
 // Koppelt Identity aan je database via Entity Framework
 .AddEntityFrameworkStores<GotchaDbContext>()

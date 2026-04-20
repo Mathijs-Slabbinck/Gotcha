@@ -192,11 +192,17 @@ namespace Gotcha.Core.Migrations
                     b.Property<DateTime?>("GuardianConsentDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("GuardianConsentToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("GuardianEmail")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("HasGuardianConsent")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
@@ -345,6 +351,33 @@ namespace Gotcha.Core.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Players");
+                });
+
+            modelBuilder.Entity("Gotcha.Core.Entities.Models.ProfileImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("MimeType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
+
+                    b.ToTable("ProfileImages");
                 });
 
             modelBuilder.Entity("Gotcha.Core.Entities.Models.Rules", b =>
@@ -693,6 +726,14 @@ namespace Gotcha.Core.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Gotcha.Core.Entities.Models.ProfileImage", b =>
+                {
+                    b.HasOne("Gotcha.Core.Entities.Models.GotchaUser", null)
+                        .WithOne("ProfileImage")
+                        .HasForeignKey("Gotcha.Core.Entities.Models.ProfileImage", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("Gotcha.Core.Entities.Models.TargetAssignment", b =>
                 {
                     b.HasOne("Gotcha.Core.Entities.Models.Player", "Hunter")
@@ -787,6 +828,8 @@ namespace Gotcha.Core.Migrations
             modelBuilder.Entity("Gotcha.Core.Entities.Models.GotchaUser", b =>
                 {
                     b.Navigation("PlayerAccounts");
+
+                    b.Navigation("ProfileImage");
 
                     b.Navigation("VipSettings")
                         .IsRequired();

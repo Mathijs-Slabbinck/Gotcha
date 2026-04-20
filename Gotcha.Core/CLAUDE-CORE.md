@@ -29,7 +29,7 @@ public class Entity
 
 - TimeSpan stored as ticks in DB (configured in `OnModelCreating`)
 - `GotchaDbContext` extends `IdentityDbContext` (not plain `DbContext`)
-- Cascade behavior: Game→Players (Cascade), Player→GotchaUser (Restrict), Kill→Killer/Victim (Restrict)
+- Cascade behavior: Game→Players (Cascade), Player→GotchaUser (Restrict), Kill→Killer/Victim (Restrict), User→VipSettings (Cascade), User→ProfileImage (Restrict — deleted manually in PrivacyDashboard)
 - Seeder uses `GotchaDbContext` (`SeedAsync(GotchaDbContext)`) not `ModelBuilder.HasData()`
 - CS8618 warnings on navigation properties are normal for EF Core POCOs
 
@@ -42,9 +42,10 @@ Controller → Service (validates + business logic) → RepoService (CRUD) → D
 - **Repository pattern**: `IRepositoryService<T>` with concrete implementations per entity in `Services/Repository/`. CRUD only, no business logic.
 - **Service layer**: `GameService` handles orchestration (JoinPlayer, StartGame, HandleValidKill, etc.)
 - **Result model**: `ResultModel<T>` / `BaseResultModel` for returning data with error/warning collections
-- **Validation**: Split into 3 focused static services — `UserValidationService` (email, username, name, birthday), `ImageValidationService` (image URL, file extension, MIME type, file size, magic bytes, re-encoding), `SecurityValidationService` (IP validation). Reserved usernames = simple static HashSet, no config/DI.
+- **Validation**: Split into 3 focused static services — `UserValidationService` (email, username, name, birthday), `ImageValidationService` (image URL, file extension, MIME type, file size, magic bytes, dimensions, resize, re-encoding), `SecurityValidationService` (IP validation, suspicious input detection for honeypot). Reserved usernames = simple static HashSet, no config/DI.
+- **Email**: `IEmailService` interface + `EmailService` (SMTP via MailHog in dev). Used for email confirmation and guardian consent on signup.
 - **Exception hierarchy**: Base `GotchaException` with specific subtypes (`GameStateException`, `GameRuleViolationException`, `ValidationException`, etc.) and per-entity `NotFoundException` classes
-- **Logging**: Custom `Log` entity system with `Attacker` tracking (IP, user agent, path) and subtypes (Error, Warning, HackAttempt)
+- **Logging**: Custom `Log` entity system with `Attacker` tracking (IP, user agent, path, user ID) and subtypes (Error, Warning, HackAttempt)
 
 ## DI Registrations (in Program.cs)
 

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gotcha.API", "Gotcha.API\Go
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gotcha.Maui", "Gotcha.Maui\Gotcha.Maui.csproj", "{800E5D40-F7A2-4AFB-8C68-7DAD1A5A4754}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gotcha.Shared", "Gotcha.Shared\Gotcha.Shared.csproj", "{9152B1DA-0112-4F87-BDB3-31189F9DE79E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{800E5D40-F7A2-4AFB-8C68-7DAD1A5A4754}.Release|x64.Build.0 = Release|Any CPU
 		{800E5D40-F7A2-4AFB-8C68-7DAD1A5A4754}.Release|x86.ActiveCfg = Release|Any CPU
 		{800E5D40-F7A2-4AFB-8C68-7DAD1A5A4754}.Release|x86.Build.0 = Release|Any CPU
+		{9152B1DA-0112-4F87-BDB3-31189F9DE79E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9152B1DA-0112-4F87-BDB3-31189F9DE79E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9152B1DA-0112-4F87-BDB3-31189F9DE79E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9152B1DA-0112-4F87-BDB3-31189F9DE79E}.Debug|x64.Build.0 = Debug|Any CPU
+		{9152B1DA-0112-4F87-BDB3-31189F9DE79E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9152B1DA-0112-4F87-BDB3-31189F9DE79E}.Debug|x86.Build.0 = Debug|Any CPU
+		{9152B1DA-0112-4F87-BDB3-31189F9DE79E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9152B1DA-0112-4F87-BDB3-31189F9DE79E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9152B1DA-0112-4F87-BDB3-31189F9DE79E}.Release|x64.ActiveCfg = Release|Any CPU
+		{9152B1DA-0112-4F87-BDB3-31189F9DE79E}.Release|x64.Build.0 = Release|Any CPU
+		{9152B1DA-0112-4F87-BDB3-31189F9DE79E}.Release|x86.ActiveCfg = Release|Any CPU
+		{9152B1DA-0112-4F87-BDB3-31189F9DE79E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
