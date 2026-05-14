@@ -1,5 +1,9 @@
 # Gotcha
 
+## Ben bezig met een versimpelde 2.0 versie waar ik meer mijn tijd voor neem;
+zag dit te groot en heb te snel willen werken en AI te veel grote taken in eens gegeven om het af te krijgen
+was geen slimme keuze
+
 ## Project Description
 ### What is Gotcha?
 Gotcha (also known as Assassin) is a social elimination game that's all about stealth, creativity, and timing.
